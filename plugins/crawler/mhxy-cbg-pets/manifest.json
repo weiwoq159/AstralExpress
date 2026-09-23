@@ -1,0 +1,25 @@
+{
+  "key": "mhxy-cbg-pets",
+  "order": 30,
+  "name": "梦幻西游藏宝阁召唤兽获取",
+  "category": "json",
+  "description": "从梦幻西游藏宝阁获取召唤兽名称与 id 的映射",
+  "tags": [
+    "梦幻西游",
+    "藏宝阁",
+    "JSON"
+  ],
+  "icon": "AudioOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {
+    "targetWebsite": "https://cbg.163.com/"
+  }
+}

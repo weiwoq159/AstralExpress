@@ -1,0 +1,51 @@
+// ── 页面布局 ──
+@mixin module-header {
+  background: linear-gradient(
+    105deg,
+    rgba(121, 169, 202, 0.72) 0%,
+    rgba(182, 216, 237, 0.56) 36%,
+    rgba(218, 239, 255, 0.42) 100%
+  );
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+@mixin module-content {
+  padding: 24px;
+}
+
+// ── 卡片 ──
+@mixin card-button($focus-radius: 14px) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid #4d89b4;
+    outline-offset: 3px;
+    border-radius: $focus-radius;
+  }
+}
+
+@mixin glass-card(
+  $radius: 14px,
+  $border-color: rgba(255, 255, 255, 0.58),
+  $background: rgba(255, 255, 255, 0.28),
+  $shadow: 0 8px 20px rgba(32, 77, 112, 0.05),
+  $backdrop-filter: blur(10px) saturate(125%)
+) {
+  border: 1px solid $border-color;
+  border-radius: $radius;
+  background: $background;
+  box-shadow: $shadow;
+  backdrop-filter: $backdrop-filter;
+}

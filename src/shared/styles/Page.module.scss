@@ -1,0 +1,9 @@
+@use "./mixins" as m;
+
+.page {
+  @include m.module-content;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

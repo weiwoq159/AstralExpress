@@ -1,0 +1,1 @@
+export { toCatalogGridItem } from "./toCatalogGridItem";

@@ -1,0 +1,19 @@
+{
+  "key": "document-converter",
+  "order": 40,
+  "name": "文档转换",
+  "category": "document",
+  "description": "在常用办公文档格式之间快速转换。",
+  "tags": ["格式转换", "办公文档", "批量处理"],
+  "icon": "SwapOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

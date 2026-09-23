@@ -1,0 +1,19 @@
+{
+  "key": "timestamp-converter",
+  "order": 150,
+  "name": "时间戳转换",
+  "category": "utility",
+  "description": "在 Unix 时间戳与本地日期时间之间转换。",
+  "tags": ["时间戳", "时区转换", "日期时间"],
+  "icon": "ClockCircleOutlined",
+  "status": "disabled",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

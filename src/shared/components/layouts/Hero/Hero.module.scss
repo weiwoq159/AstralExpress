@@ -1,0 +1,54 @@
+.hero {
+  position: relative;
+  display: grid;
+  min-height: 208px;
+  overflow: hidden;
+  padding: 30px 34px;
+  user-select: none;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 20px;
+
+  background:
+    radial-gradient(circle at 84% 18%, rgba(106, 169, 214, 0.28), transparent 30%),
+    radial-gradient(circle at 32% 120%, rgba(142, 181, 235, 0.2), transparent 40%),
+    linear-gradient(125deg, rgba(255, 255, 255, 0.64), rgba(210, 237, 255, 0.36));
+  box-shadow: 0 16px 34px rgba(32, 77, 112, 0.1);
+  backdrop-filter: blur(20px) saturate(150%);
+
+  &::before {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+      linear-gradient(rgba(69, 119, 157, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(69, 119, 157, 0.08) 1px, transparent 1px);
+    background-size: 38px 38px;
+
+    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.65), transparent 82%);
+
+    content: "";
+    pointer-events: none;
+  }
+}
+
+.heroMain {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+}
+
+.tag {
+  margin-inline-end: 0;
+  padding: 5px 10px;
+  border: 1px solid rgba(77, 120, 157, 0.14);
+  border-radius: 999px;
+  color: #416b8e;
+  background: rgba(255, 255, 255, 0.44);
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 24px;
+  }
+}

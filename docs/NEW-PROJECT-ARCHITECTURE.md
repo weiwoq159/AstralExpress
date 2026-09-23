@@ -248,31 +248,39 @@ src-tauri/src/
 原本对 `tools/runner.rs`/`crawler/runner.rs` 的"两者不得依赖 task"这条
 约束原样保留，只是不用为每个模块各写一份了。
 
-### 为什么 `Source`/模块 ID 不再是封闭枚举
+### `module_id` 是封闭枚举 `ModuleId`
 
-旧项目里 `Source`（原来叫 `ManifestSource`/`TaskSource`，审计中发现是
-两个逐字段相同的重复枚举）是 `Tool | Crawler` 两个变体的封闭 Rust
-`enum`。这个设计在只有两个模块时没问题，但路线图上明确写着还有 5 个
-模块要加——每加一个模块就要：改这个枚举、改数据库 CHECK 约束、重新生成
-ts-rs 绑定、检查所有 `match` 是不是漏了新分支。这是纯粹的、会随时间线
-性增长的维护负担，不该用编译期封闭类型表达。
+早期草案设想过路线图上还有 5 个模块要加，因此把 `module_id` 留成开放
+字符串——每加一个模块只用加个 `plugins/<name>/` 目录，不用碰 Rust 代码。
+这个路线图后来确认已经过时：当前明确就只做 `tools`/`crawler` 两个模块，
+不再有"随时加新模块"的扩展需求，开放字符串换来的"免改代码"能力也就没
+了用武之地，反而让 `module_id` 能不能传非法值这件事在编译期查不出来。
 
-新设计里，**模块 ID 就是一个普通字符串**，等于 `plugins/` 下的目录名，
-Rust 侧不维护任何硬编码的模块清单：
+所以 `domain::module::ModuleId`（`Tools`/`Crawler` 两个变体）现在是封闭
+Rust `enum`——贯穿 Tauri IPC（`serde(rename_all = "lowercase")`）、SQLite
+（`ToSql`/`FromSql`，仍是 `TEXT` 列，取值跟枚举的 `as_str()` 保持一致）、
+`plugins/<as_str()>/` 目录名三层边界，写法上跟 `domain::task::TaskStatus`
+保持一致。如果以后真的又要加新模块，代价就是显式改这个枚举、让编译器把
+所有漏掉的 `match` 分支标红——这次是有意识地选择用编译期检查换开放性。
 
-- `commands::catalog::get_manifests(module_id: String)` 直接拿这个字符
-  串去 `plugins/<module_id>/` 找 manifest，目录不存在就返回空列表（和
-  现有 `manifest_scanner.rs` "目录不存在不算错误"的行为一致，天然兼容）。
-- `database/schema.rs` 里 `tasks.source` 列**不再声明 CHECK 枚举**，只
-  保留 `NOT NULL`。真正的防线是 `task::service::create` 里"目标
-  manifest 必须真实存在才能建任务"的校验（这条本来就该有，旧项目审计
-  里发现它缺失，是 P1 级问题）——这条校验同时天然拦住了"建一个指向不
-  存在模块的任务"，不需要额外的枚举/CHECK 做双重把关。
+`commands::catalog::get_manifests(module_id: ModuleId)` 直接拿枚举转成
+的目录名去 `plugins/<as_str()>/` 找 manifest，目录不存在就返回空列表
+（和 `manifest_scanner.rs` "目录不存在不算错误"的行为一致，天然兼容，
+只是现在传进来的值本身已经不可能是非法值了）。
 
-**这是一个明确的权衡，不是免费的午餐**：丢掉了"写错模块 ID 编译期报错"
-这一层类型安全，换来的是"加模块不用碰 Rust 代码"。团队如果更看重前者、
-预期模块数量长期就是个位数，完全可以退回封闭枚举——但要清楚这是在为
-"以后不会有很多模块"这个假设下注。
+`database/schema.sql` 里 `tasks.module_id`/`manifest_configs.module_id`
+两列仍然是 `TEXT`，没有加 CHECK 约束——数据库层面的合法性不是防线，
+`ModuleId::FromSql` 在读出非法字符串时会直接报错，加上
+`task::service::create` 里"目标 manifest 必须真实存在才能建任务"的
+校验（这条本来就该有，旧项目审计里发现它缺失，是 P1 级问题），两层
+一起保证了运行时不会出现指向不存在模块的任务。
+
+**这是一个明确的权衡，不是免费的午餐**：选封闭枚举意味着如果以后真要
+加新模块，得显式改这个枚举、重新生成 ts-rs 绑定、检查所有 `match` 是
+不是漏了新分支（虽然数据库列本身没有 CHECK 约束，但读出非法值会在
+`FromSql` 处直接报错，相当于把"允许哪些取值"这件事从"数据库约束"搬到
+了"枚举定义"）——这是当前"模块数量固定就两个"这个前提下换来的编译期
+安全，前提变了就要重新评估。
 
 ### `category` 为什么不再是跨模块共享的枚举，`status` 为什么仍然是
 
@@ -369,45 +377,83 @@ Rust/ts-rs 不需要为每个新模块的专属字段重新生成 `Manifest` 类
 这类写法），`catalog/types.ts` 的 `ExtraFilterConfig.deriveOptions`/`match`
 两个回调就是消费 `metadata` 的标准位置。
 
-### stdin / stdout 协议（旧项目完全没有规范化的部分）
+### stdin / stdout 协议
+
+> 以下是 `run::protocol::ExecutorMessage`（配合 `run::executor::execute_process`
+> 读取、`run::python::entry_script_path` 定位入口脚本）实际实现并跑通测试的版本，
+> **协议以代码为准**，这里只是把实现出来的规则写清楚。早期草案先后设想过
+> `progress`/`result`/`error` 三事件（失败走 stdout），后来改成 `success`/
+> `process`/`download`/`db` 四事件（失败只走 stderr+退出码），最终定型为下面
+> 这套统一 `{"type", "payload"}` 信封、多补了一个 `failed` 事件的版本。
 
 请求（stdin，一次性写入一个 JSON 对象，随后关闭 stdin）：
 
 ```json
-{ "method": "execute", "params": { "targetDirectory": "C:\\...", "renameMode": "sequence" } }
+{ "method": "execute", "payload": { "targetDirectory": "C:\\...", "renameMode": "sequence" } }
 ```
 
-响应（stdout，**按行分隔的 JSON**，每行一个事件对象）：
+响应（stdout，**按行分隔的 JSON，一行一个事件**）统一信封：
 
-```
-{"type":"progress","done":3,"total":10,"message":"正在处理 c.jpg"}
-{"type":"progress","done":10,"total":10}
-{"type":"result","data":{"renamed":10,"unchanged":0}}
+```json
+{ "type": "<事件名>", "payload": { ... } }
 ```
 
-失败时最后一行改为：
+这正是 serde 的 adjacently tagged enum 表示法，Rust 端直接 derive
+`#[serde(tag = "type", content = "payload")]` 解出来，不用手写字段抽取。
+支持的 `type`：
 
-```
-{"type":"error","message":"目标文件夹不存在"}
-```
+| `type` | `payload` 字段 | 作用 |
+|---|---|---|
+| `process` | `currentIndex`、`total`（均可选，数字或数字字符串都收） | 汇报中间进度，映射到 `task::repo::update_progress`；缺的字段保留数据库里原值不动 |
+| `success` | `message`（可选字符串）、`data`（可选任意 JSON） | 任务**成功**结束的终态；`data` 存进 `result_json`，缺省时退化成 `{"message": message}` |
+| `failed` | `message`（必填字符串） | 任务**失败**结束的终态；`message` 就是失败原因，不再需要走 stderr |
+| `download` | `downloadUrl`、`downloadPath`、`downloadName`（均必填） | 委托 Rust 发起下载，脚本自己不摸网络；下载失败只记日志警告，**不会**让任务失败 |
+| `db_insert` | `tableName`、`value`（均必填） | 委托 Rust 写数据库，脚本自己不摸数据库连接；`tableName` 必须在白名单里（`run::db_writer`），写失败只记日志警告。目前只支持插入/替换，没有单独的 `action` 字段——以后要支持更新/删除，加 `db_update`/`db_delete` 新事件，不要在这个事件里塞字符串分支 |
+| 没有 `type` 字段 | — | 按旧协议兼容处理：整行 JSON 原样当最终结果（`LegacyResult`，等同一条 `success`），用于还没迁移到这套消息协议、只会 `print(json.dumps(result))` 的脚本 |
 
-规则很简单，跟旧项目里唯一一处真正实现过协议的 `tools/batch-rename`
-一致，只是把"一次性打印最终结果"扩展成"可以打印任意条 progress"：
+**`type` 字段存在但值不认识、或 `payload` 缺必填字段的行，不会退化成
+`LegacyResult`**——只有完全没有 `type` 字段的行才按旧协议兼容。这是刻意
+的：把一条格式错误的新协议消息悄悄当成"成功结果"存下来，比直接丢弃更
+危险，所以这种行只记一条警告日志跳过，不影响任务终态。
 
-- **stdout 只允许出现这三种事件，一行一个 JSON，不允许夹杂人类可读文本**
-- **stderr 只用于日志**，Rust 不解析它，只在失败时收集进日志方便排查
-- 进程退出码是兜底信号（0/非 0），Rust 判断成功/失败**以最后一行事件
-  类型为准**，不是以退出码为准——退出码和 stdout 冲突时以 stdout 为准
-- Rust 侧（`platform::python` 读取 + `run::runner` 转发）把 `progress`
-  事件转成 `task::repo::update_progress` 调用，把 `result`/`error`
-  转成 `task::service` 的终态更新（`mark_success`/`mark_failed`，均需
-  按 `AGENTS.md` 既有约定做 `WHERE task_uid=? AND status=?` 的条件更新
-  保证并发原子性）
+`success`/`failed`/没有 `type` 字段的行都是**终态**，以**最后一条终态
+消息为准**——跟进程退出码无关；`process`/`download`/`db_insert` 不是
+终态，不会结束 stdout 读取循环。也就是说退出码和 stderr **只在脚本
+从头到尾没输出过任何终态消息时才当兜底**（比如中途未捕获异常崩溃）：
+这种情况下非 0 退出码 + stderr 文本作为失败原因，退出码是 0 但没有
+终态消息则统一判失败，错误信息固定为 `脚本未输出结果`。
 
-占位实现（还没写业务逻辑的条目）也必须遵守这个协议，哪怕只是立刻输出
-一行 `{"type":"error","message":"尚未实现"}` 并以非 0 退出——**不要用
-`print("尚未实现")` 打印人类可读文本到 stdout**，那样等执行引擎真的
-接上时，这些占位条目会成为第一批解析失败的坏数据。
+Rust 侧对应关系：`run::executor::execute_process` spawn 子进程、
+`run::executor::read_stdout` 按行调 `ExecutorMessage::parse` 分发，
+`process`→`task::repo::update_progress`，`success`/`LegacyResult`/
+`failed`→记为终态（`Outcome::Success`/`Outcome::Failed`，最后一条覆盖
+前一条），进程退出后再按上一段的优先级决定最终传给 `task::repo::
+mark_success`/`mark_failed` 的到底是哪一个。
+
+### Python 端错误处理规范
+
+- 能确定失败原因时，优先打一行 `{"type": "failed", "payload": {"message": "..."}}`
+  到 stdout 并以非 0 退出码退出——这是首选方式，Rust 侧直接拿 `message`
+  当失败原因，不用再从 stderr 里拼。
+- 兜底方式（比如未捕获异常导致进程直接崩溃、来不及打印终态行）：把人类
+  可读的错误信息打到 **stderr**，并保证进程以非 0 退出码结束；Rust 只在
+  从头到尾没收到任何终态消息时才会用这条 stderr 文本当失败原因。
+- **除了 `{"type": ..., "payload": ...}` 这套协议行，stdout 上不要出现
+  任何东西**——哪怕是一句人类可读文本，那样的行既解析不出已知类型，也
+  没有 `type` 字段（所以不会被当成 `LegacyResult`），只会被当噪音丢弃并
+  记一条警告日志，白白丢失这条错误信息。
+- 占位实现（还没写业务逻辑的插件）的最小写法：
+
+  ```python
+  import json
+
+  def main() -> None:
+      print(json.dumps({"type": "failed", "payload": {"message": "音频转码尚未实现。"}}, ensure_ascii=False))
+      raise SystemExit(1)
+
+  if __name__ == "__main__":
+      main()
+  ```
 
 ### Python 解释器怎么找
 
@@ -435,7 +481,7 @@ Rust/ts-rs 不需要为每个新模块的专属字段重新生成 `Manifest` 类
 | `Manifest`、`Task`、`ApiResponse` 等类型 | Rust `domain/*.rs` | `ts-rs` 生成，生成前先删旧文件（同一 `export_to` 目标是增量写入，不删会残留） |
 | manifest.json 的字段集合/类型 | Rust `Manifest` struct | 校验脚本从 struct 源码提取规则，反过来检查每份 manifest.json；改 Rust 字段后必须重跑 |
 | 参数类型（`ParamDescriptor.kind`） | Rust `domain/manifest.rs` 的 `ParamKind` 枚举 | ts-rs 生成对应 TS 联合类型，`run/ParamField.tsx` 按这个类型做穷尽匹配（缺一个分支编译器应该报错，用 `never` 兜底检查） |
-| Python 进程事件（progress/result/error） | 本文档"stdin/stdout 协议"一节 | 没有代码生成，靠文档 + 两端各自的手写类型（Rust `run::protocol::Event`，Python 端没有强类型，靠约定） |
+| Python 进程事件（process/success/failed/download/db_insert） | 本文档"stdin/stdout 协议"一节 | 没有代码生成，靠文档 + 两端各自的手写类型（Rust `run::protocol::ExecutorMessage`，Python 端没有强类型，靠约定） |
 | icon 白名单 | 前端 `AppIcon` 组件的注册表 | 校验脚本读取该文件反查每份 manifest 的 `icon` 是否在白名单里 |
 | 模块清单/分类取值 | 对应 `plugins/<module-id>/*/manifest.json` 的真实数据 | **无需同步**——不再有一份需要手动维护、可能漂移的清单，这是本次设计刻意消除的一类契约 |
 

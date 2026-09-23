@@ -1,0 +1,19 @@
+{
+  "key": "hash-validator",
+  "order": 80,
+  "name": "哈希校验器",
+  "category": "utility",
+  "description": "计算并核对文件的常用哈希摘要。",
+  "tags": ["哈希校验", "完整性", "文件核对"],
+  "icon": "SafetyCertificateOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

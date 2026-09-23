@@ -1,0 +1,19 @@
+{
+  "key": "process-observer",
+  "order": 120,
+  "name": "进程观察器",
+  "category": "system",
+  "description": "查看本机进程状态与资源占用情况。",
+  "tags": ["进程监控", "资源占用", "系统"],
+  "icon": "DashboardOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

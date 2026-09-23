@@ -1,0 +1,18 @@
+@use "@/shared/styles/mixins" as m;
+
+.card {
+  @include m.glass-card;
+}
+
+.cardBody {
+  padding: 24px;
+}
+
+.title {
+  margin: 0 !important;
+  color: #234963;
+}
+
+.descriptions {
+  margin-top: 4px;
+}

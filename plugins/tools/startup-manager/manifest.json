@@ -1,0 +1,19 @@
+{
+  "key": "startup-manager",
+  "order": 130,
+  "name": "启动项管理",
+  "category": "system",
+  "description": "查看并管理系统登录时自动运行的项目。",
+  "tags": ["启动项", "开机管理", "系统"],
+  "icon": "RocketOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

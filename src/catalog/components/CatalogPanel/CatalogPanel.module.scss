@@ -1,0 +1,38 @@
+@use "@/shared/styles/mixins" as m;
+
+.card {
+  height: 100%;
+
+  @include m.glass-card;
+}
+
+.cardBody {
+  padding: 20px;
+}
+
+.title {
+  color: #1b405e;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.description {
+  display: block;
+  margin-top: 2px;
+  color: #6b8294;
+  font-size: 12px;
+}
+
+.total {
+  color: #7c8ca1;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.body {
+  margin-top: 16px;
+}
+
+.pagination {
+  margin-top: 20px;
+}

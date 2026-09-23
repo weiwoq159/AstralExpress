@@ -1,0 +1,81 @@
+@use "@/shared/styles/mixins" as m;
+
+.header {
+  padding: 22px 26px;
+
+  @include m.glass-card($radius: 20px);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #4d789d;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 160ms ease;
+
+  &:hover {
+    color: #2f668f;
+  }
+}
+
+.body {
+  margin-top: 16px;
+}
+
+.icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 14px;
+  color: #3f7196;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 26px;
+}
+
+.title {
+  margin: 0 !important;
+  color: #102a43;
+}
+
+.description {
+  display: block;
+  margin-top: 6px;
+  color: #4d789d;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  white-space: nowrap;
+
+  &::before {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: currentcolor;
+    content: "";
+  }
+
+  &[data-tone="positive"] {
+    color: #397d70;
+    background: rgba(214, 241, 233, 0.72);
+  }
+
+  &[data-tone="neutral"] {
+    color: #8b7448;
+    background: rgba(250, 239, 204, 0.72);
+  }
+
+  &[data-tone="negative"] {
+    color: #a06168;
+    background: rgba(249, 226, 229, 0.76);
+  }
+}

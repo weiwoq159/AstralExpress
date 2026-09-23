@@ -1,0 +1,19 @@
+{
+  "key": "file-organizer",
+  "order": 70,
+  "name": "文件整理",
+  "category": "file",
+  "description": "按目录规则归类并移动本地文件。",
+  "tags": ["目录归类", "批量移动", "文件整理"],
+  "icon": "FolderOpenOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

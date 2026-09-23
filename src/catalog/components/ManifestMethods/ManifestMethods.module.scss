@@ -1,0 +1,107 @@
+@use "@/shared/styles/mixins" as m;
+
+.card {
+  height: 100%;
+
+  @include m.glass-card;
+}
+
+.cardBody {
+  padding: 20px;
+}
+
+.title {
+  color: #1b405e;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.collapse {
+  margin-top: 10px;
+
+  :global(.ant-collapse-item) {
+    border-bottom: 1px solid rgba(120, 178, 219, 0.18);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  :global(.ant-collapse-header) {
+    padding: 10px 4px !important;
+    align-items: center !important;
+  }
+
+  :global(.ant-collapse-content-box) {
+    padding: 0 4px 14px !important;
+  }
+}
+
+.methodLabel {
+  color: #234963;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.methodName {
+  color: #93a6b8;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.methodCount {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(120, 178, 219, 0.16);
+  color: #5c87a6;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.noParams {
+  display: block;
+  color: #7c8ca1;
+  font-size: 12px;
+}
+
+.params {
+  margin-top: 2px;
+}
+
+.param {
+  padding: 8px 10px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.paramLabel {
+  color: #3d6d91;
+  font-size: 13px;
+}
+
+.paramName {
+  color: #93a6b8;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.paramKind {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(120, 178, 219, 0.24);
+  color: #3f7196;
+  font-size: 11px;
+}
+
+.paramRequired {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(249, 226, 229, 0.76);
+  color: #a06168;
+  font-size: 11px;
+}
+
+.empty {
+  padding: 20px 0;
+}

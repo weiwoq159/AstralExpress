@@ -1,0 +1,19 @@
+{
+  "key": "text-deduplicator",
+  "order": 140,
+  "name": "文本去重",
+  "category": "utility",
+  "description": "按行识别并移除重复文本，保留首次出现的内容。",
+  "tags": ["按行去重", "文本处理", "去重"],
+  "icon": "FilterOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

@@ -1,0 +1,25 @@
+{
+  "key": "wallpaper-hub",
+  "order": 40,
+  "name": "壁纸素材站",
+  "category": "download",
+  "description": "下载壁纸站中的图片素材",
+  "tags": [
+    "图片",
+    "壁纸",
+    "下载"
+  ],
+  "icon": "PictureOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {
+    "targetWebsite": "https://wallhaven.cc/"
+  }
+}

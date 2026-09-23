@@ -1,0 +1,19 @@
+{
+  "key": "image-processor",
+  "order": 90,
+  "name": "图片处理",
+  "category": "media",
+  "description": "批量调整图片尺寸、格式与质量。",
+  "tags": ["尺寸调整", "格式转换", "批量处理"],
+  "icon": "PictureOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

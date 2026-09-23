@@ -1,0 +1,19 @@
+{
+  "key": "duplicate-file-scanner",
+  "order": 60,
+  "name": "重复文件扫描",
+  "category": "file",
+  "description": "依据文件内容查找占用空间的重复文件。",
+  "tags": ["重复检测", "空间清理", "文件扫描"],
+  "icon": "CopyOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

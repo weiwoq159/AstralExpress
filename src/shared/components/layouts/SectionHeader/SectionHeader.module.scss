@@ -1,0 +1,46 @@
+.title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+
+  color: #1b405e;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  &::before {
+    width: 4px;
+    height: 18px;
+
+    border-radius: 999px;
+
+    background: linear-gradient(#6caee0, #4d789d);
+
+    content: "";
+  }
+}
+
+.viewAllLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #70879a;
+
+  font-size: 13px;
+  text-decoration: none;
+
+  transition: color 160ms ease;
+
+  &::after {
+    font-size: 17px;
+    line-height: 1;
+
+    content: "›";
+  }
+
+  &:hover {
+    color: #3f7196;
+  }
+}

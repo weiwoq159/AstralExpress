@@ -1,0 +1,25 @@
+{
+  "key": "game-data-feed",
+  "order": 10,
+  "name": "游戏数据源",
+  "category": "json",
+  "description": "从公开接口获取并整理游戏数据",
+  "tags": [
+    "数据",
+    "接口",
+    "JSON"
+  ],
+  "icon": "DatabaseOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {
+    "targetWebsite": "https://wiki.biligame.com/"
+  }
+}

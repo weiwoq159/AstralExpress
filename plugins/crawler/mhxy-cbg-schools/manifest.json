@@ -1,0 +1,25 @@
+{
+  "key": "mhxy-cbg-schools",
+  "order": 31,
+  "name": "梦幻西游藏宝阁门派获取",
+  "category": "json",
+  "description": "从梦幻西游藏宝阁获取门派名称与 id 的映射",
+  "tags": [
+    "梦幻西游",
+    "藏宝阁",
+    "JSON"
+  ],
+  "icon": "AudioOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {
+    "targetWebsite": "https://cbg.163.com/"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "key": "media-inspector",
+  "order": 100,
+  "name": "媒体信息查看",
+  "category": "media",
+  "description": "读取音视频编码、时长与轨道信息。",
+  "tags": ["编码信息", "音视频", "元数据"],
+  "icon": "InfoCircleOutlined",
+  "status": "disabled",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

@@ -1,0 +1,36 @@
+@use "@/shared/styles/mixins" as m;
+
+.header {
+  @include m.module-header;
+}
+.sider {
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.7);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(222, 240, 255, 0.34));
+  box-shadow: 8px 0 24px rgba(32, 77, 112, 0.05);
+  backdrop-filter: blur(20px) saturate(150%);
+}
+.layout,
+.content {
+  background-color: transparent;
+}
+
+.breadcrumb {
+  flex: 0 0 auto;
+  margin: 0 24px 16px 0;
+
+  :global(.ant-breadcrumb-link) {
+    color: #6f8799;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 160ms ease;
+
+    &:hover {
+      color: #2f668f;
+    }
+  }
+}

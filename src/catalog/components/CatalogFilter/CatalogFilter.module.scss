@@ -1,0 +1,79 @@
+@use "@/shared/styles/mixins" as m;
+
+.card {
+  height: 100%;
+
+  @include m.glass-card;
+}
+
+.cardBody {
+  padding: 16px;
+}
+
+.title {
+  margin: 0 !important;
+  color: #1b405e;
+}
+
+.description {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 14px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: auto;
+  padding: 9px 10px;
+  color: #3d6d91;
+  font-size: 13px;
+  text-align: left;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.4);
+    color: #3d6d91;
+  }
+
+  &[data-active="true"] {
+    background: rgba(120, 178, 219, 0.28);
+    color: #1b405e;
+    font-weight: 600;
+  }
+}
+
+.count {
+  color: #7c8ca1;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.divider {
+  margin: 16px 0 12px;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.note {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.noteTitle {
+  color: #234963;
+  font-size: 12px;
+}
+
+.noteText {
+  color: #6b8294;
+  font-size: 12px;
+  line-height: 1.6;
+}

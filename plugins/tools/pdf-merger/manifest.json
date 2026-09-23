@@ -1,0 +1,19 @@
+{
+  "key": "pdf-merger",
+  "order": 110,
+  "name": "PDF 合并器",
+  "category": "document",
+  "description": "按照指定顺序将多个 PDF 合并为单个文件。",
+  "tags": ["PDF 合并", "页序调整", "文档"],
+  "icon": "FilePdfOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

@@ -1,0 +1,41 @@
+@use "@/shared/styles/mixins" as m;
+
+.card {
+  height: 100%;
+
+  @include m.glass-card;
+}
+
+.cardBody {
+  padding: 20px;
+}
+
+.title {
+  color: #1b405e;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.descriptions {
+  margin-top: 14px;
+
+  :global(.ant-descriptions-item-label) {
+    color: #7c8ca1;
+  }
+
+  :global(.ant-descriptions-item-content) {
+    color: #234963;
+  }
+}
+
+.tags {
+  margin-top: 16px;
+}
+
+.tag {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  color: #4c7b9c;
+  font-size: 11px;
+}

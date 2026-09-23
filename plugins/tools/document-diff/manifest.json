@@ -1,0 +1,19 @@
+{
+  "key": "document-diff",
+  "order": 50,
+  "name": "文档差异比对",
+  "category": "document",
+  "description": "对照两份文档并标记文字内容差异。",
+  "tags": ["文本比对", "差异标记", "文档"],
+  "icon": "DiffOutlined",
+  "status": "disabled",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

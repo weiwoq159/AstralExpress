@@ -1,0 +1,19 @@
+{
+  "key": "audio-transcoder",
+  "order": 10,
+  "name": "音频转码",
+  "category": "media",
+  "description": "批量转换音频格式、码率与采样率。",
+  "tags": ["格式转换", "批量处理", "音频"],
+  "icon": "AudioOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {}
+}

@@ -1,0 +1,25 @@
+{
+  "key": "image-archive",
+  "order": 20,
+  "name": "图片归档站",
+  "category": "download",
+  "description": "从指定图站批量归档图片文件",
+  "tags": [
+    "图片",
+    "归档",
+    "下载"
+  ],
+  "icon": "CloudDownloadOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "methods": [
+    {
+      "name": "execute",
+      "label": "执行",
+      "params": []
+    }
+  ],
+  "metadata": {
+    "targetWebsite": "https://unsplash.com/"
+  }
+}
