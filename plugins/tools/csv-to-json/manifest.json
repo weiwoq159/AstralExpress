@@ -1,0 +1,16 @@
+{
+  "key": "csv-to-json",
+  "order": 601,
+  "name": "CSV转JSON",
+  "category": "数据处理",
+  "description": "将带表头的 CSV 数据转换为 JSON 对象数组。",
+  "tags": [
+    "CSV",
+    "JSON",
+    "格式转换"
+  ],
+  "icon": "ExportOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

@@ -1,0 +1,16 @@
+{
+  "key": "duplicate-file-finder",
+  "order": 102,
+  "name": "重复文件查找",
+  "category": "文件管理",
+  "description": "按文件内容计算摘要，查找指定目录中的重复文件。",
+  "tags": [
+    "查重",
+    "文件摘要",
+    "磁盘整理"
+  ],
+  "icon": "FileSearchOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

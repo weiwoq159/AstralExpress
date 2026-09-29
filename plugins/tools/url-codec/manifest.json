@@ -1,0 +1,16 @@
+{
+  "key": "url-codec",
+  "order": 505,
+  "name": "URL编码解码",
+  "category": "开发辅助",
+  "description": "对 URL 组件进行百分号编码或解码，处理中文和特殊字符。",
+  "tags": [
+    "URL",
+    "百分号编码",
+    "特殊字符"
+  ],
+  "icon": "LinkOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": false
+}

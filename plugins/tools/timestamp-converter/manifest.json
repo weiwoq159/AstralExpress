@@ -1,0 +1,16 @@
+{
+  "key": "timestamp-converter",
+  "order": 502,
+  "name": "时间戳转换",
+  "category": "开发辅助",
+  "description": "在 Unix 秒级或毫秒级时间戳与指定时区的日期时间之间转换。",
+  "tags": [
+    "时间戳",
+    "日期",
+    "时区"
+  ],
+  "icon": "ClockCircleOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": false
+}

@@ -1,0 +1,16 @@
+{
+  "key": "page-metadata-crawler",
+  "order": 603,
+  "name": "网页元信息采集",
+  "category": "website",
+  "description": "采集公开网页的标题、描述、规范链接和 Open Graph 元信息。",
+  "tags": [
+    "SEO",
+    "Open Graph",
+    "元信息"
+  ],
+  "icon": "GlobalOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

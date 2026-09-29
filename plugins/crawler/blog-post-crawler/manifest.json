@@ -1,0 +1,16 @@
+{
+  "key": "blog-post-crawler",
+  "order": 203,
+  "name": "博客文章采集",
+  "category": "news",
+  "description": "采集公开博客的文章标题、正文、分类和标签，并记录原文链接。",
+  "tags": [
+    "博客",
+    "文章",
+    "标签"
+  ],
+  "icon": "FileTextOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

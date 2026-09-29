@@ -1,0 +1,16 @@
+{
+  "key": "conference-crawler",
+  "order": 403,
+  "name": "学术会议信息采集",
+  "category": "research",
+  "description": "从公开会议页面采集主题、举办时间、地点、征稿截止日期和官网链接。",
+  "tags": [
+    "学术会议",
+    "征稿",
+    "日程"
+  ],
+  "icon": "CalendarOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

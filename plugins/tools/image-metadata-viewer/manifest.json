@@ -1,0 +1,16 @@
+{
+  "key": "image-metadata-viewer",
+  "order": 305,
+  "name": "图片元信息查看",
+  "category": "图片处理",
+  "description": "查看图片的尺寸、格式和可用的 EXIF 拍摄信息。",
+  "tags": [
+    "EXIF",
+    "元信息",
+    "拍摄参数"
+  ],
+  "icon": "CameraOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": false
+}

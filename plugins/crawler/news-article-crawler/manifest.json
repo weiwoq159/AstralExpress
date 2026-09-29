@@ -1,0 +1,16 @@
+{
+  "key": "news-article-crawler",
+  "order": 202,
+  "name": "新闻文章采集",
+  "category": "news",
+  "description": "从指定公开新闻列表及详情页提取标题、正文、来源和发布时间。",
+  "tags": [
+    "新闻",
+    "正文",
+    "资讯"
+  ],
+  "icon": "ReadOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

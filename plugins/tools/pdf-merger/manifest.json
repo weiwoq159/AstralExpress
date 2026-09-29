@@ -1,0 +1,16 @@
+{
+  "key": "pdf-merger",
+  "order": 401,
+  "name": "PDF文档合并",
+  "category": "文档处理",
+  "description": "将多个 PDF 文档按指定顺序合并为一个文件。",
+  "tags": [
+    "PDF",
+    "合并",
+    "文档整理"
+  ],
+  "icon": "FileAddOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

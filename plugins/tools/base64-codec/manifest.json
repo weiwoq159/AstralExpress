@@ -1,0 +1,16 @@
+{
+  "key": "base64-codec",
+  "order": 504,
+  "name": "Base64编码解码",
+  "category": "开发辅助",
+  "description": "对 UTF-8 文本进行 Base64 编码或解码，并提示无效输入。",
+  "tags": [
+    "Base64",
+    "编码",
+    "解码"
+  ],
+  "icon": "SwapOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": false
+}

@@ -1,0 +1,16 @@
+{
+  "key": "file-checksum",
+  "order": 105,
+  "name": "文件校验和计算",
+  "category": "文件管理",
+  "description": "计算文件的 MD5、SHA-1 和 SHA-256 校验和，用于完整性核对。",
+  "tags": [
+    "校验和",
+    "完整性",
+    "SHA-256"
+  ],
+  "icon": "SafetyCertificateOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

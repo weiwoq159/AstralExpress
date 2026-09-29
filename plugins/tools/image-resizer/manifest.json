@@ -1,0 +1,16 @@
+{
+  "key": "image-resizer",
+  "order": 303,
+  "name": "图片尺寸调整",
+  "category": "图片处理",
+  "description": "按目标宽高或缩放比例批量调整图片尺寸。",
+  "tags": [
+    "缩放",
+    "分辨率",
+    "批量"
+  ],
+  "icon": "ExpandOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

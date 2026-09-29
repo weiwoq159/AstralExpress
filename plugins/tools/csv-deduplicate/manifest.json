@@ -1,0 +1,16 @@
+{
+  "key": "csv-deduplicate",
+  "order": 604,
+  "name": "CSV记录去重",
+  "category": "数据处理",
+  "description": "按指定列或整行内容删除重复记录，保留首次出现的数据。",
+  "tags": [
+    "CSV",
+    "去重",
+    "数据清洗"
+  ],
+  "icon": "FunnelPlotOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

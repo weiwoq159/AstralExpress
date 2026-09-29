@@ -1,0 +1,16 @@
+{
+  "key": "website-link-crawler",
+  "order": 602,
+  "name": "网站链接采集",
+  "category": "website",
+  "description": "在指定域名和深度范围内采集公开网页链接，整理内部及外部链接关系。",
+  "tags": [
+    "链接",
+    "站点结构",
+    "域名"
+  ],
+  "icon": "LinkOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

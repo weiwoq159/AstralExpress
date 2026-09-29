@@ -1,0 +1,16 @@
+{
+  "key": "file-downloader",
+  "order": 101,
+  "name": "文件批量下载",
+  "category": "download",
+  "description": "从指定的公开文件链接列表批量下载资源，保留文件名并记录下载结果。",
+  "tags": [
+    "文件",
+    "批量下载",
+    "链接列表"
+  ],
+  "icon": "DownloadOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

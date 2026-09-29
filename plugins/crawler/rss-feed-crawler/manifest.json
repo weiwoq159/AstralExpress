@@ -1,0 +1,16 @@
+{
+  "key": "rss-feed-crawler",
+  "order": 201,
+  "name": "RSS订阅采集",
+  "category": "news",
+  "description": "采集 RSS 或 Atom 订阅源中的标题、摘要、发布时间和原文链接。",
+  "tags": [
+    "RSS",
+    "Atom",
+    "订阅"
+  ],
+  "icon": "NotificationOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

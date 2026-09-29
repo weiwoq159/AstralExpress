@@ -1,0 +1,16 @@
+{
+  "key": "product-price-crawler",
+  "order": 302,
+  "name": "商品价格采集",
+  "category": "ecommerce",
+  "description": "采集指定公开商品页面的展示价格和库存状态，生成带时间的价格快照。",
+  "tags": [
+    "价格",
+    "库存",
+    "快照"
+  ],
+  "icon": "LineChartOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

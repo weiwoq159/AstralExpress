@@ -1,0 +1,16 @@
+{
+  "key": "json-to-csv",
+  "order": 602,
+  "name": "JSON转CSV",
+  "category": "数据处理",
+  "description": "将由扁平对象组成的 JSON 数组转换为带表头的 CSV 文件。",
+  "tags": [
+    "JSON",
+    "CSV",
+    "表格"
+  ],
+  "icon": "TableOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

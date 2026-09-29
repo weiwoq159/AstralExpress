@@ -1,0 +1,16 @@
+{
+  "key": "pdf-text-extractor",
+  "order": 403,
+  "name": "PDF文本提取",
+  "category": "文档处理",
+  "description": "从含文字层的 PDF 中提取文本，保存为纯文本文件。",
+  "tags": [
+    "PDF",
+    "文本提取",
+    "文字层"
+  ],
+  "icon": "FileTextOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

@@ -1,0 +1,16 @@
+{
+  "key": "text-whitespace-cleaner",
+  "order": 204,
+  "name": "文本空白清理",
+  "category": "文本处理",
+  "description": "清除行尾空格，整理多余空行，并统一换行格式。",
+  "tags": [
+    "空白",
+    "换行",
+    "格式整理"
+  ],
+  "icon": "ClearOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": false
+}

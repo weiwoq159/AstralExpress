@@ -1,0 +1,16 @@
+{
+  "key": "batch-rename",
+  "order": 101,
+  "name": "文件批量重命名",
+  "category": "文件管理",
+  "description": "按编号、前后缀和文本替换规则批量重命名文件。",
+  "tags": [
+    "批量",
+    "重命名",
+    "文件整理"
+  ],
+  "icon": "EditOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

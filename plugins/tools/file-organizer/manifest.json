@@ -1,0 +1,16 @@
+{
+  "key": "file-organizer",
+  "order": 103,
+  "name": "文件分类整理",
+  "category": "文件管理",
+  "description": "按扩展名或修改日期将文件归类到不同文件夹。",
+  "tags": [
+    "分类",
+    "归档",
+    "文件整理"
+  ],
+  "icon": "FolderOpenOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

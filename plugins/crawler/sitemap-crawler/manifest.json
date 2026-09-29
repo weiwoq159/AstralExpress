@@ -1,0 +1,16 @@
+{
+  "key": "sitemap-crawler",
+  "order": 601,
+  "name": "网站地图采集",
+  "category": "website",
+  "description": "解析公开 sitemap.xml 及站点地图索引，汇总页面地址和最后修改时间。",
+  "tags": [
+    "Sitemap",
+    "页面索引",
+    "网址"
+  ],
+  "icon": "ApartmentOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

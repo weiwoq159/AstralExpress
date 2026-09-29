@@ -1,0 +1,16 @@
+{
+  "key": "product-catalog-crawler",
+  "order": 301,
+  "name": "商品目录采集",
+  "category": "ecommerce",
+  "description": "从公开商品列表及详情页采集名称、规格、展示价格和商品链接。",
+  "tags": [
+    "商品",
+    "规格",
+    "目录"
+  ],
+  "icon": "ShoppingOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

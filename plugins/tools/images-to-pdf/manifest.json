@@ -1,0 +1,16 @@
+{
+  "key": "images-to-pdf",
+  "order": 404,
+  "name": "图片转PDF",
+  "category": "文档处理",
+  "description": "将多张图片按指定顺序排版并生成 PDF 文档。",
+  "tags": [
+    "图片",
+    "PDF",
+    "排版"
+  ],
+  "icon": "FilePdfOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

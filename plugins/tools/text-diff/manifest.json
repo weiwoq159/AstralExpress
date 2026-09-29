@@ -1,0 +1,16 @@
+{
+  "key": "text-diff",
+  "order": 202,
+  "name": "文本差异比较",
+  "category": "文本处理",
+  "description": "逐行比较两段文本，标记新增、删除和修改的内容。",
+  "tags": [
+    "对比",
+    "差异",
+    "校对"
+  ],
+  "icon": "DiffOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": false
+}

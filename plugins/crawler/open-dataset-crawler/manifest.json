@@ -1,0 +1,16 @@
+{
+  "key": "open-dataset-crawler",
+  "order": 402,
+  "name": "开放数据集采集",
+  "category": "research",
+  "description": "采集公开数据集目录中的名称、简介、许可说明和下载地址。",
+  "tags": [
+    "数据集",
+    "开放数据",
+    "许可"
+  ],
+  "icon": "DatabaseOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

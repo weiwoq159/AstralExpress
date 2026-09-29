@@ -1,0 +1,16 @@
+{
+  "key": "image-compressor",
+  "order": 302,
+  "name": "图片体积压缩",
+  "category": "图片处理",
+  "description": "按质量参数压缩图片，减少文件体积。",
+  "tags": [
+    "压缩",
+    "图片优化",
+    "批量"
+  ],
+  "icon": "CompressOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

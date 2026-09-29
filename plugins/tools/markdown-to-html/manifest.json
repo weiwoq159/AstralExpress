@@ -1,0 +1,16 @@
+{
+  "key": "markdown-to-html",
+  "order": 405,
+  "name": "Markdown转HTML",
+  "category": "文档处理",
+  "description": "将 Markdown 文档转换为 HTML，保留标题、列表和代码块结构。",
+  "tags": [
+    "Markdown",
+    "HTML",
+    "格式转换"
+  ],
+  "icon": "Html5Outlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

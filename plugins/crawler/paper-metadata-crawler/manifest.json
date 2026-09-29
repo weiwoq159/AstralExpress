@@ -1,0 +1,16 @@
+{
+  "key": "paper-metadata-crawler",
+  "order": 401,
+  "name": "论文元数据采集",
+  "category": "research",
+  "description": "通过开放论文接口采集标题、作者、摘要、DOI 和发表日期。",
+  "tags": [
+    "论文",
+    "DOI",
+    "元数据"
+  ],
+  "icon": "BookOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

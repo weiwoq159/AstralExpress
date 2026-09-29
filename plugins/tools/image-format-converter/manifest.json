@@ -1,0 +1,16 @@
+{
+  "key": "image-format-converter",
+  "order": 301,
+  "name": "图片格式转换",
+  "category": "图片处理",
+  "description": "在 PNG、JPEG 和 WebP 等常见图片格式之间批量转换。",
+  "tags": [
+    "格式转换",
+    "PNG",
+    "WebP"
+  ],
+  "icon": "PictureOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}
