@@ -2,7 +2,7 @@
   "key": "csv-merger",
   "order": 603,
   "name": "CSV文件合并",
-  "category": "数据处理",
+  "category": "Data",
   "description": "按一致的表头合并多个 CSV 文件，并保留一份标题行。",
   "tags": [
     "CSV",

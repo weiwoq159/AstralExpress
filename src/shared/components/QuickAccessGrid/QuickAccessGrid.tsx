@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router";
 
-import { Row, Col, Card, Typography } from "antd";
+import { Row, Col, Typography } from "antd";
 
 import { AppIcon } from "@/shared/components";
 import type { Manifest } from "@/shared/domain/manifest";
+
+import { GlassCard } from "../GlassCard/GlassCard";
 
 import styles from "./QuickAccessGrid.module.scss";
 
@@ -20,11 +22,12 @@ export const QuickAccessGrid = ({ manifests }: QuickAccessGridProps) => {
   return (
     <Row gutter={[24, 24]}>
       {manifests.map((manifest) => {
+        const { link } = manifest;
         return (
           <Col key={manifest.key} xs={12} sm={12} md={8} lg={6}>
-            <Card
-              hoverable={manifest.link !== undefined}
-              onClick={() => navigate(manifest.link)}
+            <GlassCard
+              hoverable
+              onClick={link ? () => navigate(link) : undefined}
               className={styles.card}
               classNames={{ body: styles.cardBody }}
             >
@@ -33,7 +36,7 @@ export const QuickAccessGrid = ({ manifests }: QuickAccessGridProps) => {
               </Text>
               <Text className={styles.title}>{manifest.name}</Text>
               <Text className={styles.description}>{manifest.description}</Text>
-            </Card>
+            </GlassCard>
           </Col>
         );
       })}

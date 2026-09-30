@@ -2,7 +2,7 @@
   "key": "pdf-splitter",
   "order": 402,
   "name": "PDF页面拆分",
-  "category": "文档处理",
+  "category": "Documents",
   "description": "按页码范围拆分 PDF，或将每一页保存为独立文档。",
   "tags": [
     "PDF",

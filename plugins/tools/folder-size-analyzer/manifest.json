@@ -2,7 +2,7 @@
   "key": "folder-size-analyzer",
   "order": 104,
   "name": "文件夹空间分析",
-  "category": "文件管理",
+  "category": "Files",
   "description": "统计子目录和文件的大小，定位占用空间较多的项目。",
   "tags": [
     "磁盘空间",

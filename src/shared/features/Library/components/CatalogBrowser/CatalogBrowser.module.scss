@@ -1,0 +1,51 @@
+.card {
+  flex: 1;
+  width: 100%;
+}
+
+.cardBody {
+  padding: 16px;
+}
+
+.title {
+  color: #1b405e;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.description {
+  display: block;
+  margin-top: 2px;
+  color: #6b8294;
+  font-size: 12px;
+}
+
+.total {
+  color: #7c8ca1;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.toolbar {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.filters {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.search {
+  min-width: 220px;
+  max-width: 320px;
+  flex: 1 1 220px;
+}
+
+.status {
+  width: 140px;
+}
+
+.state {
+  padding: 34px 24px;
+}

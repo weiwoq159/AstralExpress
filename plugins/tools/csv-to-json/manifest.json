@@ -2,7 +2,7 @@
   "key": "csv-to-json",
   "order": 601,
   "name": "CSV转JSON",
-  "category": "数据处理",
+  "category": "Data",
   "description": "将带表头的 CSV 数据转换为 JSON 对象数组。",
   "tags": [
     "CSV",

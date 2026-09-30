@@ -2,7 +2,7 @@
   "key": "regex-tester",
   "order": 205,
   "name": "正则表达式测试",
-  "category": "文本处理",
+  "category": "Text",
   "description": "测试正则表达式的匹配结果、捕获分组和替换效果。",
   "tags": [
     "正则",

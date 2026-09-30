@@ -28,7 +28,8 @@ pub fn run() {
             commands::catalog::get_manifests,
             commands::task::create_task,
             commands::task::get_task_by_uid,
-            commands::task::list_tasks
+            commands::task::list_tasks,
+            commands::task::apply_task_action
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

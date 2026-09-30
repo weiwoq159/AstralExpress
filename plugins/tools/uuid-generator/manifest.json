@@ -2,7 +2,7 @@
   "key": "uuid-generator",
   "order": 503,
   "name": "UUID批量生成",
-  "category": "开发辅助",
+  "category": "Dev",
   "description": "生成指定数量的 UUID v4，并支持逐行复制或保存。",
   "tags": [
     "UUID",

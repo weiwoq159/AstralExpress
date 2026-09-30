@@ -1,0 +1,876 @@
+<title>应用库页面</title>
+<style>
+  @font-face {
+    font-family: "RPG";
+    src: url("../../../src/assets/fonts/RPG_CN.ttf") format("truetype");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Helta";
+    src: url("../../../src/assets/fonts/TheHelta.ttf") format("truetype");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+
+  :root {
+    --sky-1: #79a9ca;
+    --sky-2: #b6d8ed;
+    --sky-3: #daefff;
+    --ink-900: #102a43;
+    --ink-800: #16324a;
+    --ink-700: #1d425f;
+    --ink-600: #234963;
+    --ink-500: #2f668f;
+    --ink-400: #3f7196;
+    --ink-300: #4d89b4;
+    --muted-700: #56758c;
+    --muted-600: #5f7891;
+    --muted-500: #6b8294;
+    --muted-400: #6f8799;
+    --muted-300: #7c8ca1;
+    --on-glass: rgba(255, 255, 255, .96);
+    --brand-shadow-1: rgba(40, 79, 108, .42);
+    --brand-shadow-2: rgba(40, 79, 108, .24);
+
+    --hud-bg: rgba(9, 20, 32, .5);
+    --hud-border: rgba(255, 255, 255, .16);
+    --hud-icon: rgba(255, 255, 255, .92);
+    --hud-value: #f4f9ff;
+    --hud-caption: rgba(224, 236, 247, .68);
+
+    --canvas: #0c1826;
+    --canvas-glow-1: rgba(121, 169, 202, .18);
+    --canvas-glow-2: rgba(90, 140, 190, .12);
+    --page-ink: #e7eef6;
+    --page-muted: #8ea3b8;
+    --page-accent: #8fc4e8;
+
+    /* 应用背景渐变 —— 与 src/shared/styles/global.scss 里的实际取值一致 */
+    --app-bg:
+      radial-gradient(circle at 10% 0%, rgba(135, 201, 237, .34), transparent 30rem),
+      radial-gradient(circle at 92% 8%, rgba(158, 183, 244, .3), transparent 28rem),
+      radial-gradient(circle at 62% 100%, rgba(107, 205, 221, .18), transparent 32rem),
+      linear-gradient(135deg, #eaf5ff, #f7fbff 48%, #edf3ff);
+
+    --card-bg: #ffffff;
+    --card-line: #dce6ee;
+    --card-ink: #16324a;
+    --card-muted: #5f7891;
+
+    /* 状态徽标色调 —— 与 TaskQueue.module.scss 的 $status-tones 同一套语言 */
+    --tone-available: #397d70;
+    --tone-available-bg: rgba(214, 241, 233, .72);
+    --tone-disabled: #8b7448;
+    --tone-disabled-bg: rgba(250, 239, 204, .72);
+    --tone-unavailable: #a06168;
+    --tone-unavailable-bg: rgba(249, 226, 229, .76);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100%;
+    background:
+      radial-gradient(1100px 560px at 12% -8%, var(--canvas-glow-1), transparent 60%),
+      radial-gradient(900px 520px at 88% 106%, var(--canvas-glow-2), transparent 62%),
+      var(--canvas);
+    color: var(--page-ink);
+    font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 40px 20px 56px;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--page-accent);
+  }
+
+  h1 {
+    margin: 6px 0 0;
+    font-size: 26px;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  .lede {
+    margin: 6px 0 0;
+    max-width: 68ch;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--page-muted);
+  }
+
+  /* ---- 设备外框：整页原型 ---- */
+
+  .frame-scroll {
+    overflow-x: auto;
+    padding: 4px;
+    margin: 4px -4px 0;
+  }
+
+  .frame {
+    min-width: 1180px;
+    height: 760px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, .06);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, .45), 0 0 0 1px rgba(255, 255, 255, .04);
+    overflow: hidden;
+  }
+
+  .titlebar {
+    flex: 0 0 auto;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    background: #f6f9fc;
+    border-bottom: 1px solid var(--card-line);
+  }
+
+  .titlebar span.dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #d7e1ea;
+  }
+
+  .titlebar .path {
+    margin-left: 8px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--card-muted);
+    letter-spacing: .01em;
+  }
+
+  /* ---- 顶栏：品牌 + 报时 HUD，跟 AstralExpressHeader 组件同一份实现 ---- */
+
+  .app-header {
+    flex: 0 0 auto;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 24px;
+    background: linear-gradient(105deg,
+        rgba(121, 169, 202, .72) 0%,
+        rgba(182, 216, 237, .56) 36%,
+        rgba(218, 239, 255, .42) 100%);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .brand img {
+    height: 64px;
+    display: block;
+    flex: 0 0 auto;
+  }
+
+  .brand-name {
+    font-family: "RPG", "Microsoft YaHei", sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--on-glass);
+    text-shadow: 0 1px 1px var(--brand-shadow-1), 0 3px 7px var(--brand-shadow-2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hud {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hud-chip {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--hud-border);
+    background: var(--hud-bg);
+    box-shadow: 0 10px 22px rgba(4, 12, 20, .28), inset 0 1px 0 rgba(255, 255, 255, .08);
+    backdrop-filter: blur(9px) saturate(140%);
+  }
+
+  .hud-icon { flex: 0 0 auto; width: 19px; height: 19px; color: var(--hud-icon); }
+  .hud-figures { display: flex; flex-direction: column; gap: 2px; line-height: 1; }
+  .hud-value { font-family: "Helta", "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; font-size: 19px; font-weight: 600; letter-spacing: .02em; color: var(--hud-value); }
+  .hud-caption { font-size: 10.5px; letter-spacing: .02em; color: var(--hud-caption); white-space: nowrap; }
+  .hud-clock .hud-value { font-size: 21px; }
+
+  /* ---- 页面主体：侧栏 + 内容 ---- */
+
+  .app-body {
+    flex: 1 1 auto;
+    display: flex;
+    min-height: 0;
+    background: var(--app-bg);
+  }
+
+  .sider {
+    flex: 0 0 204px;
+    position: relative;
+    overflow: hidden;
+    border-right: 1px solid rgba(255, 255, 255, .7);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .56), rgba(222, 240, 255, .34));
+    box-shadow: 8px 0 24px rgba(32, 77, 112, .05);
+  }
+
+  .sider-head { padding: 26px 24px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .sider-kicker { color: #6c91aa; font-family: "Helta", "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .16em; }
+  .sider-title { color: var(--ink-600); font-family: "RPG", sans-serif; font-size: 18px; font-weight: 700; letter-spacing: .06em; }
+
+  .menu { padding: 0 10px; display: flex; flex-direction: column; gap: 4px; }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 8px;
+    color: var(--muted-700);
+    font-size: 14px;
+    text-decoration: none;
+    position: relative;
+  }
+
+  .menu-item.active {
+    color: #1d5d89;
+    font-weight: 700;
+    background: linear-gradient(90deg, rgba(190, 225, 246, .76), rgba(223, 241, 252, .36));
+  }
+
+  .menu-item.active::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--ink-300);
+  }
+
+  .sider-footer { position: absolute; right: 16px; bottom: 26px; left: 16px; }
+  .sider-quote {
+    margin: 16px 6px 0;
+    padding-top: 16px;
+    border-top: 1px solid rgba(102, 149, 180, .24);
+    color: #7695a9;
+    font-family: Georgia, "Songti SC", serif;
+    font-size: 12.5px;
+    line-height: 1.8;
+  }
+
+  .content { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+
+  .breadcrumb {
+    flex: 0 0 auto;
+    margin: 24px 24px 0;
+    color: var(--muted-400);
+    font-size: 13px;
+    user-select: none;
+  }
+  .breadcrumb .current { color: var(--ink-600); }
+
+  .lib-page {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  /* ---- 工具栏：标题 + 搜索 + 筛选 ---- */
+
+  .lib-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .lib-heading { display: flex; align-items: baseline; gap: 10px; }
+  .lib-heading h2 {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .lib-heading h2::before {
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    margin-right: 9px;
+    border-radius: 999px;
+    background: linear-gradient(#6caee0, var(--ink-300));
+    vertical-align: -3px;
+    content: "";
+  }
+  .lib-count { color: var(--muted-400); font-size: 12.5px; }
+
+  .lib-controls { display: flex; align-items: center; gap: 10px; }
+
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 240px;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, .7);
+    background: rgba(255, 255, 255, .6);
+    color: var(--muted-500);
+    font-size: 13px;
+    box-shadow: 0 6px 16px rgba(32, 77, 112, .05);
+  }
+  .search svg { flex: 0 0 auto; width: 15px; height: 15px; color: var(--muted-400); }
+  .search span.placeholder { color: var(--muted-400); }
+
+  .filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, .7);
+    background: rgba(255, 255, 255, .6);
+    color: var(--ink-600);
+    font-size: 13px;
+    box-shadow: 0 6px 16px rgba(32, 77, 112, .05);
+  }
+  .filter svg { width: 12px; height: 12px; color: var(--muted-400); }
+
+  /* ---- 分类小节 + 卡片网格 ---- */
+
+  .lib-section { margin-bottom: 26px; }
+  .lib-section:last-child { margin-bottom: 0; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--ink-500);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+  .section-title .count {
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: rgba(77, 137, 180, .1);
+    color: var(--ink-400);
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .lib-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(228px, 1fr));
+    gap: 16px;
+  }
+
+  .app-card {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, .58);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .28);
+    box-shadow: 0 8px 20px rgba(32, 77, 112, .05);
+    backdrop-filter: blur(10px) saturate(125%);
+    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+  .app-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, .9);
+    background: rgba(255, 255, 255, .44);
+    box-shadow: 0 14px 26px rgba(32, 77, 112, .1);
+  }
+  .app-card[data-status="disabled"],
+  .app-card[data-status="unavailable"] { opacity: .74; }
+
+  .app-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+
+  .app-card-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 auto;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, .5);
+    color: var(--ink-400);
+  }
+  .app-card-icon svg { width: 18px; height: 18px; }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex: 0 0 auto;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .status-badge::before { width: 6px; height: 6px; border-radius: 999px; background: currentcolor; content: ""; }
+  .status-badge[data-tone="available"] { color: var(--tone-available); background: var(--tone-available-bg); }
+  .status-badge[data-tone="disabled"] { color: var(--tone-disabled); background: var(--tone-disabled-bg); }
+  .status-badge[data-tone="unavailable"] { color: var(--tone-unavailable); background: var(--tone-unavailable-bg); }
+
+  .app-card-name {
+    margin-top: 14px;
+    color: var(--ink-700);
+    font-size: 15px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app-card-desc {
+    display: -webkit-box;
+    margin-top: 6px;
+    overflow: hidden;
+    color: var(--muted-500);
+    font-size: 12px;
+    line-height: 1.55;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    min-height: 37px;
+  }
+
+  .app-card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag-chip {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(77, 137, 180, .1);
+    color: var(--ink-400);
+    font-size: 11px;
+  }
+
+  .app-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--card-line);
+  }
+
+  .mode-pill { padding: 3px 8px; border-radius: 999px; background: rgba(111, 135, 153, .12); color: var(--muted-400); font-size: 11px; }
+
+  .app-card-action {
+    padding: 5px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(77, 137, 180, .35);
+    color: var(--ink-500);
+    font-size: 12.5px;
+    font-weight: 600;
+    background: transparent;
+  }
+  .app-card[data-status="disabled"] .app-card-action,
+  .app-card[data-status="unavailable"] .app-card-action {
+    border-color: transparent;
+    color: var(--muted-400);
+    font-weight: 500;
+  }
+
+  /* ---- 说明面板 ---- */
+
+  .spec {
+    border: 1px solid rgba(255, 255, 255, .06);
+    border-radius: 12px;
+    background: var(--card-bg);
+    color: var(--card-ink);
+    padding: 18px 22px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .35), 0 0 0 1px rgba(255, 255, 255, .04);
+  }
+  .spec h2 { margin: 0 0 3px; font-size: 13px; font-weight: 700; letter-spacing: .03em; }
+  .spec p.note { margin: 0 0 14px; font-size: 12.5px; color: var(--card-muted); }
+  .spec-rows { display: flex; flex-direction: column; gap: 10px; }
+  .spec-row {
+    display: grid;
+    grid-template-columns: 108px minmax(0, 1fr);
+    align-items: baseline;
+    gap: 14px;
+    padding-block: 8px;
+    border-top: 1px solid var(--card-line);
+  }
+  .spec-row:first-child { border-top: none; padding-top: 0; }
+  .spec-label { font-size: 12.5px; font-weight: 600; color: var(--ink-700); }
+  .spec-detail { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; min-width: 0; }
+  .spec-detail .val { font-size: 13px; color: var(--card-ink); }
+  .spec-detail code {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11.5px;
+    padding: 1px 6px;
+    border-radius: 5px;
+    background: #eef4fa;
+    color: var(--ink-700);
+    white-space: nowrap;
+  }
+
+  .attribution { margin-top: 4px; font-size: 11px; color: var(--card-muted); }
+
+  @media (max-width: 640px) {
+    body { padding: 28px 16px 44px; }
+    .spec-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<div class="page">
+  <div>
+    <p class="eyebrow">AstralExpress · 页面原型</p>
+    <h1>应用库 · Library</h1>
+    <p class="lede">
+      缇里西庇俄丝（Tribios）模块的应用库页——按分类展示 <code style="font-family:'JetBrains Mono',monospace;background:none;padding:0;color:inherit">plugins/tools/</code>
+      下扫描出的全部工具，支持按名称 / 标签搜索和状态筛选，卡片沿用首页「快捷入口」同一套玻璃卡片语言，只是信息密度更高（多了状态徽标、标签、运行方式）。
+    </p>
+  </div>
+
+  <div class="frame-scroll">
+    <div class="frame">
+      <div class="titlebar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="path">AstralExpress · 缇里西庇俄丝 · 应用库</span>
+      </div>
+
+      <div class="app-header">
+        <div class="brand">
+          <img src="../../../src/assets/images/cn.png" alt="崩坏：星穹铁道" />
+          <span class="brand-name">【命运的三子】缇里西庇俄丝 · 应用管理与功能入口</span>
+        </div>
+        <div class="hud">
+          <div class="hud-chip">
+            <svg class="hud-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <circle cx="12" cy="12" r="4.2" />
+              <path d="M12 2.6v3M12 18.4v3M21.4 12h-3M5.6 12h-3M18.36 5.64l-2.12 2.12M7.76 16.24l-2.12 2.12M18.36 18.36l-2.12-2.12M7.76 7.76 5.64 5.64" />
+            </svg>
+            <div class="hud-figures">
+              <span class="hud-value">23°</span>
+              <span class="hud-caption">晴 · 昌平区</span>
+            </div>
+          </div>
+          <div class="hud-chip hud-clock">
+            <div class="hud-figures">
+              <span class="hud-value">14:32</span>
+              <span class="hud-caption">周一 · 09.29</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-body">
+        <aside class="sider">
+          <div class="sider-head">
+            <span class="sider-kicker">TRIBIOS</span>
+            <span class="sider-title">功能导航</span>
+          </div>
+          <nav class="menu">
+            <a class="menu-item">首页</a>
+            <a class="menu-item active">应用库</a>
+            <a class="menu-item">任务队列</a>
+          </nav>
+          <div class="sider-footer">
+            <p class="sider-quote">"雅努萨波利斯的圣女，缇里西庇俄丝，你要为众生奔走，令救世的讯息晓喻大地"</p>
+          </div>
+        </aside>
+
+        <div class="content">
+          <div class="breadcrumb">首页 / <span class="current">应用库</span></div>
+
+          <div class="lib-page">
+            <div class="lib-toolbar">
+              <div class="lib-heading">
+                <h2>应用库</h2>
+                <span class="lib-count">示例 8 项 · 实际共 30 个应用</span>
+              </div>
+              <div class="lib-controls">
+                <div class="search">
+                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                    <circle cx="9" cy="9" r="5.5" /><path d="M17 17l-3.6-3.6" />
+                  </svg>
+                  <span class="placeholder">搜索应用名称或标签…</span>
+                </div>
+                <div class="filter">
+                  <span>全部分类</span>
+                  <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M1 1.5 6 6.5 11 1.5" /></svg>
+                </div>
+                <div class="filter">
+                  <span>全部状态</span>
+                  <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M1 1.5 6 6.5 11 1.5" /></svg>
+                </div>
+              </div>
+            </div>
+
+            <section class="lib-section">
+              <div class="section-title">文件管理 <span class="count">6</span></div>
+              <div class="lib-grid">
+                <article class="app-card" data-status="available">
+                  <div class="app-card-top">
+                    <span class="app-card-icon">
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 16l1-4 8.5-8.5 3 3L8 15l-4 1z" /><path d="M11 5.5 14.5 9" />
+                      </svg>
+                    </span>
+                    <span class="status-badge" data-tone="available">可用</span>
+                  </div>
+                  <div class="app-card-name">文件批量重命名</div>
+                  <div class="app-card-desc">按编号、前后缀和文本替换规则批量重命名文件。</div>
+                  <div class="app-card-tags">
+                    <span class="tag-chip">批量</span><span class="tag-chip">重命名</span><span class="tag-chip">文件整理</span>
+                  </div>
+                  <div class="app-card-footer">
+                    <span class="mode-pill">队列执行</span>
+                    <button class="app-card-action">运行</button>
+                  </div>
+                </article>
+
+                <article class="app-card" data-status="available">
+                  <div class="app-card-top">
+                    <span class="app-card-icon">
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2.5 6a1.3 1.3 0 0 1 1.3-1.3h3.4l1.3 1.7h7.2A1.3 1.3 0 0 1 17 7.7v6.6A1.3 1.3 0 0 1 15.7 15.6H3.8A1.3 1.3 0 0 1 2.5 14.3V6Z" />
+                      </svg>
+                    </span>
+                    <span class="status-badge" data-tone="available">可用</span>
+                  </div>
+                  <div class="app-card-name">文件自动分类整理</div>
+                  <div class="app-card-desc">按类型、日期或自定义规则把杂乱文件归类到对应目录。</div>
+                  <div class="app-card-tags">
+                    <span class="tag-chip">分类</span><span class="tag-chip">整理</span><span class="tag-chip">规则</span>
+                  </div>
+                  <div class="app-card-footer">
+                    <span class="mode-pill">队列执行</span>
+                    <button class="app-card-action">运行</button>
+                  </div>
+                </article>
+
+                <article class="app-card" data-status="disabled">
+                  <div class="app-card-top">
+                    <span class="app-card-icon">
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="8.6" cy="8.6" r="5" /><path d="M16 16l-3.4-3.4" />
+                      </svg>
+                    </span>
+                    <span class="status-badge" data-tone="disabled">已禁用</span>
+                  </div>
+                  <div class="app-card-name">重复文件查找</div>
+                  <div class="app-card-desc">基于哈希比对找出目录中的重复文件，辅助清理磁盘空间。</div>
+                  <div class="app-card-tags">
+                    <span class="tag-chip">查重</span><span class="tag-chip">清理</span>
+                  </div>
+                  <div class="app-card-footer">
+                    <span class="mode-pill">队列执行</span>
+                    <span class="app-card-action">已禁用</span>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="lib-section">
+              <div class="section-title">图片处理 <span class="count">6</span></div>
+              <div class="lib-grid">
+                <article class="app-card" data-status="available">
+                  <div class="app-card-top">
+                    <span class="app-card-icon">
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3v3.6M3 8h3.6M12 17v-3.6M17 12h-3.6M3 3l4.2 4.2M17 17l-4.2-4.2" />
+                      </svg>
+                    </span>
+                    <span class="status-badge" data-tone="available">可用</span>
+                  </div>
+                  <div class="app-card-name">图片压缩</div>
+                  <div class="app-card-desc">在可控画质损失下压缩图片体积，支持批量处理整个目录。</div>
+                  <div class="app-card-tags">
+                    <span class="tag-chip">压缩</span><span class="tag-chip">批量</span>
+                  </div>
+                  <div class="app-card-footer">
+                    <span class="mode-pill">队列执行</span>
+                    <button class="app-card-action">运行</button>
+                  </div>
+                </article>
+
+                <article class="app-card" data-status="available">
+                  <div class="app-card-top">
+                    <span class="app-card-icon">
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 2.6l1.6 3.4 3.7.5-2.7 2.6.6 3.7L10 11l-3.2 1.8.6-3.7-2.7-2.6 3.7-.5L10 2.6Z" />
+                      </svg>
+                    </span>
+                    <span class="status-badge" data-tone="available">可用</span>
+                  </div>
+                  <div class="app-card-name">图片加水印</div>
+                  <div class="app-card-desc">批量为图片添加文字或图片水印，支持位置与透明度调整。</div>
+                  <div class="app-card-tags">
+                    <span class="tag-chip">水印</span><span class="tag-chip">批量</span>
+                  </div>
+                  <div class="app-card-footer">
+                    <span class="mode-pill">队列执行</span>
+                    <button class="app-card-action">运行</button>
+                  </div>
+                </article>
+
+                <article class="app-card" data-status="unavailable">
+                  <div class="app-card-top">
+                    <span class="app-card-icon">
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 8V3h5M17 12v5h-5M8 3 3 8M12 17l5-5" />
+                      </svg>
+                    </span>
+                    <span class="status-badge" data-tone="unavailable">环境缺失</span>
+                  </div>
+                  <div class="app-card-name">图片尺寸调整</div>
+                  <div class="app-card-desc">按宽高或比例批量缩放图片，可保持长宽比或强制裁切。</div>
+                  <div class="app-card-tags">
+                    <span class="tag-chip">缩放</span><span class="tag-chip">批量</span>
+                  </div>
+                  <div class="app-card-footer">
+                    <span class="mode-pill">队列执行</span>
+                    <span class="app-card-action">环境缺失</span>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="lib-section">
+              <div class="section-title">开发辅助 <span class="count">2</span></div>
+              <div class="lib-grid">
+                <article class="app-card" data-status="available">
+                  <div class="app-card-top">
+                    <span class="app-card-icon">
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2.5" y="5" width="15" height="10" rx="2" /><circle cx="7" cy="10" r="1.6" /><path d="M11 8.6h4M11 11.4h4" />
+                      </svg>
+                    </span>
+                    <span class="status-badge" data-tone="available">可用</span>
+                  </div>
+                  <div class="app-card-name">UUID 生成器</div>
+                  <div class="app-card-desc">批量生成 UUID v4，支持自定义数量与大小写格式。</div>
+                  <div class="app-card-tags">
+                    <span class="tag-chip">UUID</span><span class="tag-chip">生成</span>
+                  </div>
+                  <div class="app-card-footer">
+                    <span class="mode-pill">瞬时执行</span>
+                    <button class="app-card-action">运行</button>
+                  </div>
+                </article>
+
+                <article class="app-card" data-status="available">
+                  <div class="app-card-top">
+                    <span class="app-card-icon">
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 7h10l-2.6-2.6M16 13H6l2.6 2.6" />
+                      </svg>
+                    </span>
+                    <span class="status-badge" data-tone="available">可用</span>
+                  </div>
+                  <div class="app-card-name">Base64 编解码</div>
+                  <div class="app-card-desc">文本与 Base64 互相转换，支持粘贴或拖入文件。</div>
+                  <div class="app-card-tags">
+                    <span class="tag-chip">编码</span><span class="tag-chip">Base64</span>
+                  </div>
+                  <div class="app-card-footer">
+                    <span class="mode-pill">瞬时执行</span>
+                    <button class="app-card-action">运行</button>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spec">
+    <h2>字段与交互对照</h2>
+    <p class="note">供实现 <code style="font-family:'JetBrains Mono',monospace;background:none;padding:0;color:inherit">Library.tsx</code> 时参考——数据全部来自 <code style="font-family:'JetBrains Mono',monospace;background:none;padding:0;color:inherit">useToolStore</code> 已缓存的 <code style="font-family:'JetBrains Mono',monospace;background:none;padding:0;color:inherit">Manifest[]</code>，搜索 / 筛选都在前端本地过滤，不额外请求。</p>
+    <div class="spec-rows">
+      <div class="spec-row">
+        <span class="spec-label">图标</span>
+        <span class="spec-detail">
+          <span class="val">卡片左上角图标芯片</span>
+          <code>AppIcon icon={manifest.icon}</code>
+        </span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">分类分组</span>
+        <span class="spec-detail">
+          <span class="val">按 category 文本分组，section 标题右侧数字为该分类的应用数</span>
+          <code>Manifest.category</code>
+        </span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">状态徽标</span>
+        <span class="spec-detail">
+          <span class="val">available → 可用（青）· disabled → 已禁用（琥珀）· unavailable → 环境缺失（红），与 TaskQueue 状态色同一套色板</span>
+          <code>Manifest.status</code>
+        </span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">运行方式</span>
+        <span class="spec-detail">
+          <span class="val">卡片底部左侧小标签，isQueue=true 标"队列执行"、false 标"瞬时执行"，仅做展示区分</span>
+          <code>Manifest.isQueue</code>
+        </span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">运行按钮</span>
+        <span class="spec-detail">
+          <span class="val">status≠available 时按钮态变成禁用文案（已禁用 / 环境缺失），不可点击</span>
+        </span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">「运行」行为</span>
+        <span class="spec-detail">
+          <span class="val">点击后调用 createTask(manifestKey) 建一条 pending 任务，并可在任务队列页跟踪；仓库里目前还没有真正执行任务的调度器/执行引擎（对照 bak 项目的 run::scheduler + run::executor 尚未移植），所以任务会一直停在 pending，等后端补上这块再联调「运行」的实际效果。“瞬时执行”（isQueue=false）的同步调用路径目前完全没实现，按钮先占位。</span>
+          <code>createTask</code>
+          <code>commands::task::create_task</code>
+        </span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">搜索 / 筛选</span>
+        <span class="spec-detail">
+          <span class="val">搜索框匹配 name + tags + category；两个下拉分别按 category、status 精确筛选，均为前端本地计算</span>
+        </span>
+      </div>
+    </div>
+    <p class="attribution">示例数据 · 取自 plugins/tools 下真实 manifest.json 的字段结构，卡片数量为展示样例，非全量</p>
+  </div>
+</div>

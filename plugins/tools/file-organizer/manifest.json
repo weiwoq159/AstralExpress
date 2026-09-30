@@ -2,7 +2,7 @@
   "key": "file-organizer",
   "order": 103,
   "name": "文件分类整理",
-  "category": "文件管理",
+  "category": "Files",
   "description": "按扩展名或修改日期将文件归类到不同文件夹。",
   "tags": [
     "分类",

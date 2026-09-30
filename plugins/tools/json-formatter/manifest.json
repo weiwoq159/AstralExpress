@@ -2,7 +2,7 @@
   "key": "json-formatter",
   "order": 501,
   "name": "JSON格式校验",
-  "category": "开发辅助",
+  "category": "Dev",
   "description": "校验 JSON 语法，支持缩进格式化和紧凑输出。",
   "tags": [
     "JSON",

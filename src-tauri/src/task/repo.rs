@@ -30,6 +30,31 @@ pub fn get_by_uid(conn: &Connection, task_uid: &str) -> rusqlite::Result<Option<
     .optional()
 }
 
+pub fn update_queue_status(
+    conn: &Connection,
+    task_uid: &str,
+    status: TaskStatus,
+    reset: bool,
+) -> rusqlite::Result<()> {
+    conn.execute(
+        "UPDATE tasks SET
+            status = ?2,
+            progress = CASE WHEN ?3 THEN 0 ELSE progress END,
+            total = CASE WHEN ?3 THEN 0 ELSE total END,
+            done = CASE WHEN ?3 THEN 0 ELSE done END,
+            result_json = CASE WHEN ?3 THEN NULL ELSE result_json END,
+            error_message = CASE WHEN ?3 THEN NULL ELSE error_message END,
+            started_at = CASE WHEN ?3 THEN NULL ELSE started_at END,
+            finished_at = CASE
+                WHEN ?2 = 'canceled' THEN strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+                WHEN ?3 THEN NULL ELSE finished_at END,
+            updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+         WHERE task_uid = ?1",
+        params![task_uid, status, reset],
+    )?;
+    Ok(())
+}
+
 pub fn list(
     conn: &Connection,
     module_id: ModuleId,

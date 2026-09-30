@@ -2,7 +2,7 @@
   "key": "text-statistics",
   "order": 203,
   "name": "文本字数统计",
-  "category": "文本处理",
+  "category": "Text",
   "description": "统计文本的字符数、中文字数、英文单词数和行数。",
   "tags": [
     "字数",

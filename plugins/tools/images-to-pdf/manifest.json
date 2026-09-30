@@ -2,7 +2,7 @@
   "key": "images-to-pdf",
   "order": 404,
   "name": "图片转PDF",
-  "category": "文档处理",
+  "category": "Documents",
   "description": "将多张图片按指定顺序排版并生成 PDF 文档。",
   "tags": [
     "图片",

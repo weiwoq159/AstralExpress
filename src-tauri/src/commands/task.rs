@@ -1,7 +1,7 @@
 use crate::database::state::DbState;
 use crate::domain::module::ModuleId;
 use crate::domain::response::ApiResponse;
-use crate::domain::task::{CreateTaskResult, NewTask, Task};
+use crate::domain::task::{CreateTaskResult, NewTask, Task, TaskActionKind};
 use crate::task::service;
 use tauri::State;
 
@@ -22,4 +22,14 @@ pub fn list_tasks(
     manifest_key: Option<String>,
 ) -> ApiResponse<Vec<Task>> {
     ApiResponse::from(service::list(&state, module_id, manifest_key.as_deref()))
+}
+
+#[tauri::command(async)]
+pub fn apply_task_action(
+    state: State<'_, DbState>,
+    module_id: ModuleId,
+    task_uid: String,
+    action: TaskActionKind,
+) -> ApiResponse<Task> {
+    ApiResponse::from(service::apply_action(&state, module_id, &task_uid, action))
 }

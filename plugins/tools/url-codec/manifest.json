@@ -2,7 +2,7 @@
   "key": "url-codec",
   "order": 505,
   "name": "URL编码解码",
-  "category": "开发辅助",
+  "category": "Dev",
   "description": "对 URL 组件进行百分号编码或解码，处理中文和特殊字符。",
   "tags": [
     "URL",

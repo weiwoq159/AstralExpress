@@ -2,7 +2,7 @@
   "key": "text-deduplicate",
   "order": 201,
   "name": "文本行去重",
-  "category": "文本处理",
+  "category": "Text",
   "description": "删除重复文本行，保留首次出现的内容和原始顺序。",
   "tags": [
     "去重",

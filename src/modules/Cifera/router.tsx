@@ -3,7 +3,7 @@ import type { AppRouteObject } from "@/router/types";
 import { CiferaLayout } from "./Layout/CiferaLayout";
 import { Cifera } from "./module";
 import { CiferaNavigation } from "./navigation";
-import { Dashboard } from "./pages";
+import { Dashboard, Library, Tasks } from "./pages";
 
 export const CiferaRouter: AppRouteObject[] = [
   {
@@ -18,6 +18,22 @@ export const CiferaRouter: AppRouteObject[] = [
         element: <Dashboard />,
         handle: {
           breadcrumb: [{ title: CiferaNavigation.home.title, to: CiferaNavigation.home.path }],
+          menu: true,
+        },
+      },
+      {
+        path: "library",
+        element: <Library />,
+        handle: {
+          breadcrumb: [{ title: CiferaNavigation.library.title, to: CiferaNavigation.library.path }],
+          menu: true,
+        },
+      },
+      {
+        path: "tasks",
+        element: <Tasks />,
+        handle: {
+          breadcrumb: [{ title: CiferaNavigation.tasks.title, to: CiferaNavigation.tasks.path }],
           menu: true,
         },
       },

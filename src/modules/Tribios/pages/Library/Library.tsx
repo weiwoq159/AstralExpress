@@ -1,7 +1,9 @@
+import { Library as SharedLibrary, useLibrary } from "@/shared/features/Library";
+
+import { useToolStore } from "@tribios/stores/useToolStore";
+
 export const Library = () => {
-  return (
-    <div>
-      <h1>Library</h1>
-    </div>
-  );
+  const library = useLibrary(useToolStore);
+
+  return <SharedLibrary library={library} />;
 };

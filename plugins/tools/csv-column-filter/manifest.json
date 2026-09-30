@@ -2,7 +2,7 @@
   "key": "csv-column-filter",
   "order": 605,
   "name": "CSV列筛选",
-  "category": "数据处理",
+  "category": "Data",
   "description": "按列名选择需要保留的字段，并按指定顺序导出 CSV。",
   "tags": [
     "CSV",

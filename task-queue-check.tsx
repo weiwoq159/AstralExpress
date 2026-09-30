@@ -1,0 +1,11 @@
+import {useState} from 'react';
+import {createRoot} from 'react-dom/client';
+import {ConfigProvider, Button, Flex} from 'antd';
+import {TaskQueue} from './src/shared/components/TaskQueue/TaskQueue';
+import {AmphoreusTheme} from './src/app/theme';
+import './src/shared/styles/global.scss';
+const states = ['running','failed','pending','success','paused','canceled','interrupted'] as const;
+const tasks = Array.from({length:14}, (_,i) => ({id:i+1,taskUid:'check-task-'+(i+1),moduleId:'tools' as const,manifestKey:'batch-rename',title:i === 13 ? '整理旅行照片 · 批量重命名' : '文件归档任务 '+(i+1),paramsJson:JSON.stringify({directory:'photos',prefix:'trip'}),resultJson:i%7===3 ? JSON.stringify({files:100}) : null,status:states[i%7],progress:i%7===3?100:42,total:100,done:i%7===3?100:42,errorMessage:i%7===1?'测试错误：文件不存在':null,createdAt:'2026-09-29T'+String(i+1).padStart(2,'0')+':00:00',updatedAt:'2026-09-29T15:00:00',startedAt:null,finishedAt:null}));
+const manifests = [{key:'batch-rename',order:1,name:'文件批量重命名',category:'文件管理',description:'',tags:[],icon:'EditOutlined',status:'unavailable' as const,entry:'main.py',isQueue:true}];
+function Check() { const [mode,setMode] = useState<'full'|'preview'>('full'); const [empty,setEmpty] = useState(false); const [loading,setLoading] = useState(false); return <ConfigProvider theme={AmphoreusTheme}><main style={{padding:32,maxWidth:1200,margin:'auto'}}><Flex gap={10} style={{marginBottom:24}}><Button onClick={()=>setMode(mode==='full'?'preview':'full')}>切换展示模式</Button><Button onClick={()=>setEmpty(!empty)}>切换空列表</Button><Button onClick={()=>setLoading(!loading)}>切换加载状态</Button></Flex><TaskQueue variant={mode} tasks={empty?[]:tasks} manifests={manifests} loading={loading} onRefresh={async()=>{throw new Error('组件验证：刷新失败，保留原列表')}} /></main></ConfigProvider>};
+createRoot(document.getElementById('root')!).render(<Check/>);

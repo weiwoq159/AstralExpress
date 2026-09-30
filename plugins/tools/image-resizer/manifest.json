@@ -2,7 +2,7 @@
   "key": "image-resizer",
   "order": 303,
   "name": "图片尺寸调整",
-  "category": "图片处理",
+  "category": "Images",
   "description": "按目标宽高或缩放比例批量调整图片尺寸。",
   "tags": [
     "缩放",

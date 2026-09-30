@@ -1,11 +1,20 @@
-import { Hero, SectionHeader, QuickAccessGrid } from "@/shared/components";
+import { useTaskQueue } from "@/shared/hooks/useTaskQueue";
+import { Hero, QuickAccessGrid, SectionHeader, TaskQueue } from "@/shared/components";
 import pageStyles from "@/shared/styles/page.module.scss";
 
 import { Cifera } from "@cifera/module";
+import { CiferaNavigation } from "@cifera/navigation";
 import { useCrawlerStore } from "@cifera/stores/useCrawlerStore";
+import { useCrawlerTaskStore } from "@cifera/stores/useCrawlerTaskStore";
 
 export const Dashboard = () => {
-  const crawlers = useCrawlerStore((state) => state.crawlers);
+  const manifests = useCrawlerStore((state) => state.items);
+  const queue = useTaskQueue(useCrawlerTaskStore);
+
+
+
+  const quickAccess = manifests.slice(0, 8);
+
   return (
     <div className={pageStyles.page}>
       <Hero
@@ -15,9 +24,14 @@ export const Dashboard = () => {
         tags={Cifera.tags}
         cover={Cifera.cover}
       />
-      <SectionHeader sectionTitle="快捷入口" viewAllPath="library" style={{ marginTop: 24 }} />
-      <QuickAccessGrid manifests={crawlers.slice(0, 8)} />
-      <SectionHeader sectionTitle="任务队列" viewAllPath="tasks" style={{ marginBottom: 24, marginTop: 24 }} />
+      <SectionHeader sectionTitle="快捷入口" style={{ marginTop: 24 }} />
+      <QuickAccessGrid manifests={quickAccess} />
+      <SectionHeader
+        sectionTitle="爬虫任务队列"
+        viewAllPath={CiferaNavigation.tasks.path}
+        style={{ marginBottom: 24, marginTop: 24 }}
+      />
+      <TaskQueue {...queue} tasks={queue.tasks.slice(0, 5)} manifests={manifests} pagination={false} />
     </div>
   );
 };

@@ -2,7 +2,7 @@
   "key": "image-watermark",
   "order": 304,
   "name": "图片文字水印",
-  "category": "图片处理",
+  "category": "Images",
   "description": "为图片批量添加文字水印，并调整位置、字号和透明度。",
   "tags": [
     "水印",

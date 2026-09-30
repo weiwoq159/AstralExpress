@@ -1,0 +1,22 @@
+@use "@/shared/styles/mixins" as m;
+
+.card {
+  overflow: hidden;
+  @include m.glass-card;
+}
+
+.hoverable {
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.44);
+    box-shadow: 0 14px 26px rgba(32, 77, 112, 0.1);
+  }
+}
