@@ -5,7 +5,7 @@ import { Flex, Image, Tag, Typography } from "antd";
 import { AppIcon } from "@/shared/components";
 
 import styles from "./Hero.module.scss";
-const { Paragraph, Text, Title } = Typography;
+const { Text, Title } = Typography;
 
 export interface HeroProps {
   title: string;

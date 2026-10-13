@@ -8,7 +8,7 @@ import { SectionIndex } from "../SectionIndex/SectionIndex";
 
 import styles from "./ExecutionCard.module.scss";
 const { Text } = Typography;
-type ExecutionCardProps = { manifest: Manifest; status?: ManifestPresentation };
+type ExecutionCardProps = { manifest: Manifest; status: ManifestPresentation };
 
 export const ExecutionCard = ({ manifest, status }: ExecutionCardProps) => {
   const fields = [

@@ -11,8 +11,8 @@ import styles from "./ManifestCard.module.scss";
 const { Text } = Typography;
 
 type ManifestCardProps = {
-  manifest?: Manifest;
-  status?: ManifestPresentation;
+  manifest: Manifest;
+  status: ManifestPresentation;
 };
 export const ManifestCard = ({ manifest, status }: ManifestCardProps) => {
   const fields = [
@@ -20,11 +20,11 @@ export const ManifestCard = ({ manifest, status }: ManifestCardProps) => {
     { label: "原始分类", value: manifest.category },
     { label: "清单排序", value: String(manifest.order) },
     { label: "图标标识", value: manifest.icon || "—" },
-    { label: "当前状态", value: status?.label || "—" },
+    { label: "当前状态", value: status.label },
     { label: "执行方式", value: manifest.isQueue ? "加入任务队列" : "直接执行" },
   ];
   return (
-    <GlassPanel glass="frosted" hoverable={false} style={{ marginTop: 24 }}>
+    <GlassPanel glass="frosted" hoverable={false}>
       <SectionIndex index="02 / MANIFEST" title="应用清单" />
       <Row className={styles.details}>
         {fields.map(({ label, value }) => (

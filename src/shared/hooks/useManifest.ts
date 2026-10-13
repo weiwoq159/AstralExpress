@@ -26,10 +26,9 @@ export const useManifestMap = (moduleId: ModuleId) => {
   return { manifests, manifestMap };
 };
 
-export const useManifest = (moduleId: ModuleId, manifestKey: string) => {
-  const { data } = useQuery({
+/** 读取单个应用清单，返回完整查询状态（data / isPending / isFetching / error / refetch）。 */
+export const useManifest = (moduleId: ModuleId, manifestKey: string) =>
+  useQuery({
     queryKey: ["manifest", moduleId, manifestKey],
     queryFn: () => readManifest(moduleId, manifestKey),
   });
-  return { data };
-};

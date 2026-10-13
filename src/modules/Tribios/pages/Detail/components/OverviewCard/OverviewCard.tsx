@@ -10,8 +10,8 @@ import styles from "./OverviewCard.module.scss";
 const { Text, Title, Paragraph } = Typography;
 
 type OverviewCardProps = {
-  manifest?: Manifest;
-  status?: ManifestPresentation;
+  manifest: Manifest;
+  status: ManifestPresentation;
 };
 export const OverviewCard = ({ manifest, status }: OverviewCardProps) => {
   return (
