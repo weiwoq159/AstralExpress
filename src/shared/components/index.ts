@@ -6,3 +6,5 @@ export type { HeroProps } from "./Hero/Hero";
 export { QuickAccessGrid } from "./QuickAccessGrid/QuickAccessGrid";
 export { SectionHeader } from "./SectionHeader/SectionHeader";
 export { AppIcon } from "./AppIcon/AppIcon";
+export { ManifestDetail } from "./ManifestDetail/ManifestDetail";
+export type { ManifestDetailProps } from "./ManifestDetail/ManifestDetail";
