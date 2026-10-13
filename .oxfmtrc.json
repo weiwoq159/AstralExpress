@@ -1,0 +1,74 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "useTabs": false,
+  "printWidth": 120,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "sortImports": {
+    "internalPattern": ["@/", "@tribios/", "@cifera/", "#"],
+    "newlinesBetween": true,
+    "customGroups": [
+      {
+        "groupName": "react",
+        "elementNamePattern": [
+          "react",
+          "react-dom",
+          "react-dom/**",
+          "react-router",
+          "react-router/**",
+          "react-router-dom",
+          "react-router-dom/**"
+        ]
+      },
+      {
+        "groupName": "antd",
+        "elementNamePattern": ["antd", "@ant-design/**"]
+      },
+      {
+        "groupName": "shared",
+        "elementNamePattern": ["@/shared", "@/shared/**"]
+      },
+      {
+        "groupName": "modules",
+        "elementNamePattern": ["@/modules", "@/modules/**", "@tribios", "@tribios/**", "@cifera", "@cifera/**"]
+      },
+      {
+        "groupName": "app-router",
+        "elementNamePattern": ["@/router", "@/router/**"]
+      }
+    ],
+    "groups": [
+      "react",
+      "antd",
+      ["type-builtin", "type-external", "value-builtin", "value-external"],
+      "shared",
+      ["type-internal", "internal"],
+      "modules",
+      "app-router",
+      ["type-parent", "type-sibling", "type-index", "value-parent", "value-sibling", "value-index"],
+      ["side_effect_style", "style"],
+      "unknown"
+    ]
+  },
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "src-tauri",
+    "crawler",
+    "tools",
+    "logs",
+    "runtime",
+    "coverage",
+    "pnpm-lock.yaml",
+    "docs",
+    "src/shared/domain/manifest.ts",
+    "src/shared/domain/task.ts",
+    "src/shared/domain/response.ts",
+    "README.md"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "key": "page-image-downloader",
+  "order": 102,
+  "name": "网页图片下载",
+  "category": "download",
+  "description": "提取公开网页中的图片地址，按尺寸和格式筛选后批量保存。",
+  "tags": [
+    "图片",
+    "网页资源",
+    "批量下载"
+  ],
+  "icon": "PictureOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

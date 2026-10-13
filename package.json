@@ -10,12 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tauri-apps/api": "^2.12.3",
+    "@tauri-apps/plugin-dialog": "~2.8.2",
+    "@tauri-apps/plugin-http": "~2.8.2",
+    "ahooks": "^3.10.0",
+    "antd": "^6.6.5",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@ant-design/icons": "~6.3.4",
     "@babel/core": "^7.29.7",
     "@rolldown/plugin-babel": "^0.2.3",
+    "@tanstack/react-query": "^5.104.1",
     "@tauri-apps/cli": "^2.12.2",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^24.13.3",
@@ -23,7 +30,11 @@
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "babel-plugin-react-compiler": "^1.0.0",
+    "dayjs": "^1.11.23",
+    "oxfmt": "^0.72.0",
     "oxlint": "^1.81.0",
+    "react-router": "^8.4.0",
+    "sass": "^1.105.1",
     "typescript": "~6.0.2",
     "vite": "^8.3.0"
   }

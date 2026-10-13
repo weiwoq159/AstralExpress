@@ -1,0 +1,16 @@
+{
+  "key": "github-issue-crawler",
+  "order": 503,
+  "name": "GitHub议题采集",
+  "category": "developer",
+  "description": "通过 GitHub API 采集公开仓库议题的标题、正文、标签、状态和更新时间。",
+  "tags": [
+    "GitHub",
+    "Issue",
+    "议题"
+  ],
+  "icon": "IssuesCloseOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

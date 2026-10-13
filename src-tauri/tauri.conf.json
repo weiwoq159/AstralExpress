@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "vite-project",
+  "productName": "AstralExpress",
   "version": "0.1.0",
   "identifier": "com.tauri.dev",
   "build": {
@@ -12,11 +12,12 @@
   "app": {
     "windows": [
       {
-        "title": "vite-project",
-        "width": 800,
-        "height": 600,
+        "title": "星穹列车",
+        "width": 1920,
+        "height": 1080,
         "resizable": true,
-        "fullscreen": false
+        "fullscreen": false,
+        "visible": false
       }
     ],
     "security": {

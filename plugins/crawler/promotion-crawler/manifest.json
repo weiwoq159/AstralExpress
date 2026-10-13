@@ -1,0 +1,16 @@
+{
+  "key": "promotion-crawler",
+  "order": 303,
+  "name": "促销活动采集",
+  "category": "ecommerce",
+  "description": "采集公开促销页面中的活动名称、优惠说明、有效期和活动链接。",
+  "tags": [
+    "促销",
+    "优惠",
+    "活动"
+  ],
+  "icon": "TagsOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

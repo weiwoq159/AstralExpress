@@ -1,0 +1,47 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.root.root {
+    --glass-surface: #{$glass-surface};
+    --glass-blur: #{$glass-blur};
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid $glass-border;
+    border-radius: $radius-panel;
+    background: var(--glass-surface);
+    box-shadow: $glass-shadow;
+    backdrop-filter: blur(var(--glass-blur)) saturate($glass-saturation);
+
+    // 顶部高光细线
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 18px;
+        right: 18px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #fff, transparent);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+
+        &:hover {
+            box-shadow: $glass-shadow-hover;
+        }
+    }
+}
+
+// 清透：更白、模糊更小
+.root.clear {
+    --glass-surface: rgba(255, 255, 255, 0.64);
+    --glass-blur: 12px;
+}
+
+// 柔雾：更透、模糊更大
+.root.frosted {
+    --glass-surface: rgba(255, 255, 255, 0.34);
+    --glass-blur: 28px;
+}

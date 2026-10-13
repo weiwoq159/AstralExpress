@@ -1,0 +1,59 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.kicker {
+    color: $ink-500;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+}
+
+.title {
+    color: $ink-900;
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.footer {
+    position: absolute;
+    right: 16px;
+    bottom: 26px;
+    left: 16px;
+}
+
+.quote {
+    margin: 16px 6px 0;
+    padding-top: 16px;
+    border-top: 1px solid $color-border;
+    color: $ink-500;
+    font-family: var(--serif);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.menu {
+    padding: 0 10px;
+    background: transparent;
+    border-inline-end: 0;
+
+    :global(.ant-menu-item) {
+        width: 100%;
+        height: 44px;
+        margin-block: 4px;
+        margin-inline: 0;
+        color: $ink-700;
+        font-size: 14px;
+        line-height: 44px;
+    }
+
+    :global(.ant-menu-item-selected) {
+        color: $brand-600;
+        font-weight: 700;
+        background: linear-gradient(90deg, $brand-100, rgba($brand-100, 0.4));
+    }
+
+    :global(.ant-menu-item::after) {
+        border-inline-end: 2px solid $color-primary;
+    }
+}

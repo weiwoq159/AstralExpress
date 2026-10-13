@@ -1,0 +1,16 @@
+{
+  "key": "document-downloader",
+  "order": 103,
+  "name": "公开文档下载",
+  "category": "download",
+  "description": "从指定公开页面提取 PDF、DOCX 和 XLSX 等文档链接并批量下载。",
+  "tags": [
+    "文档",
+    "PDF",
+    "附件"
+  ],
+  "icon": "FilePdfOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

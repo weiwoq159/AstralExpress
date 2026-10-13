@@ -20,7 +20,21 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@tribios/*": ["./src/modules/Tribios/*"],
+      "@aglaea/*": ["./src/modules/Aglaea/*"],
+      "@cerydra/*": ["./src/modules/Cerydra/*"],
+      "@cifera/*": ["./src/modules/Cifera/*"],
+      "@helektra/*": ["./src/modules/Helektra/*"],
+      "@hyacinthia/*": ["./src/modules/Hyacinthia/*"],
+      "@castorice/*": ["./src/modules/Castorice/*"],
+      "@cyrene/*": ["./src/modules/Cyrene/*"],
+      "@evernight/*": ["./src/modules/Evernight/*"],
+      "@permansor/*": ["./src/modules/Permansor/*"],
+      "@elysia/*": ["./src/modules/Elysia/*"]
+    }
   },
   "include": ["src"]
 }

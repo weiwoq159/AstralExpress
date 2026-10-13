@@ -1,0 +1,44 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.sider {
+    position: relative;
+    overflow: hidden;
+    background: $glass-surface;
+    backdrop-filter: blur($glass-blur) saturate($glass-saturation);
+
+    // 与 header 同一块玻璃：去掉硬边框和投影，右侧只留一道自上而下渐隐的细线
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 1px;
+        pointer-events: none;
+        background: linear-gradient(180deg, transparent, $color-border 30%, transparent);
+    }
+}
+
+.content {
+    padding: 24px;
+    padding-top: 12px;
+}
+
+.breadcrumb {
+    flex: 0 0 auto;
+    margin: 0 24px 16px 0;
+
+    :global(.ant-breadcrumb-link) {
+        color: $ink-500;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 160ms ease;
+
+        &:hover {
+            color: $brand-600;
+        }
+    }
+}
