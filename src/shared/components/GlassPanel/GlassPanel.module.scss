@@ -28,7 +28,7 @@
     @media (prefers-reduced-motion: no-preference) {
         transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
 
-        &:hover {
+        &:not(.static):hover {
             box-shadow: $glass-shadow-hover;
         }
     }

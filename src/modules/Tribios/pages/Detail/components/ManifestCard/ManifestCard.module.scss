@@ -1,0 +1,23 @@
+.details {
+    margin: 0;
+}
+
+.detailField {
+    min-width: 0;
+    padding: 16px 0;
+    border-top: 1px solid rgba(109, 158, 189, 0.2);
+}
+
+.detailLabel {
+    display: block;
+    margin-bottom: 8px;
+    color: #7792a3;
+    font-size: 12px;
+}
+
+.detailValue {
+    display: block;
+    overflow-wrap: anywhere;
+    color: #244c65;
+    font-weight: 650;
+}

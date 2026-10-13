@@ -8,8 +8,7 @@ export interface GlassPanelProps extends CardProps {
   glass?: "clear" | "standard" | "frosted";
 }
 
-export const GlassPanel = ({ glass = "standard", className, ...rest }: GlassPanelProps) => {
-  const classes = [styles.root, glass !== "standard" && styles[glass], className].filter(Boolean).join(" ");
-
-  return <Card className={classes} {...rest} />;
+export const GlassPanel = ({ glass = "standard", className, hoverable, ...rest }: GlassPanelProps) => {
+  const classes = [styles.root, glass !== "standard" && styles[glass], hoverable === false && styles.static, className].filter(Boolean).join(" ");
+  return <Card className={classes} hoverable={hoverable} {...rest} />;
 };

@@ -1,0 +1,74 @@
+.icon {
+    display: grid;
+    flex: none;
+    width: 64px;
+    height: 64px;
+    place-items: center;
+    border: 1px solid rgba(100, 159, 196, 0.28);
+    border-radius: 18px;
+    color: #327cad;
+    background: linear-gradient(145deg, rgba(234, 248, 255, 0.95), rgba(173, 217, 241, 0.52));
+    font-size: 28px;
+}
+
+.name {
+    margin: 0 !important;
+    color: #17364c !important;
+}
+
+.category {
+    color: #67869a;
+    font-size: 13px;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: #397d70;
+    background: rgba(214, 241, 233, 0.78);
+    font-size: 12px;
+    white-space: nowrap;
+
+    &[data-tone="disabled"] {
+        color: #8b7448;
+        background: rgba(250, 239, 204, 0.78);
+    }
+
+    &[data-tone="unavailable"] {
+        color: #a06168;
+        background: rgba(249, 226, 229, 0.8);
+    }
+}
+
+.description {
+    margin: 24px 0 !important;
+    color: #486a80;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.tagArea {
+    border-top: 1px solid rgba(109, 158, 189, 0.2);
+    padding-top: 18px;
+}
+
+.fieldLabel {
+    display: block;
+    color: #7792a3;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.tags {
+    margin-top: 10px;
+}
+
+.tags :global(.ant-tag) {
+    margin: 0;
+    border-color: rgba(89, 147, 183, 0.2);
+    border-radius: 8px;
+    color: #416b8e;
+    background: rgba(228, 244, 253, 0.55);
+}

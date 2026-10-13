@@ -1,0 +1,26 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.back.back {
+    padding-left: 8px;
+    color: $brand-600;
+
+    &:hover {
+        color: $brand-700;
+    }
+}
+
+.retry {
+    margin-top: 16px;
+}
+
+// 左右两列等高：左列纵向堆叠，右列让卡片撑满整列
+.mainColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.sideColumn {
+    display: flex;
+    flex-direction: column;
+}
