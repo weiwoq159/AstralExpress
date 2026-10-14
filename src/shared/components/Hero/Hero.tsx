@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId, useState, type ReactNode } from "react";
 
 import { Flex, Image, Tag, Typography } from "antd";
 
@@ -15,9 +15,10 @@ export interface HeroProps {
   cover?: string;
   className?: string;
   icon?: string;
+  children?: ReactNode;
 }
 
-export const Hero = ({ title, eyebrow, description, tags = [], cover, className, icon }: HeroProps) => {
+export const Hero = ({ title, eyebrow, description, tags = [], cover, className, icon, children }: HeroProps) => {
   const titleId = useId();
   const [failedCover, setFailedCover] = useState<string | null>(null);
   const showCover = Boolean(cover && cover !== failedCover);
@@ -48,6 +49,7 @@ export const Hero = ({ title, eyebrow, description, tags = [], cover, className,
           </Title>
         </Flex>
         {description && <Text className={styles.description}>{description}</Text>}
+        {children}
         {tags.length > 0 && (
           <Flex wrap gap={8} className={styles.tags} aria-label="功能标签">
             {tags.map((tag) => (

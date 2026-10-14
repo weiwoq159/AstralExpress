@@ -49,7 +49,12 @@ export const AstralExpressHeader = ({ path, title, subtitle, slogan }: AstralExp
           <Divider vertical style={{ height: 24 }} />
           <HubClock />
           <Divider vertical style={{ height: 24, marginRight: 22 }} />
-          <Button className={styles.glassBtn} icon={<SettingOutlined />} aria-label="设置" />
+          <Button
+            className={styles.glassBtn}
+            icon={<SettingOutlined />}
+            aria-label="设置"
+            onClick={() => navigate("/settings")}
+          />
         </Flex>
       </Flex>
     </Header>

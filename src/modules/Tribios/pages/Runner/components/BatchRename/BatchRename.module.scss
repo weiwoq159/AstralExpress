@@ -1,0 +1,166 @@
+@use "@/shared/styles/variables.scss" as *;
+.ruleButton:global(.ant-btn) {
+  height: auto;
+  min-height: 41px;
+  border-color: $color-border;
+  border-radius: 8px;
+  color: $ink-700;
+  background: rgba(255, 255, 255, 0.45);
+  font-size: 11px;
+
+  &:hover {
+    border-color: $color-border;
+    color: $ink-700;
+    background: rgba(255, 255, 255, 0.83);
+  }
+
+  &[aria-pressed="true"] {
+    border-color: $brand-500;
+    color: $brand-700;
+    background: $brand-100;
+    font-weight: 700;
+  }
+}
+
+.ruleFields {
+  margin-top: 17px;
+
+  :global(.ant-input-number) {
+    width: 100%;
+  }
+}
+
+.previewState {
+  margin: 19px 0;
+
+  h3:global(.ant-typography) {
+    margin: 1px 0 5px;
+    font-size: 12px;
+  }
+
+  :global(div.ant-typography) {
+    margin: 0;
+    color: $ink-500;
+    font-size: 11px;
+    line-height: 1.65;
+  }
+}
+
+.previewIcon {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  color: $brand-500;
+  background: $brand-100;
+  font-size: 19px;
+}
+
+.previewNumber {
+  padding: 11px 8px;
+  border: 1px solid rgba($brand-600, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.45);
+  text-align: center;
+}
+
+.previewValue,
+.previewLabel {
+  display: block;
+}
+
+.previewValue {
+  color: $brand-700;
+  font: 700 18px "Bahnschrift", sans-serif;
+}
+
+.previewLabel {
+  margin-top: 4px;
+  color: $ink-500;
+  font-size: 10px;
+}
+
+.previewActions {
+  margin-top: 19px;
+
+  :global(div.ant-typography) {
+    margin: 0;
+    color: $ink-500;
+    font-size: 10px;
+    text-align: center;
+  }
+}
+
+.changes {
+  :global(.ant-card-body) {
+    padding: 0;
+  }
+}
+
+.changesHead {
+  padding: 22px 26px 19px;
+
+  :global(.ant-typography) {
+    &:is(h2) {
+      margin: 8px 0 0;
+      font-size: 18px;
+    }
+
+    &:not(h2) {
+      color: $ink-500;
+      font-size: 11px;
+    }
+  }
+}
+
+.changesTable {
+  :global(.ant-table),
+  :global(.ant-table-container) {
+    background: transparent;
+  }
+
+  :global(.ant-table-thead > tr > th) {
+    padding: 12px 24px;
+    border-top: 1px solid rgba($brand-600, 0.09);
+    border-bottom: 1px solid rgba($brand-600, 0.09);
+    border-radius: 0;
+    color: $ink-500;
+    background: rgba($brand-100, 0.32);
+    font-size: 11px;
+    font-weight: 400;
+    white-space: nowrap;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  :global(.ant-table-tbody > tr > td) {
+    padding: 33px 24px;
+    border-bottom: 1px solid rgba($brand-600, 0.08);
+    font-size: 11px;
+  }
+
+  :global(.ant-table-tbody > tr.ant-table-placeholder:hover > td) {
+    background: transparent;
+  }
+
+  .empty {
+    color: $ink-500;
+    text-align: center;
+  }
+}
+
+.changesFoot {
+  display: block;
+  padding: 13px 24px;
+  color: $ink-500;
+  font-size: 10px;
+}
+
+@media (max-width: 680px) {
+  .changesHead {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

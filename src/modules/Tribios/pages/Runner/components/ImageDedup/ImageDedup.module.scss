@@ -1,0 +1,315 @@
+@use "@/shared/styles/variables.scss" as *;
+
+.switchRow {
+  margin-top: 18px;
+  padding: 11px 13px;
+  border: 1px solid rgba($brand-600, 0.09);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.switchTitle,
+.switchDesc {
+  display: block;
+}
+
+.switchTitle {
+  font-size: 11px;
+}
+
+.switchDesc {
+  margin-top: 4px;
+  color: $ink-500;
+  font-size: 10px;
+}
+
+.modeButton:global(.ant-btn) {
+  height: auto;
+  min-height: 74px;
+  padding: 13px 14px;
+  border-color: rgba($brand-600, 0.12);
+  border-radius: 9px;
+  color: $ink-700;
+  background: rgba(255, 255, 255, 0.48);
+  text-align: left;
+  white-space: normal;
+
+  :global(.ant-typography) {
+    color: inherit;
+    font-size: 11px;
+  }
+
+  :global(.ant-typography:not(.ant-typography-strong)) {
+    color: $ink-500;
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  &:hover {
+    border-color: rgba($brand-600, 0.12);
+    color: $ink-700;
+    background: #fff;
+  }
+
+  &[aria-pressed="true"] {
+    border-color: $brand-500;
+    color: $brand-700;
+    background: $brand-100;
+
+    :global(.ant-typography:not(.ant-typography-strong)) {
+      color: $ink-700;
+    }
+  }
+
+  &:disabled,
+  &:disabled:hover {
+    border-color: #d9dfeb;
+    color: #98a4b8;
+    background: rgba(233, 237, 245, 0.7);
+
+    :global(.ant-typography) {
+      color: #98a4b8;
+    }
+  }
+}
+
+.formats {
+  margin-top: 17px;
+}
+
+.formatsLabel:global(.ant-typography) {
+  margin-right: 6px;
+  color: $ink-700;
+  font-size: 11px;
+}
+
+.format:global(.ant-checkbox-wrapper) {
+  padding: 6px 8px;
+  border: 1px solid rgba($brand-600, 0.14);
+  border-radius: 6px;
+  color: $ink-700;
+  background: rgba(255, 255, 255, 0.55);
+  font-size: 10px;
+}
+
+.safety {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 17px;
+  padding: 13px;
+  border: 1px solid rgba(40, 104, 91, 0.15);
+  border-radius: 9px;
+  color: #28685b;
+  background: rgba(214, 241, 233, 0.67);
+
+  > :global(.anticon) {
+    margin-top: 1px;
+    font-size: 17px;
+  }
+
+  :global(.ant-typography) {
+    display: block;
+    color: inherit;
+    font-size: 11px;
+  }
+
+  :global(.ant-typography:not(.ant-typography-strong)) {
+    margin-top: 4px;
+    color: #47796e;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+}
+
+.queueVisual {
+  position: relative;
+  height: 72px;
+  margin: 16px 0 15px;
+  overflow: hidden;
+  border: 1px solid rgba($brand-600, 0.09);
+  border-radius: 9px;
+  background: radial-gradient(circle at 88% 50%, rgba(155, 184, 243, 0.35), transparent 90px), rgba(255, 255, 255, 0.46);
+
+  &::before,
+  &::after {
+    position: absolute;
+    border: 1px solid rgba($brand-500, 0.15);
+    border-radius: 50%;
+    content: "";
+  }
+
+  &::before {
+    top: -38px;
+    right: 7%;
+    width: 74px;
+    height: 74px;
+    box-shadow:
+      0 0 0 17px rgba(111, 147, 234, 0.04),
+      0 0 0 34px rgba(111, 147, 234, 0.035);
+  }
+
+  &::after {
+    top: 33px;
+    left: 18%;
+    width: 55px;
+    height: 55px;
+  }
+}
+
+.queueTitle:global(.ant-typography),
+.queueSub:global(.ant-typography) {
+  position: absolute;
+  left: 19px;
+  z-index: 1;
+}
+
+.queueTitle:global(.ant-typography) {
+  top: 18px;
+  color: $brand-600;
+  font: 700 12px "Bahnschrift", sans-serif;
+  letter-spacing: 0.1em;
+}
+
+.queueSub:global(.ant-typography) {
+  top: 40px;
+  color: $ink-500;
+  font-size: 12px;
+}
+
+div.queueNote:global(.ant-typography) {
+  margin: 0;
+  color: $ink-500;
+  font-size: 11px;
+  line-height: 1.75;
+}
+
+.queueAction {
+  margin-top: 18px;
+}
+
+div.actionNote:global(.ant-typography) {
+  margin: 2px 0 0;
+  color: $ink-500;
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.result {
+  :global(.ant-card-body) {
+    padding: 0;
+  }
+}
+
+.resultHead {
+  padding: 21px 25px 18px;
+  border-bottom: 1px solid rgba($brand-600, 0.09);
+
+  h2:global(.ant-typography) {
+    margin: 6px 0 0;
+    font-size: 18px;
+  }
+
+  > :global(.ant-typography) {
+    color: $ink-500;
+    font-size: 11px;
+  }
+}
+
+.resultBody {
+  padding: 21px 25px 24px;
+
+  h3:global(.ant-typography) {
+    margin: 0 0 9px;
+    font-size: 13px;
+  }
+}
+
+div.resultCopy:global(.ant-typography) {
+  max-width: 530px;
+  margin: 0;
+  color: $ink-700;
+  font-size: 12px;
+  line-height: 1.85;
+}
+
+.bullets {
+  margin-top: 18px;
+
+  :global(.anticon) {
+    color: #28685b;
+    font-size: 14px;
+  }
+
+  :global(.ant-typography) {
+    color: $ink-700;
+    font-size: 11px;
+  }
+}
+
+.sample {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid rgba($brand-600, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.56);
+
+  div:global(.ant-typography) {
+    margin: 5px 0 8px;
+    color: $ink-500;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+}
+
+.sampleTitle:global(.ant-typography) {
+  display: block;
+  font-size: 12px;
+}
+
+.sampleArt {
+  position: relative;
+  display: flex;
+  flex: none;
+  width: 117px;
+  height: 70px;
+
+  span {
+    position: absolute;
+    width: 69px;
+    height: 61px;
+    border: 2px solid #fff;
+    border-radius: 7px;
+    background: linear-gradient(150deg, #acd9e9 0 32%, #95bad6 33% 46%, #617caa 47% 64%, #b7c6ca 65%);
+    box-shadow: 0 4px 12px rgba(18, 35, 79, 0.13);
+
+    &:first-child {
+      top: 2px;
+      left: 2px;
+      transform: rotate(-8deg);
+    }
+
+    &:last-child {
+      top: 7px;
+      left: 40px;
+      transform: rotate(6deg);
+      filter: saturate(0.8) brightness(1.07);
+    }
+  }
+}
+
+.resultFoot:global(.ant-typography) {
+  display: block;
+  padding: 12px 25px;
+  border-top: 1px solid rgba($brand-600, 0.08);
+  color: $ink-500;
+  font-size: 11px;
+}
+
+@media (max-width: 680px) {
+  .resultHead {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

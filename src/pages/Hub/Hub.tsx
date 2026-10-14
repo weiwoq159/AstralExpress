@@ -2,7 +2,7 @@ import { Layout } from "antd";
 
 import { AstralExpressHeader } from "@/shared/components";
 
-import { HubFooter, HubContent } from "@/Hub/components";
+import { HubFooter, HubContent } from "@/pages/Hub/components";
 
 import styles from "./Hub.module.scss";
 

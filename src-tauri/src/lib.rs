@@ -3,8 +3,10 @@ mod commands;
 mod database;
 mod domain;
 mod platform;
+mod task;
 mod tray;
 mod weather;
+
 use std::sync::Arc;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -29,7 +31,9 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             commands::weather::fetch_weather,
             commands::catalog::list_manifests,
-            commands::catalog::read_manifest
+            commands::catalog::read_manifest,
+            commands::task::list_tasks,
+            commands::files::list_directory_files
         ])
         .run(tauri::generate_context!())
         .expect("error while building tauri application");

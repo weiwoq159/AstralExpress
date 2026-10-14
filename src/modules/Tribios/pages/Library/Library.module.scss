@@ -1,0 +1,116 @@
+@use "@/shared/styles/variables.scss" as *;
+
+.heroStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 16px;
+  color: $ink-500;
+  font-size: 11px;
+}
+
+.stat + .stat {
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid $color-border;
+}
+
+.stat .statValue {
+  margin-right: 4px;
+  color: $brand-700;
+  font:
+    600 15px "Bahnschrift",
+    sans-serif;
+}
+
+.stat > span {
+  color: $ink-500;
+}
+
+@media (max-width: 480px) {
+  .stat + .stat {
+    margin-left: 8px;
+    padding-left: 8px;
+  }
+}
+
+.categories {
+  gap: 4px;
+  padding: 8px;
+  overflow-x: auto;
+  border: 1px solid $glass-border;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.36);
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.category {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  height: auto;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: $ink-700;
+  font-size: 12px;
+
+  &:global(.ant-btn-primary) {
+    color: #fff;
+    font-weight: 700;
+    background: $brand-500;
+    box-shadow: 0 4px 12px rgba(63, 111, 220, 0.18);
+
+    .count {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.count {
+  min-width: 20px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(178, 189, 214, 0.17);
+  font:
+    10px "Bahnschrift",
+    sans-serif;
+}
+
+.toolbar {
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+.search {
+  width: 410px;
+  max-width: 100%;
+  padding: 8px 16px;
+  border: 1px solid $glass-border;
+  border-radius: $radius-control;
+  background: $glass-surface-strong;
+}
+
+.sort {
+  width: 110px;
+}
+
+.viewSwitch {
+  padding: 4px;
+  background: $glass-surface;
+  border: 1px solid $glass-border;
+
+  :global(.ant-segmented-item) {
+    color: $ink-500;
+  }
+
+  :global(.ant-segmented-item-selected) {
+    color: $brand-600;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(18, 35, 79, 0.08);
+  }
+}

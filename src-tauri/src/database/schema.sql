@@ -40,3 +40,18 @@ CREATE TABLE IF NOT EXISTS mhxy_cbg_servers (
 );
 
 CREATE INDEX IF NOT EXISTS idx_mhxy_cbg_servers_area_id ON mhxy_cbg_servers (area_id);
+
+-- 调用记录：用户每点一次"运行"写一条，即时应用和入队应用都写，写入后不再更新。
+-- 即时应用 task_uid 为空；队列应用填 tasks.task_uid，统计成功率时 LEFT JOIN tasks，
+-- 不建外键——任务被删后记录要保留，用于调用次数统计。
+CREATE TABLE IF NOT EXISTS invocations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    module_id TEXT NOT NULL,
+    manifest_key TEXT NOT NULL,
+    task_uid TEXT,
+    params_json TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_invocations_module_manifest ON invocations (module_id, manifest_key);
+CREATE INDEX IF NOT EXISTS idx_invocations_task_uid ON invocations (task_uid);

@@ -1,0 +1,157 @@
+@use "@/shared/styles/variables.scss" as *;
+
+.card {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.body {
+  min-width: 0;
+  padding: 16px 24px;
+}
+
+.icon {
+  display: grid;
+  flex: 0 0 40px;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 11px;
+  color: $brand-600;
+  background: linear-gradient(145deg, #fff, $brand-100);
+  font-size: 19px;
+}
+
+.running .icon {
+  border-color: transparent;
+  color: #fff;
+  background: linear-gradient(135deg, $brand-600, $brand-400);
+  box-shadow: 0 5px 12px rgba($brand-600, 0.17);
+}
+
+.main {
+  min-width: 0;
+}
+
+.identity {
+  min-width: 0;
+}
+
+h3.title {
+  margin: 0;
+  color: $ink-900;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.manifest {
+  color: $ink-500;
+  font:
+    12px "Bahnschrift",
+    "Trebuchet MS",
+    sans-serif;
+}
+
+.status {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.status-running {
+  color: $status-running;
+  background: $status-running-bg;
+}
+
+.status-pending {
+  color: $status-pending;
+  background: $status-pending-bg;
+}
+
+.status-paused {
+  color: $status-paused;
+  background: $status-paused-bg;
+}
+
+.status-canceled {
+  color: $status-canceled;
+  background: $status-canceled-bg;
+}
+
+.status-interrupted {
+  color: $status-interrupted;
+  background: $status-interrupted-bg;
+}
+
+.status-success {
+  color: $status-success;
+  background: $status-success-bg;
+}
+
+.status-failed {
+  color: $status-failed;
+  background: $status-failed-bg;
+}
+
+.meta {
+  color: $ink-500;
+  font-size: 12px;
+}
+
+.divider {
+  width: 1px;
+  height: 12px;
+  background: $color-border;
+}
+
+.progress {
+  margin: 0;
+
+  :global(.ant-progress-bg) {
+    background: linear-gradient(90deg, $brand-500, $brand-300);
+  }
+}
+
+.success .progress :global(.ant-progress-bg) {
+  background: $status-success;
+}
+
+.canceled .progress :global(.ant-progress-bg) {
+  background: $status-canceled;
+}
+
+.interrupted .progress :global(.ant-progress-bg),
+.failed .progress :global(.ant-progress-bg) {
+  background: $status-failed;
+}
+
+.paused .progress :global(.ant-progress-bg) {
+  background: $status-paused;
+}
+
+.arrow {
+  align-self: center;
+  color: $brand-600;
+  font-size: 12px;
+  opacity: 0.55;
+}
+
+@media (max-width: 700px) {
+  .body {
+    gap: 8px;
+    padding: 16px;
+  }
+
+  .identity {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .arrow {
+    display: none;
+  }
+}

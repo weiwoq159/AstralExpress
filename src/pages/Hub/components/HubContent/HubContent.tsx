@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 
 import { Row, Col, Card, Image, Tag, Flex, Typography, Space } from "antd";
 
-import { useModules } from "@/Hub/hooks/useModules";
+import { useModules } from "@/pages/Hub/hooks/useModules";
 
 import styles from "./HubContent.module.scss";
 

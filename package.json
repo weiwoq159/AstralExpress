@@ -16,7 +16,8 @@
     "ahooks": "^3.10.0",
     "antd": "^6.6.5",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@ant-design/icons": "~6.3.4",

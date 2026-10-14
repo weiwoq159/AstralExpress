@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>应用库 · 缇里西庇俄丝</title>
+  <style>
+    :root {
+      --brand-50:#f1f5fe; --brand-100:#e1eafc; --brand-200:#c3d5f9; --brand-300:#9bb8f3; --brand-400:#6f93ea; --brand-500:#3f6fdc; --brand-600:#2c57bf; --brand-700:#22449a; --brand-900:#12234f;
+      --ink-900:#12234f; --ink-700:#3f5380; --ink-500:#5d7199; --ink-300:#b2bdd6; --gold-500:#d4a648;
+      --success:#28685b; --success-bg:#d6f1e9; --failed:#8d4d57; --failed-bg:#f9e2e5;
+      --glass:rgba(255,255,255,.44); --glass-strong:rgba(255,255,255,.78); --glass-border:rgba(255,255,255,.85);
+      --shadow:0 12px 36px rgba(18,35,79,.06),inset 0 1px 0 rgba(255,255,255,.82); --border:rgba(44,87,191,.15);
+      color-scheme:light; font-family:"Microsoft YaHei UI","Microsoft YaHei",sans-serif; color:var(--ink-900);
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; background:radial-gradient(ellipse at 5% 0%,rgba(111,147,234,.24),transparent 38rem),radial-gradient(ellipse at 95% 14%,rgba(150,180,245,.16),transparent 32rem),radial-gradient(ellipse at 60% 100%,rgba(110,200,235,.16),transparent 36rem),linear-gradient(135deg,#eaf1ff,#f6f9ff 48%,#edf2ff); background-attachment:fixed; }
+    button,input,select { font:inherit; }
+    button { cursor:pointer; }
+    button:focus-visible,input:focus-visible,select:focus-visible { outline:2px solid var(--brand-500); outline-offset:3px; }
+    button:disabled { cursor:default; }
+    svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sprite { display:none; }
+    .page { max-width:1536px; padding:28px 32px 32px; margin:0 auto; }
+    .glass { background:var(--glass); border:1px solid var(--glass-border); border-radius:18px; box-shadow:var(--shadow); backdrop-filter:blur(20px) saturate(125%); -webkit-backdrop-filter:blur(20px) saturate(125%); }
+    .hero { position:relative; min-height:164px; overflow:hidden; display:flex; align-items:center; padding:26px 32px; isolation:isolate; background:linear-gradient(110deg,rgba(255,255,255,.76),rgba(225,234,252,.62) 65%,rgba(195,213,249,.55)); }
+    .hero-cover { position:absolute; z-index:-2; right:-1px; top:-30%; width:47%; height:165%; object-fit:cover; object-position:42% 40%; opacity:.55; mask-image:linear-gradient(90deg,transparent,#000 28%,#000 77%,transparent),linear-gradient(0deg,transparent,#000 25%,#000 73%,transparent); mask-composite:intersect; -webkit-mask-image:linear-gradient(90deg,transparent,#000 28%,#000 77%,transparent),linear-gradient(0deg,transparent,#000 25%,#000 73%,transparent); -webkit-mask-composite:source-in; }
+    .hero::before { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg,rgba(241,245,254,.85),rgba(241,245,254,.74) 42%,transparent 82%); pointer-events:none; }
+    .hero::after { content:""; position:absolute; height:3px; width:72px; bottom:0; left:32px; border-radius:3px 3px 0 0; background:linear-gradient(90deg,var(--brand-500),var(--brand-300)); }
+    .eyebrow { display:flex; align-items:center; gap:9px; color:var(--brand-600); font:700 10px/1.3 "Bahnschrift","Trebuchet MS",sans-serif; letter-spacing:.18em; }
+    .eyebrow::before { content:""; height:1px; width:22px; background:var(--gold-500); }
+    .hero h1 { margin:10px 0 9px; font-size:30px; letter-spacing:.025em; line-height:1.15; }
+    .hero p { margin:0; color:var(--ink-700); font-size:12px; line-height:1.8; }
+    .hero-meta { display:flex; gap:16px; margin-top:15px; color:var(--ink-500); font-size:10px; }
+    .hero-meta b { color:var(--brand-700); font:600 13px "Bahnschrift",sans-serif; margin-right:4px; }
+    .hero-meta span+span { border-left:1px solid var(--border); padding-left:16px; }
+    .hero-quote { position:absolute; right:29px; bottom:21px; color:var(--ink-500); font:11px "SimSun",serif; letter-spacing:.18em; }
+    .hero-quote i { color:var(--gold-500); font-style:normal; margin-right:8px; }
+    .catalog { margin-top:23px; }
+    .toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px; }
+    .search { position:relative; display:flex; align-items:center; width:410px; max-width:100%; background:var(--glass-strong); border:1px solid var(--glass-border); border-radius:9px; box-shadow:0 4px 15px rgba(18,35,79,.025); }
+    .search svg { margin-left:14px; color:var(--ink-500); width:16px; }
+    .search input { min-width:0; flex:1; border:0; background:transparent; padding:12px 10px; color:var(--ink-900); font-size:12px; border-radius:9px; outline:none; }
+    .search:focus-within { border-color:var(--brand-300); box-shadow:0 0 0 3px rgba(63,111,220,.1); }
+    .search input::placeholder { color:#8090af; }
+    .clear-search { display:grid; place-items:center; border:0; background:transparent; color:var(--ink-500); padding:6px; margin-right:7px; }
+    .clear-search svg { margin:0; width:14px; }
+    .toolbar-right { display:flex; align-items:center; gap:14px; }
+    .availability { display:flex; align-items:center; gap:8px; color:var(--ink-700); font-size:11px; cursor:pointer; white-space:nowrap; }
+    .availability input { accent-color:var(--brand-500); width:14px; height:14px; margin:0; }
+    .sort { padding:9px 27px 9px 11px; border:1px solid var(--glass-border); border-radius:9px; background:var(--glass-strong); font-size:11px; color:var(--ink-700); cursor:pointer; }
+    .view-switch { display:flex; padding:3px; border:1px solid var(--glass-border); border-radius:9px; background:var(--glass); gap:3px; }
+    .view-switch button { width:31px; height:29px; border:0; border-radius:6px; background:transparent; color:var(--ink-500); display:grid; place-items:center; }
+    .view-switch button svg { width:15px; }
+    .view-switch button.active { background:white; color:var(--brand-600); box-shadow:0 2px 7px rgba(18,35,79,.08); }
+    .categories { display:flex; align-items:center; gap:5px; padding:6px; border:1px solid var(--glass-border); border-radius:12px; background:rgba(255,255,255,.36); overflow-x:auto; scrollbar-width:none; }
+    .categories::-webkit-scrollbar { display:none; }
+    .category { display:flex; align-items:center; gap:9px; padding:10px 14px; border:0; border-radius:8px; background:transparent; color:var(--ink-700); white-space:nowrap; font-size:11px; }
+    .category:hover { background:rgba(255,255,255,.52); }
+    .category.active { background:var(--brand-500); color:white; font-weight:700; box-shadow:0 4px 12px rgba(63,111,220,.18); }
+    .category .count { font:10px "Bahnschrift",sans-serif; padding:2px 5px; border-radius:4px; background:rgba(178,189,214,.17); min-width:20px; }
+    .category.active .count { background:rgba(255,255,255,.2); }
+    .collection-heading { display:flex; align-items:center; justify-content:space-between; margin:20px 1px 14px; }
+    .collection-title { display:flex; align-items:center; gap:9px; }
+    .collection-title::before { content:""; width:3px; height:16px; background:linear-gradient(var(--brand-500),var(--brand-300)); border-radius:4px; }
+    .collection-title h2 { font-size:14px; font-weight:700; margin:0; }
+    .collection-title span { color:var(--ink-500); font-size:10px; }
+    .reset { display:flex; gap:5px; align-items:center; color:var(--brand-600); border:0; background:transparent; font-size:10px; padding:3px 0; }
+    .reset svg { width:12px; height:12px; }
+    .grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+    .app-card { position:relative; display:flex; flex-direction:column; min-width:0; min-height:208px; padding:19px 20px 14px; text-align:left; color:inherit; }
+    .app-card:hover { background:rgba(255,255,255,.61); border-color:#fff; box-shadow:0 16px 36px rgba(18,35,79,.1),inset 0 1px 0 rgba(255,255,255,.9); transform:translateY(-2px); }
+    .app-card.available { background:rgba(255,255,255,.63); }
+    .card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:7px; }
+    .app-icon { display:grid; place-items:center; width:39px; height:39px; border:1px solid rgba(255,255,255,.9); border-radius:11px; color:var(--brand-600); background:linear-gradient(145deg,#fff,var(--brand-100)); box-shadow:inset 0 1px 0 white; }
+    .app-icon svg { width:21px; height:21px; }
+    .available .app-icon { color:white; background:linear-gradient(135deg,var(--brand-600),var(--brand-400)); box-shadow:0 5px 12px rgba(44,87,191,.17),inset 0 1px 0 rgba(255,255,255,.32); border-color:transparent; }
+    .app-status { display:flex; align-items:center; gap:5px; color:var(--failed); font-size:9px; padding:4px 7px; background:rgba(249,226,229,.53); border-radius:5px; }
+    .app-status::before { content:""; width:4px; height:4px; border-radius:50%; background:currentColor; }
+    .app-status.available { color:var(--success); background:var(--success-bg); }
+    .app-status.disabled { color:#756036; background:#faefcc; }
+    .app-name { margin:0 0 6px; font-size:14px; font-weight:700; line-height:1.5; }
+    .app-description { margin:0; color:var(--ink-500); font-size:11px; line-height:1.75; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:38px; }
+    .app-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:12px; margin-bottom:14px; }
+    .app-tags span { padding:3px 6px; border:1px solid rgba(44,87,191,.08); color:var(--ink-500); border-radius:4px; background:rgba(255,255,255,.34); font-size:9px; line-height:1.2; }
+    .card-bottom { display:flex; align-items:center; justify-content:space-between; gap:10px; border-top:1px solid rgba(44,87,191,.09); padding-top:11px; margin-top:auto; font-size:9px; color:var(--ink-500); }
+    .card-bottom .category-label { display:flex; align-items:center; gap:6px; }
+    .card-bottom .category-label i { font-style:normal; color:var(--ink-300); }
+    .open-arrow { color:var(--brand-600); display:flex; align-items:center; gap:4px; }
+    .open-arrow svg { width:12px; height:12px; }
+    .pagination { margin-top:23px; display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--ink-500); font-size:10px; }
+    .page-buttons { display:flex; align-items:center; gap:5px; }
+    .page-buttons button { width:29px; height:29px; border:1px solid var(--glass-border); background:rgba(255,255,255,.5); color:var(--ink-700); border-radius:7px; font:11px "Bahnschrift",sans-serif; display:grid; place-items:center; }
+    .page-buttons button svg { width:12px; }
+    .page-buttons button.active { background:var(--brand-500); border-color:var(--brand-500); color:white; }
+    .page-buttons button:disabled { color:var(--ink-300); opacity:.65; }
+    .grid.list { grid-template-columns:1fr; gap:10px; }
+    .list .app-card { display:grid; grid-template-columns:190px minmax(0,1fr) 180px; column-gap:24px; min-height:unset; padding:16px 20px; align-items:center; }
+    .list .card-top { grid-column:1; grid-row:1 / 4; justify-content:flex-start; margin:0; }
+    .list .app-name { grid-column:2; margin-bottom:3px; }
+    .list .app-description { grid-column:2; min-height:unset; }
+    .list .app-tags { grid-column:2; margin:7px 0 0; }
+    .list .card-bottom { grid-column:3; grid-row:1 / 4; flex-direction:column; align-items:flex-end; justify-content:center; border:0; margin:0; padding:0; gap:14px; }
+    .empty { padding:60px 24px; display:flex; align-items:center; flex-direction:column; text-align:center; }
+    .empty-icon { width:54px; height:54px; display:grid; place-items:center; border-radius:16px; background:var(--brand-100); color:var(--brand-500); margin-bottom:14px; }
+    .empty h3 { font-size:15px; margin:0 0 8px; }.empty p { color:var(--ink-500); font-size:12px; margin:0 0 18px; }
+    .primary { color:white; background:var(--brand-500); border:1px solid var(--brand-500); border-radius:9px; padding:10px 18px; font-size:11px; }
+    .primary:hover { background:var(--brand-600); }
+    [hidden] { display:none !important; }
+    dialog { width:min(520px,calc(100vw - 32px)); padding:0; color:var(--ink-900); border:1px solid white; border-radius:18px; background:#f6f9ff; box-shadow:0 30px 100px rgba(18,35,79,.22); }
+    dialog::backdrop { background:rgba(18,35,79,.22); backdrop-filter:blur(5px); }
+    .dialog-content { padding:29px; }.dialog-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:19px; }.dialog-top .eyebrow { font-size:9px; }
+    .dialog-close { border:0; color:var(--ink-500); background:transparent; padding:5px; display:grid; place-items:center; }
+    .dialog-content h2 { font-size:22px; margin:0 0 13px; }.dialog-content p { font-size:12px; line-height:1.9; color:var(--ink-700); margin:0 0 20px; }
+    .dialog-fields { display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:20px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }.dialog-fields dt { color:var(--ink-500); font-size:10px; margin-bottom:8px; }.dialog-fields dd { font-size:11px; margin:0; overflow-wrap:anywhere; }
+    .dialog-footer { display:flex; justify-content:flex-end; margin-top:20px; }
+    @media (prefers-reduced-motion:no-preference) { .app-card { transition:transform .18s,box-shadow .18s,background .18s; } }
+    @media (max-width:1180px) { .grid { grid-template-columns:repeat(3,minmax(0,1fr)); }.toolbar-right { gap:9px; }.hero-cover { width:53%; }.hero-quote { display:none; } }
+    @media (max-width:900px) { .page { padding:22px; }.grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.toolbar { flex-wrap:wrap; }.search { width:100%; }.toolbar-right { width:100%; justify-content:space-between; }.list .app-card { grid-template-columns:140px minmax(0,1fr); }.list .card-bottom { grid-column:2; grid-row:4; flex-direction:row; align-items:center; justify-content:space-between; margin-top:12px; } }
+    @media (max-width:540px) { .page { padding:16px; }.hero { padding:24px; min-height:170px; }.hero::after { left:24px; }.hero h1 { font-size:27px; }.hero p { max-width:230px; }.hero-cover { width:68%; opacity:.3; }.categories { border-radius:10px; }.category { padding:9px 11px; }.grid { grid-template-columns:1fr; gap:12px; }.app-card { min-height:200px; }.collection-title span { font-size:9px; }.list .app-card { display:flex; }.list .card-top { justify-content:space-between; margin-bottom:12px; }.list .app-tags { margin:12px 0 14px; }.list .card-bottom { width:100%; margin-top:0; padding-top:11px; border-top:1px solid var(--border); }.pagination { align-items:flex-start; flex-direction:column; }.dialog-fields { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true"><defs>
+    <symbol id="search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol>
+    <symbol id="files" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v9H3V7zM3 12h18"/></symbol>
+    <symbol id="edit" viewBox="0 0 24 24"><path d="m14 5 5 5M4 20l4-1L20 7l-5-5L3 14l-1 6h7"/></symbol>
+    <symbol id="text" viewBox="0 0 24 24"><path d="M4 4h16M12 4v16M8 20h8M4 4v3M20 4v3"/></symbol>
+    <symbol id="images" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-6 4 4 3-3 5 5"/></symbol>
+    <symbol id="documents" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6V3zM14 3v5h4M9 12h6M9 16h6"/></symbol>
+    <symbol id="dev" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 3l-4 18"/></symbol>
+    <symbol id="data" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v7c0 4 16 4 16 0V5M4 12v7c0 4 16 4 16 0v-7"/></symbol>
+    <symbol id="refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M5 8a8 8 0 0 1 13-3l2 2M19 16a8 8 0 0 1-13 3l-2-2"/></symbol>
+    <symbol id="left" viewBox="0 0 24 24"><path d="m14 5-7 7 7 7"/></symbol>
+    <symbol id="right" viewBox="0 0 24 24"><path d="m10 5 7 7-7 7"/></symbol>
+  </defs></svg>
+  <main class="page">
+    <header class="hero glass">
+      <img class="hero-cover" src="../src/assets/images/cover/Tribios.webp" alt="">
+      <div><div class="eyebrow">APPLICATION LIBRARY / 缇里西庇俄丝</div><h1>应用库</h1><p>让繁琐有序，让灵感自由。找到此刻需要的那一个工具。</p><div class="hero-meta"><span><b id="totalCount">30</b> 个应用</span><span><b id="categoryCount">6</b> 个分类</span><span><b id="availableCount">1</b> 个可用</span></div></div>
+      <span class="hero-quote"><i>✦</i>每一个小工具，都通向更轻盈的日常</span>
+    </header>
+    <section class="catalog" aria-label="应用目录">
+      <div class="toolbar">
+        <div class="search"><svg aria-hidden="true"><use href="#search"/></svg><input id="searchInput" type="search" placeholder="搜索应用名称、简介或标签…" aria-label="搜索应用"><button id="clearSearch" class="clear-search" aria-label="清空搜索" hidden><svg><use href="#close"/></svg></button></div>
+        <div class="toolbar-right"><label class="availability"><input id="availableOnly" type="checkbox">仅显示可用应用</label><select id="sortSelect" class="sort" aria-label="排序方式"><option value="order">默认排序</option><option value="name">名称排序</option><option value="status">可用优先</option></select><div class="view-switch" role="group" aria-label="视图"><button type="button" id="gridView" class="active" aria-pressed="true" aria-label="卡片视图"><svg><use href="#grid"/></svg></button><button type="button" id="listView" aria-pressed="false" aria-label="列表视图"><svg><use href="#list"/></svg></button></div></div>
+      </div>
+      <nav id="categories" class="categories" aria-label="应用分类"></nav>
+      <div class="collection-heading"><div class="collection-title"><h2 id="collectionTitle">全部应用</h2><span id="resultCount" aria-live="polite"></span></div><button id="resetFilters" class="reset" hidden><svg aria-hidden="true"><use href="#refresh"/></svg>重置筛选</button></div>
+      <div id="appGrid" class="grid"></div>
+      <div id="emptyState" class="empty glass" hidden><div class="empty-icon"><svg><use href="#search"/></svg></div><h3>没有找到匹配的应用</h3><p>试试其他关键词，或清除筛选条件。</p><button class="primary" id="emptyReset">查看全部应用</button></div>
+      <div id="pagination" class="pagination"><span id="pageInfo"></span><div id="pageButtons" class="page-buttons" aria-label="分页"></div></div>
+    </section>
+  </main>
+  <dialog id="detailDialog" aria-labelledby="dialogTitle"><div class="dialog-content"><div class="dialog-top"><div class="eyebrow">APPLICATION / 应用信息</div><button class="dialog-close" id="closeDialog" aria-label="关闭"><svg><use href="#close"/></svg></button></div><h2 id="dialogTitle"></h2><p id="dialogDescription"></p><dl class="dialog-fields"><div><dt>应用 Key</dt><dd id="dialogKey"></dd></div><div><dt>分类</dt><dd id="dialogCategory"></dd></div><div><dt>可用状态</dt><dd id="dialogStatus"></dd></div><div><dt>执行方式</dt><dd id="dialogMode"></dd></div></dl><div class="dialog-footer"><button id="dialogConfirm" class="primary">关闭</button></div></div></dialog>
+  <script>
+    const manifests = [
+  {
+    "key": "batch-rename",
+    "order": 101,
+    "name": "文件批量重命名",
+    "category": "Files",
+    "description": "按编号、前后缀和文本替换规则批量重命名文件。",
+    "tags": [
+      "批量",
+      "重命名",
+      "文件整理"
+    ],
+    "icon": "EditOutlined",
+    "status": "available",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "duplicate-file-finder",
+    "order": 102,
+    "name": "重复文件查找",
+    "category": "Files",
+    "description": "按文件内容计算摘要，查找指定目录中的重复文件。",
+    "tags": [
+      "查重",
+      "文件摘要",
+      "磁盘整理"
+    ],
+    "icon": "FileSearchOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "file-organizer",
+    "order": 103,
+    "name": "文件分类整理",
+    "category": "Files",
+    "description": "按扩展名或修改日期将文件归类到不同文件夹。",
+    "tags": [
+      "分类",
+      "归档",
+      "文件整理"
+    ],
+    "icon": "FolderOpenOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "folder-size-analyzer",
+    "order": 104,
+    "name": "文件夹空间分析",
+    "category": "Files",
+    "description": "统计子目录和文件的大小，定位占用空间较多的项目。",
+    "tags": [
+      "磁盘空间",
+      "目录统计",
+      "大文件"
+    ],
+    "icon": "PieChartOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "file-checksum",
+    "order": 105,
+    "name": "文件校验和计算",
+    "category": "Files",
+    "description": "计算文件的 MD5、SHA-1 和 SHA-256 校验和，用于完整性核对。",
+    "tags": [
+      "校验和",
+      "完整性",
+      "SHA-256"
+    ],
+    "icon": "SafetyCertificateOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "text-deduplicate",
+    "order": 201,
+    "name": "文本行去重",
+    "category": "Text",
+    "description": "删除重复文本行，保留首次出现的内容和原始顺序。",
+    "tags": [
+      "去重",
+      "逐行处理",
+      "清洗"
+    ],
+    "icon": "FilterOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "text-diff",
+    "order": 202,
+    "name": "文本差异比较",
+    "category": "Text",
+    "description": "逐行比较两段文本，标记新增、删除和修改的内容。",
+    "tags": [
+      "对比",
+      "差异",
+      "校对"
+    ],
+    "icon": "DiffOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "text-statistics",
+    "order": 203,
+    "name": "文本字数统计",
+    "category": "Text",
+    "description": "统计文本的字符数、中文字数、英文单词数和行数。",
+    "tags": [
+      "字数",
+      "字符",
+      "统计"
+    ],
+    "icon": "FieldNumberOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "text-whitespace-cleaner",
+    "order": 204,
+    "name": "文本空白清理",
+    "category": "Text",
+    "description": "清除行尾空格，整理多余空行，并统一换行格式。",
+    "tags": [
+      "空白",
+      "换行",
+      "格式整理"
+    ],
+    "icon": "ClearOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "regex-tester",
+    "order": 205,
+    "name": "正则表达式测试",
+    "category": "Text",
+    "description": "测试正则表达式的匹配结果、捕获分组和替换效果。",
+    "tags": [
+      "正则",
+      "匹配",
+      "替换"
+    ],
+    "icon": "SearchOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "image-format-converter",
+    "order": 301,
+    "name": "图片格式转换",
+    "category": "Images",
+    "description": "在 PNG、JPEG 和 WebP 等常见图片格式之间批量转换。",
+    "tags": [
+      "格式转换",
+      "PNG",
+      "WebP"
+    ],
+    "icon": "PictureOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "image-compressor",
+    "order": 302,
+    "name": "图片体积压缩",
+    "category": "Images",
+    "description": "按质量参数压缩图片，减少文件体积。",
+    "tags": [
+      "压缩",
+      "图片优化",
+      "批量"
+    ],
+    "icon": "CompressOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "image-resizer",
+    "order": 303,
+    "name": "图片尺寸调整",
+    "category": "Images",
+    "description": "按目标宽高或缩放比例批量调整图片尺寸。",
+    "tags": [
+      "缩放",
+      "分辨率",
+      "批量"
+    ],
+    "icon": "ExpandOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "image-watermark",
+    "order": 304,
+    "name": "图片文字水印",
+    "category": "Images",
+    "description": "为图片批量添加文字水印，并调整位置、字号和透明度。",
+    "tags": [
+      "水印",
+      "文字",
+      "批量"
+    ],
+    "icon": "HighlightOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "image-metadata-viewer",
+    "order": 305,
+    "name": "图片元信息查看",
+    "category": "Images",
+    "description": "查看图片的尺寸、格式和可用的 EXIF 拍摄信息。",
+    "tags": [
+      "EXIF",
+      "元信息",
+      "拍摄参数"
+    ],
+    "icon": "CameraOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "pdf-merger",
+    "order": 401,
+    "name": "PDF文档合并",
+    "category": "Documents",
+    "description": "将多个 PDF 文档按指定顺序合并为一个文件。",
+    "tags": [
+      "PDF",
+      "合并",
+      "文档整理"
+    ],
+    "icon": "FileAddOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "pdf-splitter",
+    "order": 402,
+    "name": "PDF页面拆分",
+    "category": "Documents",
+    "description": "按页码范围拆分 PDF，或将每一页保存为独立文档。",
+    "tags": [
+      "PDF",
+      "拆分",
+      "页码"
+    ],
+    "icon": "ScissorOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "pdf-text-extractor",
+    "order": 403,
+    "name": "PDF文本提取",
+    "category": "Documents",
+    "description": "从含文字层的 PDF 中提取文本，保存为纯文本文件。",
+    "tags": [
+      "PDF",
+      "文本提取",
+      "文字层"
+    ],
+    "icon": "FileTextOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "images-to-pdf",
+    "order": 404,
+    "name": "图片转PDF",
+    "category": "Documents",
+    "description": "将多张图片按指定顺序排版并生成 PDF 文档。",
+    "tags": [
+      "图片",
+      "PDF",
+      "排版"
+    ],
+    "icon": "FilePdfOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "markdown-to-html",
+    "order": 405,
+    "name": "Markdown转HTML",
+    "category": "Documents",
+    "description": "将 Markdown 文档转换为 HTML，保留标题、列表和代码块结构。",
+    "tags": [
+      "Markdown",
+      "HTML",
+      "格式转换"
+    ],
+    "icon": "Html5Outlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "json-formatter",
+    "order": 501,
+    "name": "JSON格式校验",
+    "category": "Dev",
+    "description": "校验 JSON 语法，支持缩进格式化和紧凑输出。",
+    "tags": [
+      "JSON",
+      "格式化",
+      "校验"
+    ],
+    "icon": "CodeOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "timestamp-converter",
+    "order": 502,
+    "name": "时间戳转换",
+    "category": "Dev",
+    "description": "在 Unix 秒级或毫秒级时间戳与指定时区的日期时间之间转换。",
+    "tags": [
+      "时间戳",
+      "日期",
+      "时区"
+    ],
+    "icon": "ClockCircleOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "uuid-generator",
+    "order": 503,
+    "name": "UUID批量生成",
+    "category": "Dev",
+    "description": "生成指定数量的 UUID v4，并支持逐行复制或保存。",
+    "tags": [
+      "UUID",
+      "唯一标识",
+      "批量生成"
+    ],
+    "icon": "IdcardOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "base64-codec",
+    "order": 504,
+    "name": "Base64编码解码",
+    "category": "Dev",
+    "description": "对 UTF-8 文本进行 Base64 编码或解码，并提示无效输入。",
+    "tags": [
+      "Base64",
+      "编码",
+      "解码"
+    ],
+    "icon": "SwapOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "url-codec",
+    "order": 505,
+    "name": "URL编码解码",
+    "category": "Dev",
+    "description": "对 URL 组件进行百分号编码或解码，处理中文和特殊字符。",
+    "tags": [
+      "URL",
+      "百分号编码",
+      "特殊字符"
+    ],
+    "icon": "LinkOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": false
+  },
+  {
+    "key": "csv-to-json",
+    "order": 601,
+    "name": "CSV转JSON",
+    "category": "Data",
+    "description": "将带表头的 CSV 数据转换为 JSON 对象数组。",
+    "tags": [
+      "CSV",
+      "JSON",
+      "格式转换"
+    ],
+    "icon": "ExportOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "json-to-csv",
+    "order": 602,
+    "name": "JSON转CSV",
+    "category": "Data",
+    "description": "将由扁平对象组成的 JSON 数组转换为带表头的 CSV 文件。",
+    "tags": [
+      "JSON",
+      "CSV",
+      "表格"
+    ],
+    "icon": "TableOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "csv-merger",
+    "order": 603,
+    "name": "CSV文件合并",
+    "category": "Data",
+    "description": "按一致的表头合并多个 CSV 文件，并保留一份标题行。",
+    "tags": [
+      "CSV",
+      "合并",
+      "批量"
+    ],
+    "icon": "MergeCellsOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "csv-deduplicate",
+    "order": 604,
+    "name": "CSV记录去重",
+    "category": "Data",
+    "description": "按指定列或整行内容删除重复记录，保留首次出现的数据。",
+    "tags": [
+      "CSV",
+      "去重",
+      "数据清洗"
+    ],
+    "icon": "FunnelPlotOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  },
+  {
+    "key": "csv-column-filter",
+    "order": 605,
+    "name": "CSV列筛选",
+    "category": "Data",
+    "description": "按列名选择需要保留的字段，并按指定顺序导出 CSV。",
+    "tags": [
+      "CSV",
+      "字段筛选",
+      "列排序"
+    ],
+    "icon": "SelectOutlined",
+    "status": "unavailable",
+    "entry": "main.py",
+    "isQueue": true
+  }
+];
+    const categories = { Files:'文件管理', Text:'文本处理', Images:'图片处理', Documents:'文档处理', Dev:'开发辅助', Data:'数据处理' };
+    const icons = { Files:'files', Text:'text', Images:'images', Documents:'documents', Dev:'dev', Data:'data' };
+    const statuses = { available:'可用', unavailable:'环境缺失', disabled:'已禁用' };
+    const state = { category:'all', search:'', availableOnly:false, sort:'order', page:1, view:'grid' };
+    const pageSize = 12;
+    const $ = id => document.getElementById(id);
+    const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const svg = id => `<svg aria-hidden="true"><use href="#${id}"/></svg>`;
+    $('totalCount').textContent = manifests.length;
+    $('categoryCount').textContent = new Set(manifests.map(m => m.category)).size;
+    $('availableCount').textContent = manifests.filter(m => m.status === 'available').length;
+    function renderCategories() {
+      const entries = [['all','全部应用'], ...Object.entries(categories)];
+      $('categories').innerHTML = entries.map(([key,label]) => `<button type="button" class="category ${state.category === key ? 'active' : ''}" data-category="${key}" aria-pressed="${state.category === key}">${label}<span class="count">${key === 'all' ? manifests.length : manifests.filter(m => m.category === key).length}</span></button>`).join('');
+    }
+    function render() {
+      let filtered = manifests.filter(m => (state.category === 'all' || m.category === state.category) && (!state.availableOnly || m.status === 'available') && [m.name,m.description,m.key,...m.tags].join(' ').toLowerCase().includes(state.search.toLowerCase()));
+      filtered.sort((a,b) => state.sort === 'name' ? a.name.localeCompare(b.name,'zh-CN') : state.sort === 'status' ? Number(b.status === 'available') - Number(a.status === 'available') || a.order - b.order : a.order - b.order);
+      const pages = Math.max(1,Math.ceil(filtered.length/pageSize));
+      state.page = Math.min(state.page,pages);
+      const offset = (state.page-1)*pageSize;
+      const shown = filtered.slice(offset,offset+pageSize);
+      $('collectionTitle').textContent = state.category === 'all' ? '全部应用' : categories[state.category];
+      $('resultCount').textContent = `共 ${filtered.length} 个`;
+      $('resetFilters').hidden = !(state.search || state.category !== 'all' || state.availableOnly || state.sort !== 'order');
+      $('clearSearch').hidden = !state.search;
+      $('appGrid').classList.toggle('list',state.view === 'list');
+      $('appGrid').innerHTML = shown.map(m => `<button type="button" class="app-card glass ${m.status === 'available' ? 'available' : ''}" data-key="${escapeHTML(m.key)}" aria-label="查看${escapeHTML(m.name)}详情"><div class="card-top"><span class="app-icon">${svg(m.key === 'batch-rename' ? 'edit' : icons[m.category] || 'files')}</span><span class="app-status ${m.status}">${statuses[m.status] || m.status}</span></div><h3 class="app-name">${escapeHTML(m.name)}</h3><p class="app-description">${escapeHTML(m.description)}</p><div class="app-tags">${m.tags.slice(0,3).map(tag => `<span>${escapeHTML(tag)}</span>`).join('')}</div><div class="card-bottom"><span class="category-label">${categories[m.category] || escapeHTML(m.category)}<i>·</i>${m.isQueue ? '队列任务' : '即时运行'}</span><span class="open-arrow">详情 ${svg('arrow')}</span></div></button>`).join('');
+      $('emptyState').hidden = filtered.length > 0;
+      $('pagination').hidden = filtered.length === 0;
+      $('pageInfo').textContent = `显示 ${offset+1}–${Math.min(offset+pageSize,filtered.length)} 项，共 ${filtered.length} 个应用`;
+      $('pageButtons').innerHTML = `<button type="button" data-page="${state.page-1}" aria-label="上一页" ${state.page === 1 ? 'disabled' : ''}>${svg('left')}</button>` + Array.from({length:pages},(_,i) => `<button type="button" data-page="${i+1}" class="${state.page === i+1 ? 'active' : ''}" ${state.page === i+1 ? 'aria-current="page"' : ''}>${i+1}</button>`).join('') + `<button type="button" data-page="${state.page+1}" aria-label="下一页" ${state.page === pages ? 'disabled' : ''}>${svg('right')}</button>`;
+      renderCategories();
+    }
+    function reset() { Object.assign(state,{category:'all',search:'',availableOnly:false,sort:'order',page:1}); $('searchInput').value=''; $('availableOnly').checked=false; $('sortSelect').value='order'; render(); }
+    $('searchInput').addEventListener('input',e => { state.search=e.target.value.trim();state.page=1;render(); });
+    $('clearSearch').addEventListener('click',() => { $('searchInput').value='';state.search='';state.page=1;render();$('searchInput').focus(); });
+    $('availableOnly').addEventListener('change',e => { state.availableOnly=e.target.checked;state.page=1;render(); });
+    $('sortSelect').addEventListener('change',e => { state.sort=e.target.value;state.page=1;render(); });
+    $('categories').addEventListener('click',e => { const button=e.target.closest('[data-category]');if(button){state.category=button.dataset.category;state.page=1;render();} });
+    $('resetFilters').addEventListener('click',reset);$('emptyReset').addEventListener('click',reset);
+    $('pageButtons').addEventListener('click',e => { const button=e.target.closest('[data-page]');if(button && !button.disabled){state.page=Number(button.dataset.page);render();$('collectionTitle').scrollIntoView({behavior:'auto',block:'start'});} });
+    ['grid','list'].forEach(view => $(view+'View').addEventListener('click',() => {state.view=view;['grid','list'].forEach(v => {$(v+'View').classList.toggle('active',v===view);$(v+'View').setAttribute('aria-pressed',String(v===view));});render();}));
+    $('appGrid').addEventListener('click',e => { const card=e.target.closest('[data-key]');if(!card)return;const m=manifests.find(m=>m.key===card.dataset.key);$('dialogTitle').textContent=m.name;$('dialogDescription').textContent=m.description;$('dialogKey').textContent=m.key;$('dialogCategory').textContent=categories[m.category]||m.category;$('dialogStatus').textContent=statuses[m.status];$('dialogMode').textContent=m.isQueue?'加入任务队列':'直接执行';$('detailDialog').showModal(); });
+    $('closeDialog').addEventListener('click',()=>$('detailDialog').close());$('dialogConfirm').addEventListener('click',()=>$('detailDialog').close());
+    $('detailDialog').addEventListener('click',e=>{if(e.target===$('detailDialog')){const r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close();}});
+    render();
+  </script>
+</body>
+</html>

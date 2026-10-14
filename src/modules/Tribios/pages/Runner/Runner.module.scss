@@ -1,0 +1,18 @@
+@use "@/shared/styles/variables.scss" as *;
+
+.runner {
+  color: $ink-900;
+}
+
+.back {
+  align-self: flex-start;
+  padding-left: 0;
+  color: $brand-600;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.hero {
+  min-height: 190px;
+}
+

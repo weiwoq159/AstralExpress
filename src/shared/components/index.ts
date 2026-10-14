@@ -8,3 +8,6 @@ export { SectionHeader } from "./SectionHeader/SectionHeader";
 export { AppIcon } from "./AppIcon/AppIcon";
 export { ManifestDetail } from "./ManifestDetail/ManifestDetail";
 export type { ManifestDetailProps } from "./ManifestDetail/ManifestDetail";
+export { AppCard } from "./AppCard/AppCard";
+export { AppListItem } from "./AppListItem/AppListItem";
+export { TaskCard } from "./TaskCard/TaskCard";

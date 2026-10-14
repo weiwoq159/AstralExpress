@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>运行应用 · 图片去重 · 缇里西庇俄丝</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      color: #12234f;
+      --brand: #3f6fdc; --brand-deep: #2c57bf; --brand-dark: #22449a;
+      --ink: #12234f; --ink-soft: #3f5380; --muted: #5d7199;
+      --gold: #d4a648; --line: rgba(44,87,191,.13);
+      --glass: rgba(255,255,255,.44); --glass-border: rgba(255,255,255,.85);
+      --shadow: 0 12px 36px rgba(18,35,79,.06), inset 0 1px 0 rgba(255,255,255,.82);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(ellipse at 5% 0%,rgba(111,147,234,.24),transparent 38rem), radial-gradient(ellipse at 95% 14%,rgba(150,180,245,.16),transparent 32rem), radial-gradient(ellipse at 60% 100%,rgba(110,200,235,.16),transparent 36rem), linear-gradient(135deg,#eaf1ff,#f6f9ff 48%,#edf2ff); background-attachment: fixed; }
+    button,input { font: inherit; } button { cursor: pointer; } button:focus-visible,input:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+    button:disabled { cursor: not-allowed; opacity: .55; } a { color: inherit; text-decoration: none; }
+    svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+    .icons { display: none; } .page { max-width: 1536px; margin: auto; padding: 24px 32px 52px; }
+    .glass { border: 1px solid var(--glass-border); border-radius: 18px; background: var(--glass); box-shadow: var(--shadow); backdrop-filter: blur(20px) saturate(125%); -webkit-backdrop-filter: blur(20px) saturate(125%); }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 15px; }
+    .back { display: inline-flex; align-items: center; gap: 7px; padding: 7px 0; color: var(--brand-deep); font-size: 11px; font-weight: 700; }
+    .back svg { width: 14px; } .crumb { color: var(--muted); font-size: 10px; } .crumb b { color: var(--ink-soft); font-weight: 600; } .crumb span { padding: 0 8px; color: #b2bdd6; }
+    .hero { position: relative; isolation: isolate; display: flex; align-items: center; min-height: 174px; overflow: hidden; padding: 27px 32px; background: linear-gradient(110deg,rgba(255,255,255,.8),rgba(225,234,252,.65) 62%,rgba(195,213,249,.54)); }
+    .hero:before { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg,rgba(241,245,254,.88),rgba(241,245,254,.78) 43%,transparent 80%); content: ""; }
+    .hero:after { position: absolute; left: 32px; bottom: 0; width: 72px; height: 3px; border-radius: 3px 3px 0 0; background: linear-gradient(90deg,var(--brand),#9bb8f3); content: ""; }
+    .hero-cover { position: absolute; z-index: -2; top: -30%; right: -1px; width: 47%; height: 165%; object-fit: cover; object-position: 42% 40%; opacity: .57; mask-image: linear-gradient(90deg,transparent,#000 28%,#000 77%,transparent),linear-gradient(0deg,transparent,#000 25%,#000 73%,transparent); mask-composite: intersect; -webkit-mask-image: linear-gradient(90deg,transparent,#000 28%,#000 77%,transparent),linear-gradient(0deg,transparent,#000 25%,#000 73%,transparent); -webkit-mask-composite: source-in; }
+    .eyebrow { display: flex; align-items: center; gap: 9px; color: var(--brand-deep); font: 700 10px/1.3 "Bahnschrift","Trebuchet MS",sans-serif; letter-spacing: .18em; }
+    .eyebrow:before { width: 22px; height: 1px; background: var(--gold); content: ""; }
+    .hero h1 { margin: 10px 0 9px; font-size: 30px; line-height: 1.17; letter-spacing: .025em; }
+    .hero p { max-width: 540px; margin: 0; color: var(--ink-soft); font-size: 12px; line-height: 1.75; }
+    .hero-tags { display: flex; gap: 7px; margin-top: 15px; } .hero-tag { padding: 4px 8px; border: 1px solid rgba(44,87,191,.1); border-radius: 5px; color: var(--ink-soft); background: rgba(255,255,255,.55); font-size: 10px; }
+    .hero-tag.queue { color: var(--brand-dark); border-color: rgba(44,87,191,.15); background: #e1eafc; }
+    .hero-quote { position: absolute; right: 29px; bottom: 21px; color: var(--muted); font: 11px "SimSun",serif; letter-spacing: .18em; } .hero-quote i { margin-right: 7px; color: var(--gold); font-style: normal; }
+    .workspace { display: grid; grid-template-columns: minmax(0,1.53fr) minmax(310px,.9fr); gap: 20px; align-items: start; margin-top: 21px; }
+    .panel { padding: 24px 26px; } .panel-head { display: flex; align-items: start; justify-content: space-between; gap: 14px; padding-bottom: 19px; border-bottom: 1px solid var(--line); }
+    .section-label { display: flex; align-items: center; gap: 9px; color: var(--brand-deep); font: 700 9px "Bahnschrift",sans-serif; letter-spacing: .16em; } .section-label:before { width: 18px; height: 1px; background: var(--gold); content: ""; }
+    .panel h2 { margin: 8px 0 0; font-size: 17px; line-height: 1.35; } .panel-sub { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .panel-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; border-radius: 5px; color: #756036; background: #faefcc; font-size: 10px; white-space: nowrap; }
+    .panel-badge:before { width: 5px; height: 5px; border-radius: 50%; background: currentColor; content: ""; }
+    .form-section { padding: 21px 0 0; } .form-title { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; font-size: 12px; font-weight: 700; }
+    .form-title .num { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; color: var(--brand-dark); background: #e1eafc; font: 700 10px "Bahnschrift",sans-serif; }
+    .field-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; color: var(--ink-soft); font-size: 11px; font-weight: 700; } .field-label small { color: var(--muted); font-size: 10px; font-weight: 400; }
+    .path-row { display: flex; gap: 8px; } .text-input { width: 100%; min-width: 0; height: 41px; padding: 0 12px; border: 1px solid rgba(44,87,191,.14); border-radius: 9px; outline: 0; color: var(--ink); background: rgba(255,255,255,.77); font-size: 11px; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
+    .text-input:focus { border-color: #9bb8f3; box-shadow: 0 0 0 3px rgba(63,111,220,.09); } .text-input::placeholder { color: #95a4bd; }
+    .ghost,.primary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 15px; border-radius: 9px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .ghost { border: 1px solid rgba(44,87,191,.17); color: var(--brand-dark); background: rgba(255,255,255,.7); } .ghost:hover { background: #fff; }
+    .primary { border: 1px solid var(--brand-deep); color: #fff; background: linear-gradient(135deg,var(--brand),var(--brand-deep)); box-shadow: 0 7px 16px rgba(44,87,191,.18); }
+    .primary:hover { filter: brightness(.97); } .ghost svg,.primary svg { width: 14px; height: 14px; }
+    .field-hint { margin: 8px 0 0; color: var(--muted); font-size: 10px; line-height: 1.65; }
+    .scope-strip { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 11px 13px; border: 1px dashed rgba(44,87,191,.2); border-radius: 9px; background: rgba(241,245,254,.55); font-size: 10px; }
+    .scope-strip svg { width: 17px; color: var(--brand); } .scope-strip strong { font-size: 11px; } .scope-strip span { color: var(--muted); }
+    .switch-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; padding: 11px 13px; border: 1px solid rgba(44,87,191,.09); border-radius: 9px; background: rgba(255,255,255,.38); }
+    .switch-copy strong { display: block; font-size: 11px; } .switch-copy span { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .toggle { position: relative; width: 36px; height: 21px; padding: 0; border: 0; border-radius: 99px; background: #b2bdd6; } .toggle:after { position: absolute; top: 3px; left: 3px; width: 15px; height: 15px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(18,35,79,.12); content: ""; transition: transform .16s; }
+    .toggle[aria-pressed="true"] { background: var(--brand); } .toggle[aria-pressed="true"]:after { transform: translateX(15px); }
+    .mini-line { height: 1px; margin-top: 21px; background: var(--line); }
+    .mode-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; } .mode-picker button { display: flex; align-items: flex-start; flex-direction: column; gap: 5px; min-height: 74px; padding: 13px 14px; border: 1px solid rgba(44,87,191,.12); border-radius: 9px; color: var(--ink-soft); background: rgba(255,255,255,.48); text-align: left; }
+    .mode-picker button:hover { background: #fff; } .mode-picker button[aria-pressed="true"] { border-color: var(--brand); color: var(--brand-dark); background: #e1eafc; box-shadow: inset 0 0 0 1px rgba(63,111,220,.06); }
+    .mode-picker strong { font-size: 11px; } .mode-picker span { color: var(--muted); font-size: 10px; line-height: 1.5; } .mode-picker button[aria-pressed="true"] span { color: #3f5380; }
+    .mode-picker button:disabled,.mode-picker button:disabled:hover { opacity: 1; border-color: #d9dfeb; color: #98a4b8; background: rgba(233,237,245,.7); box-shadow: none; cursor: not-allowed; }
+    .mode-picker button:disabled span { color: #98a4b8; }
+    .formats { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 17px; } .formats-label { margin-right: 6px; color: var(--ink-soft); font-size: 11px; font-weight: 700; }
+    .format { display: inline-flex; align-items: center; gap: 5px; padding: 6px 8px; border: 1px solid rgba(44,87,191,.14); border-radius: 6px; color: var(--ink-soft); background: rgba(255,255,255,.55); font-size: 10px; cursor: pointer; }
+    .format input { width: 12px; height: 12px; margin: 0; accent-color: var(--brand); }
+    .side { display: grid; gap: 16px; } .overview-list { display: grid; margin: 15px 0 0; } .overview-list>div { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid rgba(44,87,191,.09); }
+    .overview-list>div:last-child { border-bottom: 0; } .overview-list dt { color: var(--muted); font-size: 10px; } .overview-list dd { overflow: hidden; max-width: 72%; margin: 0; color: var(--ink-soft); font-size: 11px; font-weight: 700; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
+    .overview-list dd.accent { color: var(--brand-dark); }
+    .safety { display: flex; align-items: start; gap: 10px; margin-top: 17px; padding: 13px; border: 1px solid rgba(40,104,91,.15); border-radius: 9px; color: #28685b; background: rgba(214,241,233,.67); }
+    .safety svg { width: 17px; margin-top: 1px; } .safety strong { display: block; font-size: 11px; } .safety span { display: block; margin-top: 4px; color: #47796e; font-size: 10px; line-height: 1.6; }
+    .queue-visual { position: relative; height: 72px; margin: 16px 0 15px; overflow: hidden; border: 1px solid rgba(44,87,191,.09); border-radius: 9px; background: radial-gradient(circle at 88% 50%,rgba(155,184,243,.35),transparent 90px),rgba(255,255,255,.46); }
+    .queue-visual:before,.queue-visual:after { position: absolute; width: 74px; height: 74px; border: 1px solid rgba(63,111,220,.15); border-radius: 50%; content: ""; }
+    .queue-visual:before { top: -38px; right: 7%; box-shadow: 0 0 0 17px rgba(111,147,234,.04),0 0 0 34px rgba(111,147,234,.035); } .queue-visual:after { top: 33px; left: 18%; width: 55px; height: 55px; }
+    .queue-visual span { position: absolute; top: 23px; left: 19px; z-index: 1; color: var(--brand-deep); font: 700 11px "Bahnschrift",sans-serif; letter-spacing: .1em; } .queue-visual b { position: absolute; top: 39px; left: 19px; z-index: 1; color: var(--muted); font-size: 9px; font-weight: 400; }
+    .queue-note { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.75; } .queue-action { display: grid; gap: 8px; margin-top: 18px; } .queue-action .primary { width: 100%; }
+    .action-note { margin: 2px 0 0; color: var(--muted); font-size: 9px; line-height: 1.6; text-align: center; }
+    .result { margin-top: 20px; padding: 0; overflow: hidden; } .result-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 21px 25px 18px; border-bottom: 1px solid rgba(44,87,191,.09); }
+    .result-head h2 { margin: 6px 0 0; font-size: 16px; } .result-head>span { color: var(--muted); font-size: 10px; }
+    .result-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 22px; padding: 21px 25px 24px; }
+    .result-copy h3 { margin: 0 0 9px; font-size: 13px; } .result-copy p { max-width: 530px; margin: 0; color: var(--ink-soft); font-size: 11px; line-height: 1.85; }
+    .result-bullets { display: grid; gap: 9px; margin: 18px 0 0; padding: 0; list-style: none; } .result-bullets li { display: flex; align-items: center; gap: 9px; color: var(--ink-soft); font-size: 10px; }
+    .result-bullets svg { width: 14px; color: #28685b; }
+    .result-sample { display: flex; align-items: center; gap: 14px; min-width: 0; padding: 14px; border: 1px solid rgba(44,87,191,.1); border-radius: 10px; background: rgba(255,255,255,.56); }
+    .sample-art { position: relative; display: flex; flex: none; width: 117px; height: 70px; }
+    .sample-art span { position: absolute; width: 69px; height: 61px; border: 2px solid #fff; border-radius: 7px; background: linear-gradient(150deg,#acd9e9 0 32%,#95bad6 33% 46%,#617caa 47% 64%,#b7c6ca 65%); box-shadow: 0 4px 12px rgba(18,35,79,.13); }
+    .sample-art span:first-child { top: 2px; left: 2px; transform: rotate(-8deg); } .sample-art span:last-child { top: 7px; left: 40px; transform: rotate(6deg); filter: saturate(.8) brightness(1.07); }
+    .result-sample strong { display: block; font-size: 11px; } .result-sample p { margin: 5px 0 0; color: var(--muted); font-size: 10px; line-height: 1.55; } .result-sample small { display: inline-block; margin-top: 7px; padding: 4px 7px; border-radius: 5px; color: var(--brand-dark); background: #e1eafc; font-size: 9px; }
+    .result-foot { padding: 12px 25px; border-top: 1px solid rgba(44,87,191,.08); color: var(--muted); font-size: 10px; }
+    .footer-note { margin-top: 17px; color: var(--muted); font-size: 10px; line-height: 1.6; text-align: center; }
+    dialog { width: min(510px,calc(100vw - 30px)); padding: 0; border: 1px solid white; border-radius: 18px; color: var(--ink); background: #f6f9ff; box-shadow: 0 30px 100px rgba(18,35,79,.22); } dialog::backdrop { background: rgba(18,35,79,.28); backdrop-filter: blur(5px); }
+    .dialog-body { padding: 28px; } .dialog-head { display: flex; align-items: center; justify-content: space-between; } .dialog-head button { display: grid; place-items: center; width: 28px; height: 28px; border: 0; color: var(--muted); background: transparent; }
+    .dialog-body h2 { margin: 15px 0 9px; font-size: 22px; } .dialog-body>p { margin: 0; color: var(--ink-soft); font-size: 11px; line-height: 1.8; }
+    .dialog-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 21px 0; padding: 19px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); } .dialog-summary dt { margin-bottom: 6px; color: var(--muted); font-size: 10px; } .dialog-summary dd { margin: 0; font-size: 12px; font-weight: 700; overflow-wrap: anywhere; }
+    .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; } .toast { position: fixed; right: 24px; bottom: 24px; z-index: 10; max-width: 360px; padding: 12px 16px; border: 1px solid var(--glass-border); border-radius: 9px; color: #8d4d57; background: #fff; box-shadow: 0 16px 42px rgba(18,35,79,.16); font-size: 11px; }
+    @media(max-width:1020px) { .workspace { grid-template-columns: 1fr; } .side { grid-template-columns: 1fr 1fr; } .hero-quote { display: none; } }
+    @media(max-width:680px) { .page { padding: 16px 16px 36px; } .topline { align-items: flex-start; flex-direction: column; gap: 4px; } .hero { min-height: 185px; padding: 22px; } .hero:after { left: 22px; } .hero-cover { width: 75%; opacity: .3; } .hero h1 { font-size: 26px; } .workspace,.side,.result-grid { grid-template-columns: 1fr; } .panel { padding: 20px; } .mode-picker { grid-template-columns: 1fr; } .scope-strip { flex-wrap: wrap; } .result-head { align-items: flex-start; flex-direction: column; } .dialog-summary { grid-template-columns: 1fr; } }
+    @media(prefers-reduced-motion:no-preference) { button,.glass { transition: background .18s,box-shadow .18s,border-color .18s; } }
+  </style>
+</head>
+<body>
+  <svg class="icons" aria-hidden="true"><defs>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m14 5-7 7 7 7"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v9H3V7zM3 12h18"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.3 8.2 8 11 4.7-2.8 8-6 8-11V5l-8-3z"/><path d="m9 12 2 2 4-4"/></symbol>
+  </defs></svg>
+  <main class="page">
+    <div class="topline"><a class="back" href="./tribios-library-prototype.html"><svg><use href="#i-left"/></svg> 返回应用库</a><nav class="crumb" aria-label="当前位置">缇里西庇俄丝 <span>›</span> 应用库 <span>›</span> 图片去重 <span>›</span> <b>运行应用</b></nav></div>
+    <header class="hero glass"><img class="hero-cover" src="../src/assets/images/cover/Tribios.webp" alt=""><div><div class="eyebrow">RUN APPLICATION / 图片整理</div><h1>图片去重</h1><p>选择图片目录，交给队列完成扫描。重复分组会出现在任务详情，供你检查与处理。</p><div class="hero-tags"><span class="hero-tag queue">队列应用</span><span class="hero-tag">图片扫描</span><span class="hero-tag">重复分组</span><span class="hero-tag">磁盘整理</span></div></div><span class="hero-quote"><i>✦</i>留下想珍藏的每一张</span></header>
+    <div class="workspace">
+      <section class="panel glass" aria-labelledby="configTitle"><div class="panel-head"><div><div class="section-label">01 / CONFIGURATION</div><h2 id="configTitle">任务配置</h2><p class="panel-sub">指定扫描范围和判断方式，任务将在后台完成比对。</p></div><span class="panel-badge">概念应用</span></div>
+        <div class="form-section"><h3 class="form-title"><span class="num">01</span>选择扫描位置</h3><label class="field-label" for="directory">图片文件夹 <small>必填</small></label><div class="path-row"><input class="text-input" id="directory" value="D:\照片库\2026旅行" placeholder="输入要扫描的文件夹路径"><button class="ghost" type="button" id="chooseFolder"><svg><use href="#i-folder"/></svg>选择文件夹</button></div><p class="field-hint">目录越大，扫描时间越长。入队后可在任务队列查看进度。</p><div class="scope-strip"><svg><use href="#i-folder"/></svg><strong>待队列扫描</strong><span>图片数量与占用空间将在任务执行时统计</span></div><div class="switch-row"><div class="switch-copy"><strong>包含子文件夹</strong><span>一起扫描目录内的多层图片</span></div><button class="toggle" type="button" id="recursive" aria-pressed="true" aria-label="包含子文件夹"></button></div></div>
+        <div class="mini-line"></div><div class="form-section"><h3 class="form-title"><span class="num">02</span>选择查找方式</h3><div class="mode-picker" role="group" aria-label="重复图片判断方式"><button type="button" aria-pressed="true"><strong>内容完全相同</strong><span>比较图片内容，找出完全一致的文件。</span></button><button type="button" disabled aria-disabled="true" title="暂未开放"><strong>视觉相似</strong><span>暂未开放</span></button></div><p class="field-hint">适合整理多次复制、改名后仍内容相同的图片。</p><div class="formats"><span class="formats-label">扫描格式</span><label class="format"><input type="checkbox" value="JPG" checked> JPG / JPEG</label><label class="format"><input type="checkbox" value="PNG" checked> PNG</label><label class="format"><input type="checkbox" value="WebP" checked> WebP</label><label class="format"><input type="checkbox" value="HEIC"> HEIC</label></div></div>
+      </section>
+      <aside class="side" aria-label="执行信息与入队"><section class="panel glass"><div class="section-label">02 / EXECUTION</div><h2>本次执行</h2><dl class="overview-list"><div><dt>应用类型</dt><dd>图片分析</dd></div><div><dt>调度方式</dt><dd class="accent">任务队列</dd></div><div><dt>扫描范围</dt><dd id="scopeValue">所选目录及子文件夹</dd></div><div><dt>查找方式</dt><dd id="modeValue">内容完全相同</dd></div></dl><div class="safety"><svg><use href="#i-shield"/></svg><div><strong>本次仅扫描</strong><span>此任务只读取图片并生成重复分组，不会删除、移动或修改原图。</span></div></div></section>
+        <section class="panel glass" aria-labelledby="handoffTitle"><div class="section-label">03 / QUEUE HANDOFF</div><h2 id="handoffTitle">交给队列扫描</h2><div class="queue-visual" aria-hidden="true"><span>IMAGE SCAN</span><b>READY TO QUEUE</b></div><p class="queue-note">图片较多时，扫描可能持续一段时间。入队后可离开当前页面；结果完成后在任务详情查看。</p><div class="queue-action"><button class="primary" type="button" id="queueButton">加入扫描队列 <svg><use href="#i-arrow"/></svg></button><p class="action-note">入队只开始分析，后续处理由你在结果页决定。</p></div></section></aside>
+    </div>
+    <section class="result glass" aria-labelledby="resultTitle"><div class="result-head"><div><div class="section-label">04 / AFTER SCAN</div><h2 id="resultTitle">扫描完成后</h2></div><span>结果展示位置 · 任务详情页</span></div><div class="result-grid"><div class="result-copy"><h3>按重复图片分组查看</h3><p>扫描完成后，任务详情会展示重复分组、文件路径与体积。你可以先核对每一组，再决定如何处理。此处不展示尚未扫描出的结果。</p><ul class="result-bullets"><li><svg><use href="#i-check"/></svg>内容相同的图片归入同一组</li><li><svg><use href="#i-check"/></svg>展示每张图片所在位置与文件信息</li><li><svg><use href="#i-check"/></svg>原始图片保持不变，处理操作需再次确认</li></ul></div><div class="result-sample"><div class="sample-art" aria-hidden="true"><span></span><span></span></div><div><strong>重复分组示意</strong><p>这里只展示结果页的呈现方式，不代表当前目录已完成扫描。</p><small>结果将在任务详情生成</small></div></div></div><div class="result-foot">本页的目录路径和分组插画均为原型示例，不读取真实图片。</div></section>
+    <p class="footer-note">设计原型 · 图片去重应用尚未接入；此页面不会扫描图片、创建任务或修改磁盘文件。</p>
+  </main>
+  <dialog id="confirmDialog" aria-labelledby="dialogTitle"><div class="dialog-body"><div class="dialog-head"><span class="eyebrow">CONFIRM / 扫描任务</span><button type="button" id="closeDialog" aria-label="关闭"><svg><use href="#i-close"/></svg></button></div><h2 id="dialogTitle">确认加入扫描队列</h2><p>队列会分析所选目录中的图片，扫描结束后在任务详情展示结果。本次不会处理原始图片。</p><dl class="dialog-summary"><div><dt>扫描目录</dt><dd id="dialogDirectory"></dd></div><div><dt>扫描范围</dt><dd id="dialogScope"></dd></div><div><dt>查找方式</dt><dd id="dialogMode"></dd></div><div><dt>扫描格式</dt><dd id="dialogFormats"></dd></div></dl><div class="dialog-actions"><button class="ghost" type="button" id="cancelDialog">继续检查</button><button class="primary" type="button" id="confirmQueue">确认入队 <svg><use href="#i-arrow"/></svg></button></div></div></dialog>
+  <script>
+    // 仅供高保真原型交互演示，不接入文件系统、Python 或真实任务队列。
+    const $ = id => document.getElementById(id);
+    const mode = 'exact';
+    const labels = {exact:'内容完全相同'};
+    function showToast(message){document.querySelector('.toast')?.remove();const toast=document.createElement('div');toast.className='toast';toast.setAttribute('role','status');toast.textContent=message;document.body.append(toast);setTimeout(()=>toast.remove(),3600);}
+    $('recursive').addEventListener('click',()=>{const active=$('recursive').getAttribute('aria-pressed')==='true';$('recursive').setAttribute('aria-pressed',String(!active));$('scopeValue').textContent=active?'仅所选目录':'所选目录及子文件夹';});
+    $('chooseFolder').addEventListener('click',()=>showToast('这是界面原型：正式 Runner 会调用系统文件夹选择器。'));
+    $('queueButton').addEventListener('click',()=>{const directory=$('directory').value.trim();const formats=[...document.querySelectorAll('.format input:checked')].map(input=>input.value);if(!directory){$('directory').focus();showToast('请先填写图片文件夹');return;}if(!formats.length){showToast('请至少选择一种图片格式');return;}$('dialogDirectory').textContent=directory;$('dialogScope').textContent=$('scopeValue').textContent;$('dialogMode').textContent=labels[mode];$('dialogFormats').textContent=formats.join('、');$('confirmDialog').showModal();});
+    $('closeDialog').addEventListener('click',()=>$('confirmDialog').close());$('cancelDialog').addEventListener('click',()=>$('confirmDialog').close());
+    $('confirmQueue').addEventListener('click',()=>{$('confirmDialog').close();location.assign('./tribios-library-prototype.html');});
+  </script>
+</body>
+</html>

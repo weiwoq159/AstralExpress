@@ -1,0 +1,170 @@
+@use "@/shared/styles/variables.scss" as *;
+
+// 各应用 Runner 页共用的版式与表单样式：左侧配置 + 右侧信息，及配置面板内部的通用块。
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.53fr) minmax(320px, 0.9fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.side {
+  display: grid;
+  gap: 16px;
+}
+
+.configuration,
+.preview {
+  :global(.ant-card-body) {
+    padding: 25px 27px;
+  }
+}
+
+.preview {
+  h2:global(.ant-typography) {
+    margin: 9px 0 0;
+    font-size: 19px;
+  }
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: $brand-600;
+  font: 700 10px "Bahnschrift", sans-serif;
+  letter-spacing: 0.16em;
+
+  &::before {
+    width: 18px;
+    height: 1px;
+    background: $gold-500;
+    content: "";
+  }
+}
+
+.panelHead {
+  padding-bottom: 20px;
+  border-bottom: 1px solid $color-border;
+
+  h2:global(.ant-typography) {
+    margin: 9px 0 0;
+    font-size: 19px;
+  }
+
+  div:global(.ant-typography) {
+    margin: 6px 0 0;
+    color: $ink-500;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+}
+
+.formSection {
+  padding-top: 21px;
+
+  & + & {
+    margin-top: 22px;
+    border-top: 1px solid $color-border;
+  }
+
+  h3:global(.ant-typography) {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 15px;
+    font-size: 13px;
+  }
+}
+
+.step {
+  display: grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border-radius: 6px;
+  color: $brand-700;
+  background: $brand-100;
+  font: 700 10px "Bahnschrift", sans-serif;
+}
+
+.fieldLabel {
+  margin-bottom: 8px;
+
+  :global(.ant-typography) {
+    color: $ink-700;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .required:global(.ant-typography) {
+    color: $ink-500;
+    font-size: 10px;
+    font-weight: 400;
+  }
+}
+
+.pathRow {
+  :global(.ant-input) {
+    min-width: 0;
+  }
+
+  :global(.ant-btn) {
+    flex-shrink: 0;
+  }
+}
+
+div.fieldHint:global(.ant-typography) {
+  margin: 9px 0 0;
+  color: $ink-500;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.fileStrip {
+  margin-top: 15px;
+  padding: 12px 14px;
+  border: 1px dashed rgba($brand-600, 0.2);
+  border-radius: 9px;
+  background: rgba($brand-50, 0.58);
+  font-size: 11px;
+
+  svg {
+    color: $brand-500;
+    font-size: 17px;
+  }
+
+  :global(.ant-typography) {
+    font-size: 11px;
+  }
+
+  :global(.ant-typography:not(.ant-typography-strong)) {
+    color: $ink-500;
+  }
+}
+
+@media (max-width: 680px) {
+  .side {
+    grid-template-columns: 1fr;
+  }
+
+  .configuration,
+  .preview {
+    :global(.ant-card-body) {
+      padding: 20px;
+    }
+  }
+}
+
+@media (min-width: 681px) and (max-width: 1020px) {
+  .side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1020px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}

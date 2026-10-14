@@ -1,0 +1,165 @@
+@use "@/shared/styles/variables.scss" as *;
+
+.link {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid $color-focus;
+    outline-offset: 3px;
+    border-radius: $radius-panel;
+  }
+}
+
+.card {
+  height: 100%;
+  min-height: 208px;
+
+  &.available {
+    background: rgba(255, 255, 255, 0.63);
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.61);
+    border-color: #fff;
+    box-shadow: $glass-shadow-hover;
+    transform: translateY(-2px);
+  }
+}
+
+.body {
+  min-width: 0;
+  min-height: 208px;
+  padding: 16px 24px;
+}
+
+.top {
+  margin-bottom: 16px;
+}
+
+.icon {
+  display: grid;
+  width: 39px;
+  height: 39px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 11px;
+  color: $brand-600;
+  background: linear-gradient(145deg, #fff, $brand-100);
+  box-shadow: inset 0 1px 0 #fff;
+  font-size: 21px;
+}
+
+.available .icon {
+  color: #fff;
+  background: linear-gradient(135deg, $brand-600, $brand-400);
+  border-color: transparent;
+  box-shadow:
+    0 5px 12px rgba(44, 87, 191, 0.17),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 4px 8px;
+  border-radius: 5px;
+  color: $status-failed;
+  background: rgba(249, 226, 229, 0.53);
+  font-size: 12px;
+  line-height: 1.2;
+
+  &::before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  &.available {
+    color: $status-success;
+    background: $status-success-bg;
+  }
+
+  &.disabled {
+    color: $status-pending;
+    background: $status-pending-bg;
+  }
+}
+
+h3.name {
+  margin: 0 0 8px;
+  color: $ink-900;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.description {
+  min-height: 38px;
+  margin: 0;
+  color: $ink-500;
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.tags {
+  margin: 16px 0 8px;
+}
+
+.tag {
+  margin: 0;
+  padding: 4px 8px;
+  border: 1px solid rgba(44, 87, 191, 0.08);
+  border-radius: 4px;
+  color: $ink-500;
+  background: rgba(255, 255, 255, 0.34);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.divider {
+  margin: 16px 0 8px;
+  margin-top: auto;
+  border-color: rgba(44, 87, 191, 0.09);
+}
+
+.bottom {
+  color: $ink-500;
+  font-size: 12px;
+}
+
+.meta {
+  font-size: 12px;
+}
+
+.dot {
+  margin: 0 8px;
+  color: $ink-300;
+}
+
+.open {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: $brand-600;
+  font-size: 12px;
+  transition: color 180ms ease;
+
+  :global(.anticon) {
+    transition: transform 180ms ease;
+  }
+
+  &:hover {
+    color: $brand-700;
+
+    :global(.anticon) {
+      transform: translateX(4px);
+    }
+  }
+}
