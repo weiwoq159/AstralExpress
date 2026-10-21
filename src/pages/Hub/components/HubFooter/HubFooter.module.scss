@@ -1,0 +1,113 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.root {
+    flex: 0 0 auto;
+    min-height: 60px;
+    padding: 14px 40px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px;
+    border-top: 1px solid $glass-border;
+    background: $glass-surface;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur($glass-blur) saturate($glass-saturation);
+    color: $ink-700;
+    width: 100%;
+}
+
+.brand {
+    font: 12px 'Bahnschrift', 'Trebuchet MS', sans-serif;
+    letter-spacing: 0.7px;
+
+    .sub {
+        display: block;
+        margin-top: 3px;
+        font-size: 7px;
+        letter-spacing: 1.7px;
+        color: $ink-500;
+    }
+}
+
+.quote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 0;
+    white-space: nowrap;
+    font: 13px 'Songti SC', 'SimSun', serif;
+    letter-spacing: 3px;
+}
+
+.star {
+    width: 10px;
+    height: 10px;
+    fill: none;
+    stroke: $gold-500;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.meta {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 9px;
+    color: $ink-500;
+
+    i {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: $status-success;
+    }
+}
+
+@media (max-width: 780px) {
+    .root {
+        padding: 14px 22px;
+        gap: 14px;
+    }
+
+    .brand {
+        font-size: 10px;
+
+        .sub {
+            font-size: 6px;
+            letter-spacing: 1px;
+        }
+    }
+
+    .quote {
+        gap: 9px;
+        font-size: 12px;
+        letter-spacing: 2px;
+    }
+
+    .meta {
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 520px) {
+    .root {
+        min-height: 53px;
+        display: flex;
+        justify-content: center;
+        padding: 17px;
+        gap: 0;
+    }
+
+    .brand,
+    .meta {
+        display: none;
+    }
+
+    .quote {
+        gap: 13px;
+        letter-spacing: 2.5px;
+    }
+}

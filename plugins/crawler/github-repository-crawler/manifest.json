@@ -1,0 +1,16 @@
+{
+  "key": "github-repository-crawler",
+  "order": 501,
+  "name": "GitHub仓库采集",
+  "category": "developer",
+  "description": "通过 GitHub API 采集公开仓库的简介、语言、主题、星标数和更新时间。",
+  "tags": [
+    "GitHub",
+    "开源",
+    "仓库"
+  ],
+  "icon": "GithubOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}

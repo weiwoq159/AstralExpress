@@ -1,0 +1,20 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.root {
+    padding: 7px 14px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.time {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: $ink-900;
+    font-variant-numeric: tabular-nums;
+}
+
+.date {
+    font-size: 11px;
+    color: $ink-500;
+}

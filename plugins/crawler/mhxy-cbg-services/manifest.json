@@ -1,0 +1,16 @@
+{
+  "key": "mhxy-cbg-services",
+  "order": 30,
+  "name": "梦幻西游藏宝阁大区获取",
+  "category": "mhxy",
+  "description": "从梦幻西游藏宝阁获取大区列表",
+  "tags": [
+    "梦幻西游",
+    "藏宝阁",
+    "JSON"
+  ],
+  "icon": "AudioOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "isQueue": true
+}

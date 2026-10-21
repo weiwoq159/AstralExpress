@@ -1,0 +1,42 @@
+{
+  "name": "vite-project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.104.5",
+    "@tauri-apps/api": "^2.12.4",
+    "@tauri-apps/plugin-dialog": "~2.8.3",
+    "@tauri-apps/plugin-http": "~2.8.3",
+    "ahooks": "^3.10.0",
+    "dayjs": "^1.11.23",
+    "oxfmt": "^0.74.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router": "^8.5.0",
+    "sass": "^1.105.2",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "~6.3.4",
+    "@babel/core": "^7.29.7",
+    "@rolldown/plugin-babel": "^0.2.3",
+    "@tauri-apps/cli": "^2.12.3",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "antd": "^6.6.6",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "oxlint": "^1.81.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  }
+}

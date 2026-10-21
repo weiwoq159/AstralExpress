@@ -1,0 +1,16 @@
+{
+  "key": "image-dedup",
+  "order": 306,
+  "name": "图片去重",
+  "category": "Images",
+  "description": "扫描文件夹，找出重复或高度相似的图片，核对后再清理。",
+  "tags": [
+    "去重",
+    "相似图片",
+    "批量"
+  ],
+  "icon": "CopyOutlined",
+  "status": "available",
+  "entry": "main.py",
+  "isQueue": true
+}

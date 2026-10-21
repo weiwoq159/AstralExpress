@@ -1,0 +1,16 @@
+{
+  "key": "github-release-crawler",
+  "order": 502,
+  "name": "GitHub发行版本采集",
+  "category": "developer",
+  "description": "通过 GitHub API 采集公开仓库的版本标签、发布时间、更新说明和附件链接。",
+  "tags": [
+    "GitHub",
+    "Release",
+    "版本"
+  ],
+  "icon": "TagOutlined",
+  "status": "unavailable",
+  "entry": "main.py",
+  "isQueue": true
+}
