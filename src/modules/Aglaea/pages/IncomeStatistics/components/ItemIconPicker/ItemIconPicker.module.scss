@@ -1,0 +1,73 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.trigger {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  padding: 0;
+  border: 1px solid $color-border;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition:
+    border-color 0.16s,
+    box-shadow 0.16s;
+
+  &:hover {
+    border-color: $brand-300;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-focus;
+    outline-offset: 2px;
+  }
+}
+
+.placeholder {
+  font-size: 14px;
+  color: $color-text-muted;
+}
+
+.hint {
+  font-size: 11px;
+}
+
+// 8 列网格，超出高度时在面板内滚动。
+.panel {
+  display: grid;
+  grid-template-columns: repeat(8, 36px);
+  gap: 6px;
+  width: max-content;
+  max-width: calc(100vw - 96px);
+  max-height: 232px;
+  overflow-y: auto;
+}
+
+.option {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+
+  &:hover {
+    background: $brand-50;
+    border-color: $brand-200;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-focus;
+    outline-offset: 1px;
+  }
+}
+
+.selected {
+  border-color: $brand-400;
+  background: $brand-100;
+}

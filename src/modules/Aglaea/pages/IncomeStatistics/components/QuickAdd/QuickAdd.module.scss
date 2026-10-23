@@ -1,0 +1,126 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.panel {
+  border: 1px solid $glass-border;
+  border-radius: 14px;
+  background: $glass-surface;
+  box-shadow: $glass-shadow;
+  backdrop-filter: blur($glass-blur) saturate($glass-saturation);
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 700;
+  color: $color-text;
+}
+
+.subtitle {
+  font-size: 12px;
+}
+
+.tools {
+  margin-bottom: 14px;
+}
+
+.tabs {
+  flex: 1;
+  min-width: 0;
+}
+
+.search {
+  flex: none;
+  width: 180px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+
+  @media (max-width: 1150px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 12px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.79);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.37);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.16s,
+    border-color 0.16s,
+    box-shadow 0.16s,
+    transform 0.16s;
+
+  &:hover {
+    border-color: $brand-200;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 5px 15px rgba($brand-600, 0.05);
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-focus;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+.itemText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.itemName {
+  overflow: hidden;
+  font-size: 12px;
+  color: $color-text;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.itemPrice {
+  font-size: 11px;
+  color: $color-text-muted;
+  font-variant-numeric: tabular-nums;
+}
+
+.plus {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  margin-left: auto;
+  border-radius: 5px;
+  font-size: 11px;
+  color: $brand-600;
+  background: $brand-100;
+}
+
+.hint {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid $color-border;
+  font-size: 11px;
+}

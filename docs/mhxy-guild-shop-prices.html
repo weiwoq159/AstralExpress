@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>梦幻西游 · 商会道具价格统计</title>
+  <style>
+    :root { color-scheme: light; --bg:#f4f6fb; --surface:#fff; --text:#1c2740; --muted:#758097; --line:#e8ebf2; --primary:#5756dc; --primarylight:#efeeff; --green:#118e67; --orange:#b76c1b; --radius:16px; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+    button,input,select { font:inherit; }
+    button { cursor:pointer; }
+    button:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #b7b1ff; outline-offset:2px; }
+    .app { max-width:1450px; margin:0 auto; padding:28px 32px 54px; }
+    header { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; margin-bottom:24px; }
+    .eyebrow { color:var(--primary); font-weight:700; font-size:12px; letter-spacing:.8px; text-transform:uppercase; margin:0 0 6px; }
+    h1 { margin:0; font-size:28px; font-weight:800; letter-spacing:-.5px; }
+    .subtitle { margin:6px 0 0; color:var(--muted); }
+    .actions { display:flex; gap:9px; flex-wrap:wrap; justify-content:flex-end; }
+    .btn { border:1px solid #dce1eb; background:#fff; color:#34405d; padding:10px 14px; border-radius:10px; font-weight:600; white-space:nowrap; }
+    .btn:hover { background:#f6f7fb; }
+    .btn.primary { color:white; background:var(--primary); border-color:var(--primary); }
+    .btn.primary:hover { background:#4948c5; }
+    .btn.small { padding:7px 11px; }
+    .stats { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px; margin-bottom:16px; }
+    .stat { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:17px 20px; }
+    .stat .label { font-size:12px; color:var(--muted); }
+    .stat strong { display:block; font-size:25px; margin-top:5px; letter-spacing:-.6px; }
+    .stat small { margin-left:4px; font-size:12px; font-weight:400; color:var(--muted); }
+    .toolbar { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 19px; display:flex; flex-wrap:wrap; align-items:end; gap:15px; margin-bottom:16px; }
+    .field { display:flex; flex-direction:column; gap:5px; min-width:150px; }
+    .field.grow { flex:2; min-width:230px; }
+    .field label { font-size:12px; color:var(--muted); font-weight:600; }
+    .control { height:40px; border:1px solid #dfe3ed; border-radius:9px; color:var(--text); background:#fff; padding:0 12px; width:100%; }
+    .help { color:var(--muted); margin-left:auto; font-size:12px; padding-bottom:10px; }
+    .workspace { display:grid; grid-template-columns:minmax(350px,.92fr) minmax(460px,1.25fr); gap:16px; align-items:start; }
+    .panel { min-width:0; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+    .panel-head { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:19px 20px 14px; }
+    h2 { margin:0; font-size:17px; letter-spacing:-.2px; }
+    .tiny { font-size:12px; color:var(--muted); }
+    .result-list { padding:0 10px 12px; overflow-y:auto; max-height:670px; }
+    .result-row { width:100%; display:grid; grid-template-columns:42px 1fr auto 19px; text-align:left; align-items:center; gap:10px; border:1px solid transparent; border-radius:12px; padding:14px 12px; background:white; color:inherit; }
+    .result-row:hover { background:#f8f8fe; }
+    .result-row.active { background:var(--primarylight); border-color:#d6d2ff; }
+    .rank { color:#9aa4b6; font-weight:800; font-size:17px; text-align:center; }
+    .result-row:first-child .rank { color:var(--primary); }
+    .store-name { font-size:14px; font-weight:700; }
+    .store-sub { font-size:12px; color:var(--muted); margin-top:3px; }
+    .price { text-align:right; color:var(--primary); font-size:21px; font-weight:800; font-variant-numeric:tabular-nums; }
+    .price small { font-size:11px; font-weight:500; color:var(--muted); margin-left:3px; }
+    .arrow { font-size:20px; color:#a7aec0; }
+    .detail-sub { color:var(--muted); margin:3px 0 0; font-size:12px; }
+    .shelves { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding:0 20px 20px; }
+    .shelf { position:relative; padding:15px; min-height:124px; background:#fafbfe; border:1px solid var(--line); border-radius:12px; }
+    .shelf.match { border-color:#bab4fb; background:#f5f3ff; }
+    .shelf-top { display:flex; justify-content:space-between; gap:8px; align-items:center; }
+    .shelf-id { font-size:12px; color:#7e8a9e; font-weight:600; }
+    .shelf-price { font-size:18px; font-weight:800; font-variant-numeric:tabular-nums; }
+    .shelf-price span { font-size:11px; font-weight:400; color:var(--muted); }
+    .chips { display:flex; gap:6px; flex-wrap:wrap; margin-top:17px; }
+    .chip { padding:4px 8px; background:white; border:1px solid #e4e7ef; border-radius:6px; font-size:12px; }
+    .chip.hit { color:#514ac7; border-color:#c9c4ff; background:#e6e2ff; font-weight:700; }
+    .empty { color:var(--muted); text-align:center; padding:70px 25px; line-height:1.8; }
+    .footnote { padding:0 20px 20px; font-size:12px; color:var(--muted); }
+    dialog { width:min(850px,calc(100vw - 30px)); max-height:90vh; border:0; border-radius:18px; padding:0; box-shadow:0 25px 90px #27334d50; color:var(--text); }
+    dialog::backdrop { background:#1a24476b; }
+    .modal-head { padding:24px 27px 18px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+    .modal-head h2 { font-size:20px; }
+    .close { border:0; background:transparent; font-size:26px; color:var(--muted); padding:0 5px; }
+    .modal-body { padding:19px 27px; max-height:58vh; overflow:auto; }
+    .form-store { margin-bottom:18px; }
+    .form-store label { display:block; font-size:12px; font-weight:700; color:var(--muted); margin-bottom:5px; }
+    .edit-hint { padding:10px 12px; background:#f7f8fc; color:#68758e; border-radius:9px; margin-bottom:13px; font-size:12px; }
+    .edit-grid { display:grid; grid-template-columns:70px 1fr 1fr 130px; align-items:center; gap:9px; margin-bottom:10px; }
+    .edit-grid .control { min-width:0; }
+    .edit-header { color:var(--muted); font-size:12px; font-weight:700; }
+    .modal-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:17px 27px; border-top:1px solid var(--line); }
+    .modal-foot .right { display:flex; gap:10px; }
+    .danger { color:#d84a52; border-color:#f4cbd0; }
+    .toast { position:fixed; right:20px; bottom:20px; background:#263453; color:white; border-radius:9px; padding:11px 16px; box-shadow:0 8px 25px #0002; opacity:0; transform:translateY(12px); transition:.2s; pointer-events:none; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    @media(max-width:900px){ .app{padding:18px 14px 30px;} .workspace{grid-template-columns:1fr;} .result-list{max-height:410px;} .help{width:100%;padding:0;} }
+    @media(max-width:600px){ header{flex-direction:column;} .actions{justify-content:flex-start;} h1{font-size:23px;} .stats{grid-template-columns:repeat(2,1fr);} .stat{padding:13px;} .stat strong{font-size:22px;} .shelves{grid-template-columns:1fr;} .edit-grid{grid-template-columns:52px 1fr 1fr 84px;gap:4px;} .edit-grid .control{padding:0 4px;font-size:12px;} .modal-body,.modal-head,.modal-foot{padding-left:14px;padding-right:14px;} }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <p class="eyebrow">MHXY GUILD MALL / PRICE TRACKER</p>
+        <h1>商会道具价格统计</h1>
+        <p class="subtitle">按道具比价，快速找到售价最低的店铺；商会内每个店铺固定 10 个货架。</p>
+      </div>
+      <div class="actions">
+        <button class="btn" type="button" id="exportCsv">导出 CSV</button>
+        <button class="btn" type="button" id="exportJson">导出 JSON</button>
+        <button class="btn" type="button" id="importJson">导入 JSON</button>
+        <input type="file" id="importFile" accept="application/json" hidden />
+        <button class="btn" type="button" id="resetData">载入演示数据</button>
+        <button class="btn primary" type="button" id="addShop">＋ 新增店铺</button>
+      </div>
+    </header>
+
+    <section class="stats" aria-label="价格概览">
+      <div class="stat"><div class="label">已记录店铺</div><strong id="statShops">—</strong></div>
+      <div class="stat"><div class="label">在售店铺</div><strong id="statMatches">—</strong></div>
+      <div class="stat"><div class="label">最低售价</div><strong id="statMin">—</strong></div>
+      <div class="stat"><div class="label">最高售价</div><strong id="statMax">—</strong></div>
+    </section>
+
+    <section class="toolbar" aria-label="查找和排序">
+      <div class="field grow"><label for="itemSelect">选择要比较的道具</label><select id="itemSelect" class="control"></select></div>
+      <div class="field"><label for="sortOrder">排序方式</label><select id="sortOrder" class="control"><option value="asc">价格从低到高 ↑</option><option value="desc">价格从高到低 ↓</option></select></div>
+      <div class="field"><label for="shopSearch">筛选店铺名称 / 编号</label><input class="control" id="shopSearch" placeholder="例如：5 或 店铺 05" /></div>
+      <div class="help">仅展示有售卖所选道具的店铺，按店内最低售价排序</div>
+    </section>
+
+    <section class="workspace">
+      <section class="panel" aria-label="价格排行榜">
+        <div class="panel-head"><div><h2>店铺报价排行</h2><div class="detail-sub" id="rankingSubtitle">选择道具查看报价</div></div><span class="tiny" id="rankingCount"></span></div>
+        <div class="result-list" id="resultList"></div>
+      </section>
+      <section class="panel" aria-label="店铺货架详情">
+        <div class="panel-head">
+          <div><h2 id="detailName">店铺货架明细</h2><p class="detail-sub" id="detailSubtitle">点击左侧店铺查看</p></div>
+          <button class="btn small" type="button" id="editShop" disabled>编辑货架</button>
+        </div>
+        <div class="shelves" id="shelfGrid"></div>
+        <div class="footnote" id="detailFootnote">每个货架可放 1～2 种道具，两种道具共享一个售价。</div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="shopDialog" aria-label="编辑店铺和货架">
+    <form method="dialog" id="shopForm">
+      <div class="modal-head"><h2 id="modalTitle">编辑店铺</h2><button type="button" class="close" id="closeDialog" aria-label="关闭">×</button></div>
+      <div class="modal-body">
+        <div class="form-store"><label for="editShopName">店铺名称</label><input id="editShopName" class="control" maxlength="50" required placeholder="例如：店铺 101" /></div>
+        <div class="edit-hint">每行代表一个货架：道具 1 必填（如货架空置可全留空），道具 2 可选，两种道具使用同一个售价。</div>
+        <div class="edit-grid edit-header"><span>货架</span><span>道具 1</span><span>道具 2（可选）</span><span>共同售价</span></div>
+        <div id="editShelves"></div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn danger" id="deleteShop">删除店铺</button>
+        <div class="right"><button type="button" class="btn" id="cancelDialog">取消</button><button type="submit" class="btn primary">保存数据</button></div>
+      </div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    'use strict';
+    const KEY = 'mhxy-guild-shop-prices-v1';
+    const CATALOG = ['金柳露','超级金柳露','九转金丹','月华露','珍珠','红玛瑙','黑宝石','舍利子','翡翠石','太阳石','光芒石','月亮石','星辉石','内丹','召唤兽口粮','魔兽要诀'];
+    const $ = (id) => document.getElementById(id);
+    const currency = (price) => Number(price).toLocaleString('zh-CN');
+    const escapeHtml = (v) => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const demoData = () => Array.from({length:12}, (_, i) => ({
+      id: i + 1,
+      name: `店铺 ${String(i+1).padStart(2,'0')}`,
+      shelves: Array.from({length:10}, (_, s) => {
+        const main = CATALOG[(i * 3 + s * 5) % CATALOG.length];
+        const items = s % 3 === 1 ? [main, CATALOG[(i*7+s*3+4) % CATALOG.length]] : [main];
+        if (i < 10 && s === (i % 5)) items[0] = '金柳露';
+        return { items: [...new Set(items)], price: 80 + ((i*173+s*79) % 19)*90 + (s%3)*15 };
+      })
+    }));
+    function readData() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(KEY));
+        if (Array.isArray(parsed) && parsed.every(s => Array.isArray(s.shelves))) return parsed;
+      } catch (e) { console.warn('缓存读取失败，从空数据开始', e); }
+      return [];
+    }
+    let shops = readData();
+    let selectedShopId = null;
+    let editingShopId = null;
+    let currentItem = '金柳露';
+    let toastTimeout;
+    function save() { try { localStorage.setItem(KEY,JSON.stringify(shops)); } catch { notify('本地存储不可用，当前修改仅保存在页面中'); } }
+    function notify(message) { const el=$('toast'); el.textContent=message; el.classList.add('show'); clearTimeout(toastTimeout); toastTimeout=setTimeout(()=>el.classList.remove('show'),2300); }
+    function allItems() { return [...new Set(shops.flatMap(s => s.shelves.flatMap(sh => sh.items)))].filter(Boolean).sort((a,b)=>a.localeCompare(b,'zh-CN')); }
+    function minShopPrice(shop, item) {
+      const prices = shop.shelves.filter(sh => sh.items.includes(item)).map(sh => sh.price);
+      return prices.length ? Math.min(...prices) : null;
+    }
+    function refreshItems() {
+      const items = allItems();
+      if (currentItem && !items.includes(currentItem)) currentItem = items[0] ?? '';
+      $('itemSelect').innerHTML = '<option value="">全部店铺（按编号）</option>' + items.map(item => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join('');
+      $('itemSelect').value = currentItem;
+    }
+    function rankedShops() {
+      const q = $('shopSearch').value.trim().toLowerCase();
+      const order = $('sortOrder').value === 'desc' ? -1 : 1;
+      return shops
+        .map(shop => ({shop, price:currentItem ? minShopPrice(shop,currentItem) : null}))
+        .filter(({shop,price}) => (!currentItem || price !== null) && (!q || shop.name.toLowerCase().includes(q) || String(shop.id).includes(q)))
+        .sort((a,b) => currentItem ? (a.price - b.price)*order || a.shop.id-b.shop.id : a.shop.id-b.shop.id);
+    }
+    function render() {
+      refreshItems();
+      const ranks = rankedShops();
+      if (!ranks.some(({shop}) => shop.id===selectedShopId)) selectedShopId = ranks[0]?.shop.id ?? null;
+      const globalMatches = shops.map(s=>minShopPrice(s,currentItem)).filter(p=>p!==null);
+      $('statShops').textContent = shops.length;
+      $('statMatches').textContent = currentItem ? globalMatches.length : '—';
+      $('statMin').innerHTML = globalMatches.length ? `${currency(Math.min(...globalMatches))}<small>两</small>` : '—';
+      $('statMax').innerHTML = globalMatches.length ? `${currency(Math.max(...globalMatches))}<small>两</small>` : '—';
+      $('rankingSubtitle').textContent = currentItem ? `当前比较：${currentItem}` : '全部店铺 · 按编号排列';
+      $('rankingCount').textContent = `共 ${ranks.length} 家`;
+      $('resultList').innerHTML = ranks.length ? ranks.map(({shop,price},idx) => {
+        const count=currentItem ? shop.shelves.filter(sh=>sh.items.includes(currentItem)).length : shop.shelves.filter(sh=>sh.items.length).length;
+        return `<button type="button" class="result-row ${shop.id===selectedShopId?'active':''}" data-shopid="${shop.id}" aria-pressed="${shop.id===selectedShopId}">
+          <span class="rank">${String(idx+1).padStart(2,'0')}</span>
+          <span><span class="store-name">${escapeHtml(shop.name)}</span><span class="store-sub" style="display:block">编号 #${shop.id} · ${count} 个货架${currentItem?'在售':'已录入'}</span></span>
+          <span class="price">${currentItem?`${currency(price)}<small>两</small>`:'<small>查看明细</small>'}</span><span class="arrow">›</span></button>`;
+      }).join('') : '<div class="empty">没有找到出售该道具的店铺。<br>请切换道具，或新增店铺录入价格。</div>';
+      renderDetail();
+    }
+    function renderDetail() {
+      const shop = shops.find(s=>s.id===selectedShopId);
+      $('editShop').disabled = !shop;
+      if (!shop) {
+        $('detailName').textContent = '店铺货架明细'; $('detailSubtitle').textContent = '选择左侧店铺查看';
+        $('shelfGrid').innerHTML = '<div class="empty">暂无店铺可展示</div>'; $('detailFootnote').textContent=''; return;
+      }
+      $('detailName').textContent = shop.name;
+      $('detailSubtitle').textContent = `店铺编号 #${shop.id} · 共 10 个货架${currentItem?' · 紫色标记为「'+currentItem+'」':''}`;
+      $('shelfGrid').innerHTML = shop.shelves.map((sh,i) => {
+        const hit=!!currentItem && sh.items.includes(currentItem);
+        return `<div class="shelf ${hit?'match':''}"><div class="shelf-top"><span class="shelf-id">货架 ${String(i+1).padStart(2,'0')}</span><div class="shelf-price">${sh.items.length ? currency(sh.price) : '—'} <span>两</span></div></div>
+          <div class="chips">${sh.items.length? sh.items.map(item=>`<span class="chip ${item===currentItem?'hit':''}">${escapeHtml(item)}</span>`).join(''):'<span class="tiny">空货架</span>'}</div></div>`;
+      }).join('');
+      $('detailFootnote').textContent = '同一货架上的 1～2 种道具共用一个价格；选择某种道具后按店内该道具的最低价排序。';
+    }
+    $('resultList').addEventListener('click', e => {
+      const row = e.target.closest('[data-shopid]');
+      if (!row) return;
+      selectedShopId=Number(row.dataset.shopid); render();
+    });
+    $('itemSelect').addEventListener('change', e=>{currentItem=e.target.value;render();});
+    $('sortOrder').addEventListener('change', render);
+    $('shopSearch').addEventListener('input', render);
+    function openEditor(shop) {
+      editingShopId = shop?.id ?? null;
+      $('modalTitle').textContent = shop ? `编辑 ${shop.name}` : '新增店铺';
+      $('editShopName').value = shop?.name ?? `店铺 ${String(Math.max(0,...shops.map(s=>s.id))+1).padStart(2,'0')}`;
+      $('deleteShop').hidden = !shop;
+      const shelves = shop?.shelves ?? Array.from({length:10},()=>({items:[],price:0}));
+      $('editShelves').innerHTML = shelves.map((sh,i)=>`<div class="edit-grid" data-shelf="${i}">
+        <strong>${String(i+1).padStart(2,'0')}</strong>
+        <input class="control" name="item1" maxlength="40" placeholder="道具名称" value="${escapeHtml(sh.items[0]??'')}" />
+        <input class="control" name="item2" maxlength="40" placeholder="可选" value="${escapeHtml(sh.items[1]??'')}" />
+        <input class="control" name="price" type="number" min="0" max="999999999" step="1" placeholder="两" value="${sh.items.length?sh.price:''}" />
+      </div>`).join('');
+      $('shopDialog').showModal();
+    }
+    const closeEditor = ()=>$('shopDialog').close();
+    $('addShop').addEventListener('click',()=>openEditor(null));
+    $('editShop').addEventListener('click',()=>openEditor(shops.find(s=>s.id===selectedShopId)));
+    $('closeDialog').addEventListener('click',closeEditor);
+    $('cancelDialog').addEventListener('click',closeEditor);
+    $('shopForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name=$('editShopName').value.trim();
+      if (!name) { notify('请输入店铺名称'); $('editShopName').focus(); return; }
+      const rows=[...$('editShelves').querySelectorAll('[data-shelf]')];
+      const shelves=[];
+      for (let i=0; i<rows.length; i++) {
+        const item1=rows[i].querySelector('[name="item1"]').value.trim();
+        const item2=rows[i].querySelector('[name="item2"]').value.trim();
+        const rawPrice=rows[i].querySelector('[name="price"]').value.trim();
+        if (item2 && !item1) { notify(`货架 ${i+1}：请先填写道具 1`); return; }
+        if ((item1 || item2) && (!rawPrice || !Number.isSafeInteger(Number(rawPrice)) || Number(rawPrice)<0)) { notify(`货架 ${i+1}：请填写有效的非负整数价格`); return; }
+        shelves.push({items:[...new Set([item1,item2].filter(Boolean))], price:item1?Number(rawPrice):0});
+      }
+      const id=editingShopId ?? Math.max(0,...shops.map(s=>s.id))+1;
+      const newShop={id,name,shelves};
+      if (editingShopId===null) shops.push(newShop); else shops=shops.map(s=>s.id===id?newShop:s);
+      selectedShopId=id;
+      if (!shelves.some(sh => sh.items.includes(currentItem))) currentItem=shelves.flatMap(sh=>sh.items)[0] ?? '';
+      save(); closeEditor(); render(); notify('店铺数据已保存到当前浏览器');
+    });
+    $('deleteShop').addEventListener('click',()=>{
+      if (editingShopId===null || !confirm('确定删除这家店铺及全部货架数据？')) return;
+      shops=shops.filter(s=>s.id!==editingShopId); selectedShopId=null; save(); closeEditor(); render(); notify('店铺已删除');
+    });
+    $('resetData').addEventListener('click',()=>{
+      if (!confirm('载入演示数据会覆盖当前浏览器已录入的所有店铺，确定继续？')) return;
+      shops=demoData();currentItem='金柳露';selectedShopId=null;$('shopSearch').value='';$('sortOrder').value='asc';save();render();notify('已载入演示数据');
+    });
+    $('exportCsv').addEventListener('click',()=>{
+      const quoted=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+      const rows=[['店铺编号','店铺名称','货架编号','道具1','道具2','货架统一售价（两）']];
+      shops.forEach(shop=>shop.shelves.forEach((sh,i)=>rows.push([shop.id,shop.name,i+1,sh.items[0]??'',sh.items[1]??'',sh.items.length?sh.price:''])));
+      const content='\ufeff'+rows.map(r=>r.map(quoted).join(',')).join('\r\n');
+      const url=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'}));
+      const a=document.createElement('a');a.href=url;a.download='商场道具售价.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+      notify('已导出 CSV 文件');
+    });
+    function download(filename, content, type) {
+      const url=URL.createObjectURL(new Blob([content],{type}));
+      const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+    }
+    $('exportJson').addEventListener('click',()=>{ download('商会道具售价.json', JSON.stringify(shops,null,2), 'application/json'); notify('已导出 JSON 文件'); });
+    $('importJson').addEventListener('click',()=>$('importFile').click());
+    $('importFile').addEventListener('change', async e => {
+      const file=e.target.files[0]; e.target.value='';
+      if (!file) return;
+      try {
+        const data=JSON.parse(await file.text());
+        const valid=Array.isArray(data) && data.every(s => Number.isSafeInteger(s.id) && typeof s.name==='string' && Array.isArray(s.shelves) &&
+          s.shelves.every(sh => Array.isArray(sh.items) && sh.items.every(n => typeof n==='string') && Number.isSafeInteger(sh.price) && sh.price>=0));
+        if (!valid) throw new Error('数据格式不符');
+        if (!confirm('导入会覆盖当前浏览器已录入的所有店铺，确定继续？')) return;
+        shops=data; selectedShopId=null; currentItem=''; save(); render(); notify('导入成功');
+      } catch (err) { notify('导入失败：'+err.message); }
+    });
+    render();
+  </script>
+</body>
+</html>

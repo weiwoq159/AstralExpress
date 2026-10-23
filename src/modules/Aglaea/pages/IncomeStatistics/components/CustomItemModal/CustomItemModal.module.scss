@@ -1,0 +1,57 @@
+@use '@/shared/styles/variables.scss' as *;
+
+// 标题上方的英文小标：Bahnschrift 8px，左侧一条金色短线。
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font:
+    600 8px 'Bahnschrift',
+    sans-serif;
+  letter-spacing: 0.19em;
+  color: $brand-600;
+
+  &::before {
+    width: 23px;
+    height: 1px;
+    background: $gold-500;
+    content: '';
+  }
+}
+
+.title {
+  margin-top: 9px;
+}
+
+.intro {
+  margin-bottom: 20px;
+  font-size: 11px;
+  line-height: 1.8;
+  color: $color-text-muted;
+}
+
+// 每个字段上方留 17px，label 与输入框间距 8px。
+.field {
+  margin-top: 17px;
+
+  :global(.ant-form-item-extra) {
+    min-height: 0;
+    padding-top: 8px;
+    font-size: 10px;
+    line-height: 1.7;
+    color: $color-text-muted;
+  }
+}
+
+.optional {
+  color: $color-text-muted;
+}
+
+.price {
+  width: 100%;
+
+  :global(.ant-input-number-suffix) {
+    font-size: 10px;
+    color: $color-text-muted;
+  }
+}

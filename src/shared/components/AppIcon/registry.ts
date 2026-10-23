@@ -13,6 +13,7 @@ import {
   CopyOutlined,
   DatabaseOutlined,
   DiffOutlined,
+  DollarOutlined,
   DownloadOutlined,
   EditOutlined,
   ExpandOutlined,
@@ -37,6 +38,7 @@ import {
   NotificationOutlined,
   PictureOutlined,
   PieChartOutlined,
+  PlusOutlined,
   ReadOutlined,
   SafetyCertificateOutlined,
   ScissorOutlined,
@@ -47,6 +49,7 @@ import {
   TableOutlined,
   TagOutlined,
   TagsOutlined,
+  WalletOutlined,
 } from "@ant-design/icons";
 
 import type { AntdIconProps } from "./AppIcon";
@@ -76,6 +79,7 @@ export const ANTD_ICON_MAP: Record<string, ComponentType<AntdIconProps>> = {
   CopyOutlined,
   DatabaseOutlined,
   DiffOutlined,
+  DollarOutlined,
   DownloadOutlined,
   EditOutlined,
   ExpandOutlined,
@@ -100,6 +104,7 @@ export const ANTD_ICON_MAP: Record<string, ComponentType<AntdIconProps>> = {
   NotificationOutlined,
   PictureOutlined,
   PieChartOutlined,
+  PlusOutlined,
   ReadOutlined,
   SafetyCertificateOutlined,
   ScissorOutlined,
@@ -110,6 +115,7 @@ export const ANTD_ICON_MAP: Record<string, ComponentType<AntdIconProps>> = {
   TableOutlined,
   TagOutlined,
   TagsOutlined,
+  WalletOutlined,
 };
 
 /** 未命中或未填写 icon 字段时的兜底图标。 */

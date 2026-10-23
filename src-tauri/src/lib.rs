@@ -1,7 +1,8 @@
-mod commands;
 mod database;
-mod domain;
+mod modules;
 mod platform;
+mod shared;
+mod tray;
 mod weather;
 
 use std::sync::Arc;
@@ -22,9 +23,15 @@ pub fn run() {
                         .build(),
                 )?;
             }
+            tray::init::init(app)?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![commands::weather::fetch_weather])
+        .invoke_handler(tauri::generate_handler![
+            weather::command::fetch_weather,
+            modules::Aglaea::items::command::aglaea_items_list,
+            modules::Aglaea::items::command::aglaea_items_insert,
+            modules::Aglaea::guild_shop::command::aglaea_guild_shops_list,
+        ])
         .run(tauri::generate_context!())
         .expect("error while building tauri application");
 }

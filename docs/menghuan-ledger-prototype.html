@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="星穹列车 · 我的梦幻账本，高保真交互原型。">
+  <title>我的梦幻账本 · 星穹列车</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --brand-50:#f1f5fe; --brand-100:#e1eafc; --brand-200:#c3d5f9; --brand-300:#9bb8f3; --brand-400:#6f93ea; --brand:#3f6fdc; --brand-600:#2c57bf; --brand-700:#22449a;
+      --ink:#12234f; --ink-soft:#3f5380; --muted:#5d7199; --gold:#d4a648; --gold-text:#806017; --gold-bg:#fbf4e2;
+      --green:#28685b; --green-bg:#d6f1e9; --red:#8d4d57; --line:rgba(44,87,191,.12); --glass:rgba(255,255,255,.46); --strong:rgba(255,255,255,.78);
+      --shadow:0 12px 36px rgba(18,35,79,.045),inset 0 1px 0 rgba(255,255,255,.82);
+      font-family:"Microsoft YaHei UI","Microsoft YaHei","PingFang SC",sans-serif; color:var(--ink); font-size:13px;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; min-width:360px; min-height:100vh; background:radial-gradient(ellipse at 3% 0%,rgba(111,147,234,.25),transparent 40rem),radial-gradient(ellipse at 100% 20%,rgba(150,180,245,.19),transparent 35rem),radial-gradient(ellipse at 60% 100%,rgba(110,200,235,.15),transparent 36rem),linear-gradient(135deg,#eaf1ff,#f6f9ff 48%,#edf2ff); background-attachment:fixed; }
+    button,input,select,textarea { font:inherit; } button,a,input,select,textarea { -webkit-tap-highlight-color:transparent; }
+    button { cursor:pointer; } button:disabled { cursor:not-allowed; opacity:.45; } a { color:inherit; text-decoration:none; }
+    button,input,select,textarea { transition:background .16s,border-color .16s,box-shadow .16s; }
+    button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible { outline:2px solid var(--brand); outline-offset:3px; }
+    button { color:inherit; } h1,h2,h3,p { margin:0; } [hidden] { display:none!important; }
+    svg.icon { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.65; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sprite { position:absolute; width:0; height:0; overflow:hidden; } .num { font-family:"Bahnschrift","DIN Alternate","Trebuchet MS",sans-serif; font-variant-numeric:tabular-nums; }
+    .glass { background:var(--glass); border:1px solid rgba(255,255,255,.9); box-shadow:var(--shadow); backdrop-filter:blur(20px) saturate(125%); -webkit-backdrop-filter:blur(20px) saturate(125%); }
+    .app { max-width:1600px; margin:22px auto; padding:0 28px; }
+    .topbar { height:65px; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:0 23px; border-radius:15px; }
+    .identity,.identity-copy,.top-right,.crumb,.inline,.heading,.panel-title,.date-picker,.date-nav,.server-button,.button,.text-button { display:flex; align-items:center; }
+    .identity { gap:11px; } .brand-mark { width:33px; height:33px; display:grid; place-items:center; color:white; background:linear-gradient(135deg,#22449a,#6f93ea); border-radius:10px; box-shadow:0 5px 13px #2c57bf25; }
+    .brand-mark svg { width:23px; height:23px; } .identity-copy { gap:14px; } .brand-name { font-size:13px; font-weight:700; letter-spacing:.08em; }
+    .brand-caption { font:8px "Bahnschrift",sans-serif; letter-spacing:.15em; margin-top:3px; color:var(--muted); }
+    .crumb { gap:13px; border-left:1px solid var(--line); padding-left:18px; margin-left:7px; color:var(--muted); font-size:11px; } .crumb .icon { width:12px; } .crumb b { color:var(--ink-soft); font-weight:500; }
+    .top-right { gap:20px; font-size:10px; } .saved { display:flex; align-items:center; gap:6px; color:var(--green); } .saved i { width:5px; height:5px; background:currentColor; border-radius:50%; } .prototype-tag { padding:5px 9px; border:1px solid var(--line); color:var(--muted); border-radius:5px; background:#ffffff40; }
+    .avatar { width:30px; height:30px; border:2px solid #fff; background:var(--brand-100); color:var(--brand-700); border-radius:50%; display:grid; place-items:center; font-weight:700; font-size:12px; }
+    .intro { position:relative; display:flex; align-items:center; justify-content:space-between; min-height:150px; padding:25px 7px 24px; overflow:hidden; }
+    .eyebrow { display:flex; gap:9px; align-items:center; color:var(--brand-600); font:600 9px "Bahnschrift",sans-serif; letter-spacing:.19em; } .eyebrow::before { content:""; width:23px; height:1px; background:var(--gold); }
+    h1 { font-size:30px; letter-spacing:.035em; line-height:1.3; margin:10px 0 9px; } .intro p { color:var(--muted); font-size:11px; letter-spacing:.02em; }
+    .intro-art { width:330px; height:145px; position:absolute; right:31px; top:4px; pointer-events:none; } .intro-note { position:absolute; right:275px; bottom:30px; color:var(--muted); font:10px "SimSun",serif; letter-spacing:.17em; } .intro-note i { color:var(--gold); font-style:normal; margin-right:6px; }
+    .workspace-toolbar { display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:18px; }
+    .view-tabs { display:flex; gap:25px; align-items:center; padding-left:3px; align-self:stretch; }
+    .view-tab { position:relative; display:flex; gap:7px; align-items:center; background:transparent; border:0; padding:13px 2px 14px; color:var(--muted); font-size:12px; } .view-tab .icon { width:15px; height:15px; }
+    .view-tab.active { color:var(--brand-700); font-weight:700; } .view-tab.active::after { content:""; position:absolute; left:2px; right:2px; height:3px; bottom:0; border-radius:5px; background:var(--brand); }
+    .toolbar-right { display:flex; align-items:center; gap:12px; } .date-picker { gap:7px; } .date-nav { gap:1px; padding:3px; border:1px solid #ffffffd9; border-radius:8px; background:#ffffff60; }
+    .icon-button { display:grid; place-items:center; width:29px; height:29px; padding:0; border:0; border-radius:6px; background:transparent; color:var(--muted); } .icon-button:hover { background:white; color:var(--brand-600); } .icon-button .icon { width:15px; height:15px; }
+    .date-field { display:flex; align-items:center; gap:7px; padding:0 8px; } .date-field .icon { width:14px; color:var(--brand-600); } input[type=date] { border:0; background:transparent; color:var(--ink-soft); font:12px "Bahnschrift","Microsoft YaHei UI",sans-serif; width:119px; padding:4px 0; } input[type=date]::-webkit-calendar-picker-indicator { width:12px; opacity:.5; }
+    .today-button { padding:5px 8px; background:transparent; border:0; color:var(--brand-600); font-size:10px; }
+    .server-button { gap:8px; padding:10px 12px; background:#ffffff80; border:1px solid white; border-radius:8px; color:var(--ink-soft); font-size:11px; } .server-button .icon { width:14px; height:14px; } .server-button .chevron { width:11px; margin-left:6px; }
+    .metrics { display:grid; grid-template-columns:1.24fr 1fr 1fr 1fr; gap:14px; margin-bottom:22px; }
+    .metric { position:relative; min-width:0; padding:19px 21px 17px; border-radius:14px; overflow:hidden; }
+    .metric-label { display:flex; align-items:center; justify-content:space-between; color:var(--muted); font-size:11px; } .metric-label .icon { width:16px; height:16px; color:#6f93ea; } .metric-value { display:flex; align-items:baseline; gap:7px; margin-top:14px; color:var(--brand-700); }
+    .metric-value strong { font-size:33px; font-weight:600; letter-spacing:-.035em; line-height:1.05; } .metric-value .unit { font-size:11px; font-weight:400; letter-spacing:0; } .metric-value .currency { font-size:21px; margin-right:-4px; } .metric-note { font-size:10px; color:var(--muted); margin-top:11px; display:flex; gap:6px; align-items:center; }
+    .metric.primary { background:linear-gradient(115deg,#2d54ad,#3f6fdc 70%,#7095e8); border-color:#6488d4; box-shadow:0 10px 24px #2c57bf1f,inset 0 1px 0 #ffffff26; }
+    .metric.primary .metric-label,.metric.primary .metric-note { color:#e0eaff; } .metric.primary .metric-value { color:white; } .metric.primary .metric-label .icon { color:#cfddff; }
+    .metric.primary::after { content:""; position:absolute; width:145px; height:145px; border:1px solid #ffffff12; border-radius:50%; top:29px; right:-28px; box-shadow:0 0 0 22px #ffffff05,0 0 0 44px #ffffff05; pointer-events:none; }
+    .metric-note .dot { width:4px; height:4px; background:#c3d5f9; border-radius:50%; } .metric-note .small-pill { font-size:9px; padding:2px 5px; border-radius:4px; color:var(--gold-text); background:var(--gold-bg); }
+    .main-grid { display:grid; grid-template-columns:minmax(0,1fr) 324px; gap:21px; align-items:start; } .main-column,.side-column { min-width:0; display:flex; flex-direction:column; gap:19px; }
+    .panel { border-radius:16px; overflow:hidden; } .panel-header { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:21px 23px 17px; }
+    .panel-title { gap:9px; } .panel-title::before { content:""; width:3px; height:16px; background:linear-gradient(var(--brand),var(--brand-300)); border-radius:3px; } h2 { font-size:15px; font-weight:700; letter-spacing:.02em; } .panel-sub { margin-top:7px; color:var(--muted); font-size:10px; padding-left:12px; }
+    .count-tag { padding:2px 6px; background:var(--brand-100); border-radius:4px; font:11px "Bahnschrift",sans-serif; color:var(--brand-600); margin-left:1px; }
+    .button { min-height:34px; justify-content:center; gap:6px; padding:0 12px; border:1px solid var(--line); border-radius:7px; background:#ffffff85; font-size:11px; color:var(--ink-soft); white-space:nowrap; }
+    .button:hover { background:#fff; border-color:var(--brand-200); } .button .icon { width:14px; height:14px; } .button.primary { background:var(--brand); border-color:var(--brand); color:white; box-shadow:0 4px 10px #3f6fdc1a; } .button.primary:hover { background:var(--brand-600); } .button.soft { border-color:transparent; background:var(--brand-100); color:var(--brand-700); }
+    .text-button { gap:5px; justify-content:center; border:0; background:transparent; color:var(--brand-600); font-size:10px; padding:5px 0; } .text-button:hover { color:var(--brand-700); } .text-button .icon { width:13px; height:13px; }
+    .table-wrap { overflow-x:auto; } .ledger-table { border-collapse:collapse; width:100%; min-width:600px; text-align:left; table-layout:fixed; }
+    .ledger-table th { font-weight:400; font-size:10px; color:var(--muted); height:38px; background:#e1eafc33; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .ledger-table th:first-child { width:35%; padding-left:24px; } .ledger-table th:nth-child(2) { width:21%; } .ledger-table th:nth-child(3) { width:19%; text-align:center; } .ledger-table th:nth-child(4) { width:19%; text-align:right; } .ledger-table th:last-child { width:6%; }
+    .ledger-table td { height:65px; border-bottom:1px solid #2c57bf0b; padding:8px 0; } .ledger-table tr:hover td { background:#ffffff38; } .ledger-table td:first-child { padding-left:24px; } .ledger-table td:nth-child(4) { text-align:right; font-size:15px; color:var(--brand-700); font-weight:500; } .ledger-table td:last-child { text-align:center; }
+    .item-info { display:flex; align-items:center; gap:11px; } .item-art { width:36px; height:36px; border-radius:10px; display:grid; place-items:center; border:1px solid #ffffffd9; background:linear-gradient(145deg,#fff,#e8effc); box-shadow:0 3px 9px #12234f06; flex:none; } .item-art svg { width:28px; height:28px; overflow:visible; } .item-art.gold { background:linear-gradient(145deg,#fffcf3,#f5e8c3); } .item-art.pink { background:linear-gradient(145deg,#fff8fb,#f8e5ef); } .item-art.green { background:linear-gradient(145deg,#f6fefc,#e1f0eb); }
+    .item-name { font-size:12px; font-weight:500; } .item-category { margin-top:4px; color:var(--muted); font-size:9px; display:flex; align-items:center; gap:5px; } .manual-tag { color:var(--gold-text); font-size:8px; padding:1px 4px; background:#f8edd1; border-radius:3px; }
+    .price-field { display:flex; align-items:center; gap:4px; } .price-field input { width:69px; padding:6px 5px; margin-left:-5px; border:1px solid transparent; border-radius:5px; color:var(--ink-soft); background:transparent; font-size:12px; -moz-appearance:textfield; }
+    input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; } .price-field input:hover,.price-field input:focus { border-color:var(--brand-200); background:#ffffffb3; } .price-field input::placeholder { color:var(--gold-text); font:10px "Microsoft YaHei UI",sans-serif; } .price-field .icon { width:11px; height:11px; color:#899cbd; }
+    .quantity { display:flex; justify-content:center; align-items:center; gap:0; } .quantity button { display:grid; place-items:center; width:23px; height:25px; padding:0; border:1px solid var(--line); background:#ffffff70; color:var(--muted); border-radius:5px; } .quantity button:hover { color:var(--brand); background:white; } .quantity .icon { width:11px; height:11px; } .quantity input { width:34px; text-align:center; border:0; border-radius:4px; padding:5px 0; background:transparent; color:var(--ink); font-size:12px; }
+    .remove-row { opacity:0; border:0; background:transparent; padding:4px; color:var(--muted); } .remove-row .icon { width:12px; height:12px; } tr:hover .remove-row,.remove-row:focus-visible { opacity:1; } .remove-row:hover { color:var(--red); } .unpriced { font:10px "Microsoft YaHei UI",sans-serif; color:var(--gold-text); }
+    .table-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 23px; font-size:10px; color:var(--muted); background:#ffffff30; } .table-total { display:flex; gap:10px; align-items:baseline; white-space:nowrap; } .table-total strong { font-size:19px; color:var(--brand-700); font-weight:600; } .table-total small { font-size:10px; color:var(--muted); font-weight:400; margin-left:4px; }
+    .unpriced-note { display:flex; align-items:center; gap:5px; color:var(--gold-text); } .unpriced-note .icon { width:12px; height:12px; }
+    .catalog-header { padding-bottom:14px; } .catalog-tools { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:0 23px 14px; }
+    .category-tabs { display:flex; gap:5px; flex-wrap:wrap; } .category-tab { padding:6px 10px; border:0; border-radius:6px; background:transparent; color:var(--muted); font-size:10px; } .category-tab:hover { background:#ffffff70; } .category-tab.active { background:var(--brand-100); color:var(--brand-700); font-weight:700; }
+    .search-field { display:flex; align-items:center; gap:6px; width:173px; flex:none; padding:7px 9px; border:1px solid var(--line); border-radius:7px; background:#ffffff75; } .search-field .icon { width:13px; height:13px; color:var(--muted); } .search-field input { width:100%; min-width:0; border:0; outline:0; background:transparent; color:var(--ink); font-size:10px; } .search-field:focus-within { border-color:var(--brand-300); } .search-field input::placeholder { color:#7d8fb0; }
+    .catalog-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:9px; padding:0 23px 21px; } .catalog-item { position:relative; display:flex; align-items:center; gap:9px; padding:12px 10px; border:1px solid #ffffffc9; border-radius:10px; background:#ffffff5e; text-align:left; min-width:0; } .catalog-item:hover { background:#ffffffd9; border-color:var(--brand-200); box-shadow:0 5px 15px #2c57bf0b; } .catalog-item .item-art { width:29px; height:29px; border-radius:8px; box-shadow:none; } .catalog-item .item-art svg { width:24px; height:24px; } .catalog-item .item-name { font-size:10px; white-space:nowrap; } .catalog-price { margin-top:4px; color:var(--muted); font-size:9px; } .catalog-plus { margin-left:auto; display:grid; place-items:center; width:17px; height:17px; border-radius:5px; color:var(--brand-600); background:var(--brand-100); flex:none; } .catalog-plus .icon { width:11px; height:11px; }
+    .catalog-hint { display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--line); padding:12px 23px; color:var(--muted); font-size:9px; } .catalog-hint .icon { width:11px; height:11px; color:var(--gold); } .catalog-hint .inline { gap:5px; }
+    .timer-panel { background:linear-gradient(150deg,#ffffffad,#e1eafc78); } .timer-panel .panel-header { padding-bottom:0; } .status { display:flex; align-items:center; gap:5px; font-size:9px; color:var(--muted); padding:4px 7px; background:#e3e9f6; border:1px solid #ffffff99; border-radius:5px; } .status::before { content:""; width:4px; height:4px; background:currentColor; border-radius:50%; } .status.running { color:#1b6f8c; background:#d1f0f7; }
+    .timer-face { padding:24px 22px 0; text-align:center; } .timer-caption { color:var(--muted); font-size:10px; } .clock { font-size:43px; font-weight:400; letter-spacing:-.02em; margin-top:10px; line-height:1; color:var(--brand-700); } .clock span { color:#9bb8d9; margin:0 1px; } .timer-segment { margin-top:12px; color:var(--muted); font-size:9px; display:flex; align-items:center; justify-content:center; gap:7px; } .timer-segment b { color:var(--ink-soft); font-weight:500; font-size:11px; }
+    .timer-controls { display:grid; grid-template-columns:1.2fr 1fr; gap:9px; padding:21px 22px 18px; } .timer-controls .button { min-height:38px; } .timer-configuration { border-top:1px solid var(--line); margin:0 22px; padding:14px 0; display:flex; align-items:center; justify-content:space-between; color:var(--muted); font-size:10px; } .timer-configuration label { display:flex; align-items:center; gap:7px; } .timer-configuration input { width:35px; padding:4px; border:1px solid var(--line); border-radius:5px; text-align:center; background:#ffffff90; color:var(--ink-soft); font-size:11px; } .timer-configuration .text-button { font-size:9px; }
+    .session-preview { padding:0 22px 18px; } .session-preview-heading { display:flex; justify-content:space-between; align-items:center; margin-bottom:13px; color:var(--muted); font-size:9px; } .session-preview-heading .text-button { font-size:9px; } .session-mini { display:flex; align-items:center; gap:9px; margin-top:12px; } .session-dot { width:6px; height:6px; border:1px solid #94addf; border-radius:50%; flex:none; } .session-mini-name { font-size:10px; color:var(--ink-soft); } .session-mini-time { margin-top:4px; color:var(--muted); font-size:9px; } .session-mini-amount { margin-left:auto; font-size:13px; color:var(--brand-700); } .session-mini-amount small { font-size:9px; color:var(--muted); margin-left:3px; }
+    .price-panel .panel-header { padding-bottom:15px; } .price-content { padding:0 22px 18px; } .server-label { display:flex; align-items:center; gap:7px; color:var(--ink-soft); font-size:10px; } .server-label .icon { width:13px; height:13px; color:var(--brand); } .gold-price { margin:17px 0 14px; display:flex; align-items:baseline; gap:4px; } .gold-price .currency { color:var(--gold-text); font-size:18px; } .gold-price strong { font-size:30px; font-weight:500; letter-spacing:-.03em; color:var(--gold-text); } .gold-price small { margin-left:5px; color:var(--muted); font-size:10px; }
+    .price-rule { background:#ffffff70; border:1px solid #ffffffd9; border-radius:7px; padding:10px 11px; display:flex; align-items:center; gap:7px; color:var(--muted); font-size:9px; } .price-rule .icon { width:12px; height:12px; color:var(--gold); } .price-foot { display:flex; align-items:center; justify-content:space-between; margin-top:12px; font-size:9px; color:var(--muted); } .price-foot .text-button { font-size:9px; }
+    .ledger-note { padding:0 6px; display:flex; align-items:flex-start; gap:7px; color:var(--muted); font-size:10px; line-height:1.9; } .ledger-note .icon { width:14px; height:14px; margin-top:3px; color:#6f93ea; } .ledger-note b { color:var(--ink-soft); font-weight:500; }
+    .page-footer { display:flex; justify-content:space-between; gap:10px; margin:22px 3px 2px; color:var(--muted); font-size:9px; } .page-footer .signature { font:9px "Bahnschrift",sans-serif; letter-spacing:.12em; color:#7d90b4; }
+    .empty-state { text-align:center; padding:38px 20px; color:var(--muted); grid-column:1/-1; font-size:11px; } .empty-state .icon { width:30px; height:30px; margin-bottom:12px; color:var(--brand-300); } .empty-state p { margin-top:7px; font-size:10px; }
+    .history-list { padding:0 23px 23px; } .history-row { display:grid; grid-template-columns:32px 1fr 110px 110px; align-items:center; gap:14px; padding:20px 0; border-bottom:1px solid var(--line); } .history-index { font-size:15px; color:var(--brand-300); } .history-name { font-size:12px; font-weight:500; } .history-desc { margin-top:7px; color:var(--muted); font-size:10px; } .history-value { text-align:right; font-size:18px; color:var(--brand-700); } .history-value small { font-size:9px; color:var(--muted); } .history-duration { text-align:right; font-size:14px; color:var(--ink-soft); } .history-summary { margin-top:19px; color:var(--muted); font-size:11px; display:flex; justify-content:space-between; }
+    dialog { width:min(520px,calc(100vw - 32px)); max-height:calc(100vh - 48px); overflow:auto; padding:0; border:1px solid #fff; border-radius:18px; color:var(--ink); background:linear-gradient(145deg,#f9fbff,#ecf2ff); box-shadow:0 25px 100px #12234f33; }
+    dialog.wide { width:min(620px,calc(100vw - 32px)); } dialog::backdrop { background:#12234f38; backdrop-filter:blur(5px); } .dialog-header { display:flex; align-items:flex-start; justify-content:space-between; padding:25px 25px 0; } .dialog-header .eyebrow { font-size:8px; } .dialog-header h2 { margin-top:9px; font-size:21px; } .dialog-header .icon-button { margin-top:-5px; margin-right:-6px; } .dialog-body { padding:18px 25px 24px; } .dialog-intro { color:var(--muted); font-size:11px; line-height:1.8; margin-bottom:20px; }
+    .field { display:flex; flex-direction:column; gap:8px; margin-top:17px; } .field label { color:var(--ink-soft); font-size:11px; } .field input,.field select,.field textarea { width:100%; min-height:39px; padding:9px 11px; border:1px solid var(--line); border-radius:7px; background:#ffffffc0; color:var(--ink); font-size:12px; } .field textarea { resize:vertical; min-height:150px; line-height:1.9; } .field small { color:var(--muted); font-size:10px; line-height:1.7; } .field .unit-input { position:relative; } .field .unit-input input { padding-right:47px; } .unit-input span { position:absolute; right:12px; top:12px; color:var(--muted); font-size:10px; }
+    .dialog-footer { display:flex; justify-content:flex-end; align-items:center; gap:10px; padding:17px 25px; border-top:1px solid var(--line); background:#ffffff40; } .dialog-footer .button { min-height:36px; } .form-error { min-height:16px; color:var(--red); font-size:11px; margin-top:13px; line-height:1.7; }
+    .server-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .server-option { display:flex; align-items:center; justify-content:space-between; text-align:left; gap:8px; padding:14px; border:1px solid var(--line); border-radius:9px; background:#ffffff99; } .server-option strong { font-size:12px; font-weight:500; } .server-option small { display:block; margin-top:7px; color:var(--muted); font-size:9px; } .server-option .icon { width:16px; height:16px; color:transparent; } .server-option.active { border-color:var(--brand); background:var(--brand-50); } .server-option.active .icon { color:var(--brand); }
+    .segmented { display:flex; padding:4px; border:1px solid var(--line); border-radius:8px; background:var(--brand-100); gap:4px; } .segmented button { flex:1; padding:9px; border:0; border-radius:5px; color:var(--muted); background:transparent; font-size:11px; } .segmented button.active { color:var(--brand-700); background:white; box-shadow:0 2px 7px #12234f09; } .account-fields { display:grid; grid-template-columns:1fr 1fr; gap:0 14px; } .settle-summary { display:flex; justify-content:space-between; padding:13px 15px; border:1px solid white; border-radius:8px; background:#e1eafc80; color:var(--muted); font-size:11px; margin-bottom:17px; } .settle-summary b { font-weight:500; color:var(--ink-soft); }
+    .price-book { margin-top:15px; } .price-book-row { display:grid; grid-template-columns:1fr 90px; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line); font-size:11px; color:var(--ink-soft); } .price-book-row input { width:100%; border:1px solid var(--line); border-radius:5px; padding:7px 9px; background:#ffffffb0; color:var(--ink); font:12px "Bahnschrift",sans-serif; text-align:right; }
+    .duration-fields { display:flex; gap:10px; } .duration-fields .field { flex:1; min-width:0; } .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:10px; max-width:calc(100vw - 32px); padding:13px 18px; background:#173363f2; color:white; border:1px solid #ffffff30; box-shadow:0 10px 35px #12234f30; border-radius:10px; z-index:20; font-size:12px; } .toast .icon { color:#c5dfcb; width:16px; height:16px; } .toast button { border:0; border-left:1px solid #ffffff35; background:transparent; color:#c3d5f9; padding:0 0 0 11px; font-size:11px; white-space:nowrap; }
+    @media(prefers-reduced-motion:no-preference) { .intro,.metrics,.main-grid { animation:enter .5s ease both; } .metrics { animation-delay:.06s; } .main-grid { animation-delay:.12s; } @keyframes enter { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } } .catalog-item { transition:background .16s,box-shadow .16s,border-color .16s,transform .16s; } .catalog-item:hover { transform:translateY(-2px); } }
+    @media(min-width:1450px) { .main-grid { grid-template-columns:minmax(0,1fr) 355px; gap:23px; } .app { padding:0 34px; } .metric { min-height:145px; padding:22px 25px; } .ledger-table td { height:70px; } .catalog-item { padding:14px 13px; } }
+    @media(max-width:1150px) { .app { padding:0 20px; } .main-grid { grid-template-columns:minmax(0,1fr) 290px; gap:16px; } .catalog-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .catalog-tools { align-items:stretch; flex-direction:column-reverse; gap:12px; } .search-field { width:100%; } .intro-note { right:240px; font-size:9px; } .intro-art { right:0; width:290px; } .metric { padding:18px; } .metric-value strong { font-size:29px; } .metric-note { font-size:9px; } .ledger-table { min-width:560px; } .ledger-table th:first-child { width:32%; } .ledger-table th:nth-child(2) { width:20%; } .ledger-table th:nth-child(3) { width:23%; } .remove-row { opacity:.6; } }
+    @media(max-width:960px) { .main-grid { grid-template-columns:minmax(0,1fr); } .side-column { display:grid; grid-template-columns:1fr 1fr; align-items:start; } .ledger-note { grid-column:1/-1; } .catalog-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } .catalog-tools { flex-direction:row; align-items:center; } .search-field { width:180px; } .intro-note { display:none; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metric { min-height:132px; } .metrics .metric-note { font-size:10px; } .crumb { display:none; } .timer-panel { grid-row:1/3; } }
+    @media(max-width:640px) { .app { margin:12px auto; padding:0 13px; } .topbar { padding:0 14px; height:59px; border-radius:12px; } .brand-name { font-size:12px; } .top-right { gap:10px; } .top-right .avatar { display:none; } .saved { font-size:9px; } .prototype-tag { font-size:8px; padding:4px 6px; } .intro { min-height:151px; padding-left:4px; } .intro-art { right:-65px; width:230px; opacity:.45; top:12px; } h1 { font-size:27px; } .intro p { font-size:10px; max-width:235px; line-height:1.7; } .intro .eyebrow { font-size:8px; } .intro>div { position:relative; z-index:1; } .workspace-toolbar { flex-wrap:wrap; gap:9px; margin-bottom:13px; } .view-tabs { gap:24px; } .view-tab { font-size:11px; padding-top:0; padding-bottom:11px; } .toolbar-right { width:100%; justify-content:space-between; gap:6px; } .date-picker { gap:0; } .date-nav { padding:2px; } .date-nav>.icon-button { width:23px; } .date-field { gap:5px; padding:0 4px; } .date-field input { width:108px; font-size:11px; } .date-field>.icon { display:none; } .today-button { padding:4px 6px; } .server-button { font-size:10px; padding:10px 9px; gap:5px; } .server-button .chevron { margin-left:0; } .metrics { gap:10px; margin-bottom:15px; } .metric { border-radius:12px; min-height:124px; padding:15px 14px; } .metric-value { margin-top:13px; gap:5px; } .metric-value strong { font-size:29px; } .metric-label { font-size:10px; } .metric-label .icon { width:14px; } .metrics .metric-note { font-size:9px; margin-top:9px; gap:4px; } .metric-value .unit { font-size:10px; } .panel-header { padding:18px 16px 15px; } h2 { font-size:14px; } .panel-sub { font-size:9px; } .button { font-size:10px; padding:0 10px; } .ledger-table th:first-child,.ledger-table td:first-child { padding-left:16px; } .ledger-table { min-width:545px; } .table-footer { padding:12px 16px; } .table-total { gap:5px; } .table-total strong { font-size:17px; } .unpriced-note { font-size:9px; } .catalog-tools { flex-direction:column-reverse; align-items:stretch; padding:0 16px 12px; } .search-field { width:100%; } .category-tabs { gap:2px; } .category-tab { padding:6px 9px; } .catalog-grid { grid-template-columns:repeat(2,minmax(0,1fr)); padding:0 16px 16px; } .catalog-item { padding:12px 10px; } .catalog-item .item-name { font-size:11px; } .catalog-hint { padding:12px 16px; } .catalog-hint>span { display:none; } .side-column { display:flex; } .side-column .panel { width:100%; } .clock { font-size:47px; } .timer-configuration { margin:0 22px; } .history-list { padding:0 16px 20px; } .history-row { grid-template-columns:23px 1fr 70px; gap:9px; } .history-duration { display:none; } .history-value { font-size:16px; } .history-desc { font-size:9px; line-height:1.7; } .page-footer { flex-direction:column; line-height:1.8; margin:18px 4px; gap:6px; } .dialog-header { padding:22px 20px 0; } .dialog-body { padding:17px 20px 20px; } .dialog-footer { padding:15px 20px; } }
+  </style>
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true"><defs>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 2.7 7.3L22 12l-7.3 2.7L12 22l-2.7-7.3L2 12l7.3-2.7L12 2Z"/><path d="m19 3 .8 2.2L22 6l-2.2.8L19 9l-.8-2.2L16 6l2.2-.8L19 3Z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><rect x="5" y="3" width="15" height="18" rx="2"/><path d="M8 3v18M12 8h4M12 12h4M3 7h4M3 12h4M3 17h4"/></symbol>
+    <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 1.4 7.2M3 4v6h6M12 7v5l3 2"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></symbol><symbol id="i-right" viewBox="0 0 24 24"><path d="m10 6 6 6-6 6"/></symbol><symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4M17 3v4M3 11h18M8 15h1M14 15h1M8 18h1"/></symbol>
+    <symbol id="i-location" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-coin" viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="8" ry="4"/><path d="M4 7v5c0 5.3 16 5.3 16 0V7M4 12v5c0 5.3 16 5.3 16 0v-5M8 11v4M16 11v4"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M4 7V5a2 2 0 0 1 2-2h12v4M4 7h15a2 2 0 0 1 2 2v10H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/><path d="M21 11h-6v5h6M17 13.5h.1"/></symbol>
+    <symbol id="i-gem" viewBox="0 0 24 24"><path d="m3 9 4-6h10l4 6-9 12L3 9ZM3 9h18M7 3l5 18L17 3"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-10M15 5h6v6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol><symbol id="i-edit" viewBox="0 0 24 24"><path d="m15 4 5 5M4 20l5-1L21 7l-5-5L4 14v6Z"/></symbol>
+    <symbol id="i-batch" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M3 6l1 1 2-2M3 12l1 1 2-2M3 18l1 1 2-2"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8V4Z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol><symbol id="i-stop" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <linearGradient id="gold-gem" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffedb2"/><stop offset=".5" stop-color="#e9b64f"/><stop offset="1" stop-color="#b57923"/></linearGradient>
+    <radialGradient id="pearl"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#d2e8ff"/><stop offset=".8" stop-color="#7bace9"/><stop offset="1" stop-color="#4a79be"/></radialGradient>
+    <symbol id="art-diamond" viewBox="0 0 40 40"><path d="m5 15 8-10h14l8 10-15 21Z" fill="url(#gold-gem)" stroke="#b58434" stroke-width=".6"/><path d="M5 15h30L27 5l-7 31-7-31Z" fill="none" stroke="#fff3ce" stroke-width="1"/><path d="m5 15 15 4 15-4M20 5v14" fill="none" stroke="#bc8731" stroke-width=".6"/><path d="m13 5 7 14 7-14" fill="#fff9dc" opacity=".6"/></symbol>
+    <symbol id="art-pearl" viewBox="0 0 40 40"><ellipse cx="20" cy="33" rx="11" ry="2" fill="#6f93ea" opacity=".15"/><circle cx="20" cy="19" r="13" fill="url(#pearl)" stroke="#80a8d7" stroke-width=".7"/><path d="M10 23c7 6 16 3 18-5" stroke="#e8f6ff" stroke-width="1.3" fill="none"/><ellipse cx="16" cy="13" rx="4" ry="3" fill="#fff" opacity=".8"/></symbol>
+    <symbol id="art-fruit" viewBox="0 0 40 40"><path d="M22 13c-1-5 2-8 7-8 0 6-3 9-7 8Z" fill="#65a579"/><path d="M21 16c1-6-1-9-3-11" fill="none" stroke="#73884e" stroke-width="1.5"/><ellipse cx="14" cy="23" rx="9" ry="10" fill="#e3959d"/><ellipse cx="25" cy="23" rx="9" ry="10" fill="#eac16a"/><path d="M9 18c1-2 3-3 5-3M21 17c2-2 5-2 7 0" fill="none" stroke="#fff7dd" stroke-width="2" stroke-linecap="round"/><path d="M16 32c2 1 5 1 7 0" fill="none" stroke="#b68d49" stroke-width=".8"/></symbol>
+    <symbol id="art-armor" viewBox="0 0 40 40"><path d="m12 7 8 3 8-3 7 8-6 5-3-4v18H14V16l-3 4-6-5 7-8Z" fill="#90a9cb" stroke="#526e9d" stroke-width=".8"/><path d="m12 7 8 13 8-13M20 20v14M14 28h12" fill="none" stroke="#e6efff" stroke-width="1.1"/><path d="m17 12 3 8 3-8" fill="#e0c279"/><path d="M14 25h12" stroke="#526e9d" stroke-width="1"/></symbol>
+    <symbol id="art-stone" viewBox="0 0 40 40"><path d="m12 8 14-2 9 13-5 13-15 3L5 23Z" fill="#b8a0cc" stroke="#84739e" stroke-width=".8"/><path d="m12 8 8 13 6-15M5 23l15-2-5 14M20 21l15-2M20 21l10 11" fill="none" stroke="#e6dbf0" stroke-width="1.1"/><path d="m12 8 8 13L5 23" fill="#cab6dd"/></symbol>
+    <symbol id="art-spark" viewBox="0 0 40 40"><path d="m22 4 4 13 10 5-13 3-6 11-3-14-10-5 12-3Z" fill="#98c8c0" stroke="#5e9a97" stroke-width=".8"/><path d="m22 4-3 16 17 2M19 20l-2 16M19 20 4 17" fill="none" stroke="#eafff8" stroke-width="1"/><path d="m30 6 1 4 4 1-4 2-1 4-2-4-4-2 4-1Z" fill="#d4a648"/></symbol>
+    <symbol id="art-scroll" viewBox="0 0 40 40"><path d="M10 7h22v23H10Z" fill="#ead4a3" stroke="#b69a64" stroke-width=".8"/><path d="M10 7h3v26H9c-5 0-5-6 0-6h2M29 7c0-5 7-5 7 0v4h-7M13 33h19" fill="#f5e8cc" stroke="#b69a64" stroke-width="1.1"/><path d="M18 13h8M18 18h8M18 23h5" stroke="#a88042" stroke-width="1.3"/><circle cx="25" cy="27" r="3" fill="#bb7376"/></symbol>
+    <symbol id="art-blue-gem" viewBox="0 0 40 40"><path d="m12 5 16 2 8 14-13 15L6 25 4 13Z" fill="#7ba3dc" stroke="#4d73af" stroke-width=".8"/><path d="m12 5 4 15 12-13M4 13l12 7-10 5M16 20l7 16 13-15Z" fill="none" stroke="#dbeaff" stroke-width="1"/><path d="m12 5 4 15L4 13Z" fill="#bbd6ff"/></symbol>
+  </defs></svg>
+
+  <div class="app">
+    <header class="topbar glass">
+      <div class="identity"><span class="brand-mark"><svg class="icon"><use href="#i-star"/></svg></span><div class="identity-copy"><div><div class="brand-name">星穹列车</div><div class="brand-caption">ASTRAL EXPRESS</div></div><div class="crumb"><span>梦幻西游</span><svg class="icon"><use href="#i-right"/></svg><b>我的账本</b></div></div></div>
+      <div class="top-right"><span class="saved" id="saveStatus" role="status"><i></i><span>本地已保存</span></span><span class="prototype-tag">交互原型</span><span class="avatar" aria-label="我的账本">星</span></div>
+    </header>
+
+    <section class="intro" aria-labelledby="pageTitle">
+      <div><div class="eyebrow">MY FANTASY JOURNEY / 每一份收获都有迹可循</div><h1 id="pageTitle">我的梦幻账本</h1><p>记下今日所得，也看见时间的价值。</p></div>
+      <span class="intro-note"><i>✦</i>把日常，慢慢积攒成闪光</span>
+      <svg class="intro-art" viewBox="0 0 360 170" aria-hidden="true"><defs><linearGradient id="hero-blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#b5cdf6"/></linearGradient><linearGradient id="hero-gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4cd"/><stop offset="1" stop-color="#dbb969"/></linearGradient></defs><ellipse cx="220" cy="94" rx="112" ry="35" transform="rotate(-17 220 94)" fill="none" stroke="#9bb8f3" stroke-opacity=".34"/><ellipse cx="220" cy="94" rx="89" ry="67" transform="rotate(-17 220 94)" fill="none" stroke="#fff" stroke-opacity=".8"/><path d="m171 46 78-13 14 94-78 13Z" fill="url(#hero-blue)" stroke="#fff" stroke-width="2"/><path d="m182 45 15 91M201 60l37-6M204 77l37-6M206 94l26-4" fill="none" stroke="#8facdc" stroke-width="1.4"/><g transform="translate(242 104)"><ellipse cy="20" rx="24" ry="9" fill="#c7a45d"/><path d="M-24 8v12c0 12 48 12 48 0V8" fill="url(#hero-gold)" stroke="#d2b167"/><ellipse cy="8" rx="24" ry="9" fill="#faeac1" stroke="#d2b167"/><path d="M-24-3V8c0 12 48 12 48 0V-3" fill="url(#hero-gold)" stroke="#d2b167"/><ellipse cy="-3" rx="24" ry="9" fill="#fff2cd" stroke="#dbbd7b"/><path d="m-4-6 8 0 0 5-8 0Z" fill="none" stroke="#c6a15a"/></g><path d="m284 47 2.5 8.5 8.5 2.5-8.5 2.5L284 69l-2.5-8.5-8.5-2.5 8.5-2.5Z" fill="#d4a648" opacity=".8"/><circle cx="142" cy="107" r="3" fill="#93afe5"/><circle cx="300" cy="96" r="2" fill="#d4a648"/><path d="M117 64h8m-4-4v8" stroke="#8aa8e0" stroke-width="1"/><path d="M126 145h187" stroke="#adc3e8" stroke-opacity=".35"/></svg>
+    </section>
+
+    <div class="workspace-toolbar">
+      <nav class="view-tabs" aria-label="账本视图"><button class="view-tab active" data-view="ledger" aria-pressed="true"><svg class="icon"><use href="#i-book"/></svg>今日账本</button><button class="view-tab" data-view="history" aria-pressed="false"><svg class="icon"><use href="#i-history"/></svg>结算记录</button></nav>
+      <div class="toolbar-right"><div class="date-picker"><div class="date-nav"><button class="icon-button" id="previousDay" aria-label="前一天"><svg class="icon"><use href="#i-left"/></svg></button><label class="date-field"><svg class="icon"><use href="#i-calendar"/></svg><input type="date" id="ledgerDate" min="2020-01-01" max="2099-12-31" aria-label="账本日期" value="2026-10-21"></label><button class="icon-button" id="nextDay" aria-label="后一天"><svg class="icon"><use href="#i-right"/></svg></button></div><button class="today-button" id="goToday">今天</button></div><button class="server-button" id="openServer"><svg class="icon"><use href="#i-location"/></svg><span id="toolbarServer">北京一区 · 紫禁城</span><svg class="icon chevron"><use href="#i-down"/></svg></button></div>
+    </div>
+
+    <section class="metrics" aria-label="当日收益总览">
+      <article class="metric primary glass"><div class="metric-label"><span>今日合计收益</span><svg class="icon"><use href="#i-coin"/></svg></div><div class="metric-value"><strong class="num" id="totalRevenue">1,686.00</strong><span class="unit">万两</span></div><div class="metric-note"><span class="dot"></span><span>已结算游戏币 + 物品参考估值</span></div></article>
+      <article class="metric glass"><div class="metric-label"><span>游戏币实收</span><svg class="icon"><use href="#i-wallet"/></svg></div><div class="metric-value"><strong class="num" id="cashRevenue">1,080.00</strong><span class="unit">万两</span></div><div class="metric-note"><span id="settledCount">已完成 3 段结算</span></div></article>
+      <article class="metric glass"><div class="metric-label"><span>物品参考估值</span><svg class="icon"><use href="#i-gem"/></svg></div><div class="metric-value"><strong class="num" id="itemRevenue">606.00</strong><span class="unit">万两</span></div><div class="metric-note"><span id="metricItemCount">6 种物品</span><span class="small-pill" id="metricUnpriced">1 项待计价</span></div></article>
+      <article class="metric glass"><div class="metric-label"><span>人民币参考值</span><svg class="icon"><use href="#i-trend"/></svg></div><div class="metric-value"><span class="currency num">¥</span><strong class="num" id="rmbRevenue">112.40</strong></div><div class="metric-note"><span>每小时约 <b class="num" id="hourlyRevenue">¥31.22</b></span><span>· 非实际收入</span></div></article>
+    </section>
+
+    <div class="main-grid">
+      <div class="main-column">
+        <section class="panel glass" id="catalogPanel" aria-labelledby="catalogTitle">
+          <div class="panel-header catalog-header"><div class="panel-title"><h2 id="catalogTitle">快速记入</h2><span style="font-size:10px;color:var(--muted);margin-left:4px">点一下，多一份收获</span></div><button class="text-button" id="openCustom"><svg class="icon"><use href="#i-plus"/></svg>自定义物品</button></div>
+          <div class="catalog-tools"><div class="category-tabs" id="categoryTabs" aria-label="物品分类"></div><label class="search-field"><svg class="icon"><use href="#i-search"/></svg><input type="search" id="catalogSearch" placeholder="搜索物品…" aria-label="搜索物品"></label></div>
+          <div class="catalog-grid" id="catalogGrid"></div>
+          <div class="catalog-hint"><div class="inline"><svg class="icon"><use href="#i-star"/></svg>点击物品数量 +1，手填单价会保留</div><span>参考物价 · 非实时报价</span></div>
+        </section>
+
+        <section class="panel glass" id="ledgerPanel" aria-labelledby="itemsTitle">
+          <div class="panel-header"><div><div class="panel-title"><h2 id="itemsTitle">今日收获</h2><span class="count-tag" id="rowCount">6</span></div><p class="panel-sub" id="itemsSubtitle">共 26 件物品，所有单价以万两计</p></div><button class="button" id="openBatch"><svg class="icon"><use href="#i-batch"/></svg>批量填数量</button></div>
+          <div class="table-wrap"><table class="ledger-table"><thead><tr><th scope="col">物品</th><th scope="col">参考单价 / 万两</th><th scope="col">数量</th><th scope="col">估值 / 万两</th><th scope="col"><span aria-label="操作"></span></th></tr></thead><tbody id="itemRows"></tbody></table></div>
+          <div id="itemsEmpty" class="empty-state" hidden><svg class="icon"><use href="#i-gem"/></svg><div>今天的收获，从第一件物品开始</div><p>点击下方物品，即可记入当天账本。</p></div>
+          <div class="table-footer"><span class="unpriced-note" id="unpricedNote"><svg class="icon"><use href="#i-info"/></svg><span>1 项未计价，不计入收益</span></span><span class="table-total">物品小计<strong class="num" id="itemSubtotal">606.00<small>万两</small></strong></span></div>
+        </section>
+
+        <section class="panel glass" id="historyPanel" aria-labelledby="historyTitle" hidden><div class="panel-header"><div><div class="panel-title"><h2 id="historyTitle">当日结算记录</h2><span class="count-tag" id="historyCount">3</span></div><p class="panel-sub">每一段投入，都留下一份清楚的记录</p></div></div><div class="history-list" id="historyList"></div></section>
+
+
+      </div>
+
+      <aside class="side-column" aria-label="计时与价格设置">
+        <section class="panel glass timer-panel" aria-labelledby="timerTitle">
+          <div class="panel-header"><div class="panel-title"><h2 id="timerTitle">今日投入</h2></div><span class="status" id="timerStatus">已暂停</span></div>
+          <div class="timer-face"><div class="timer-caption">该日累计用时</div><div class="clock num" id="dayClock">03<span>:</span>36<span>:</span>00</div><div class="timer-segment"><span>本段</span><b class="num" id="segmentClock">00:26:18</b><span>·</span><span id="accountSummary">5 个账号</span></div></div>
+          <div class="timer-controls"><button class="button primary" id="toggleTimer"><svg class="icon"><use href="#i-play"/></svg><span>继续计时</span></button><button class="button" id="openSettlement"><svg class="icon"><use href="#i-stop"/></svg>结束并结算</button></div>
+          <div class="timer-configuration"><label>账号数量 <input id="accountCount" type="number" min="1" max="20" step="1" value="5" aria-label="账号数量"></label><button class="text-button" id="openDuration"><svg class="icon"><use href="#i-edit"/></svg>修正总时长</button></div>
+          <div class="session-preview"><div class="session-preview-heading"><span id="recentHeading">最近结算 · 3 段</span><button class="text-button" id="showAllHistory">查看全部<svg class="icon"><use href="#i-right"/></svg></button></div><div id="recentSessions"></div></div>
+        </section>
+
+        <section class="panel glass price-panel" aria-labelledby="priceTitle"><div class="panel-header"><div class="panel-title"><h2 id="priceTitle">当日价格</h2></div><button class="text-button" id="openPrices"><svg class="icon"><use href="#i-edit"/></svg>修改物价单</button></div><div class="price-content"><div class="server-label"><svg class="icon"><use href="#i-location"/></svg><span id="priceServer">北京一区 · 紫禁城</span></div><div class="gold-price"><span class="currency num">¥</span><strong class="num" id="goldPrice">200.00</strong><small>/ 3,000 万两</small></div><div class="price-rule"><svg class="icon"><use href="#i-info"/></svg>参考折算 = 合计收益 ÷ 3,000 × 金价</div><div class="price-foot"><span>示例报价，非实时数据</span><button class="text-button" id="editGold">调整金价<svg class="icon"><use href="#i-right"/></svg></button></div></div></section>
+        <div class="ledger-note"><svg class="icon"><use href="#i-info"/></svg><p><b>关于收益口径</b><br>已售物品请从清单扣除，再记录卖出所得，避免重复计入。关闭页面会暂停计时，离线时间不计入。</p></div>
+      </aside>
+    </div>
+    <footer class="page-footer"><span class="signature">ASTRAL EXPRESS <span style="color:var(--gold);padding:0 7px">✦</span> SMALL EFFORTS, REAL PROGRESS.</span><span>高保真原型 · 示例数据仅保存在本浏览器 · 无线上同步</span></footer>
+  </div>
+
+  <dialog id="serverDialog" aria-labelledby="serverDialogTitle"><div class="dialog-header"><div><div class="eyebrow">SERVER / 区服设置</div><h2 id="serverDialogTitle">选择你的区服</h2></div><button class="icon-button" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="dialog-body"><p class="dialog-intro">切换后使用该区服的示例金价与物价；你手动填写的价格会保留。仅影响当前日期。</p><div class="server-grid" id="serverOptions"></div><div class="form-error" id="serverError" role="alert"></div></div><div class="dialog-footer"><button class="button" data-close>取消</button><button class="button primary" id="saveServer">确认区服</button></div></dialog>
+  <dialog id="customDialog" aria-labelledby="customDialogTitle"><div class="dialog-header"><div><div class="eyebrow">NEW ITEM / 新的收获</div><h2 id="customDialogTitle">新增个人物品</h2></div><button class="icon-button" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div><form id="customForm"><div class="dialog-body"><p class="dialog-intro">物品会加入个人目录，并记入当前日，初始数量为 1。</p><div class="field"><label for="customName">物品名称</label><input id="customName" maxlength="30" required placeholder="例如：活动纪念道具" autocomplete="off"></div><div class="field"><label for="customPrice">参考单价 <span style="color:var(--muted)">（可选）</span></label><div class="unit-input"><input id="customPrice" type="number" min="0" max="100000000" step="0.01" placeholder="暂不计价可留空"><span>万两</span></div><small>未计价物品会显示提示，暂不计入合计收益。</small></div><div class="form-error" id="customError" role="alert"></div></div><div class="dialog-footer"><button class="button" type="button" data-close>取消</button><button class="button primary" type="submit">新增并记入</button></div></form></dialog>
+  <dialog id="batchDialog" aria-labelledby="batchDialogTitle"><div class="dialog-header"><div><div class="eyebrow">BATCH ENTRY / 一次记好</div><h2 id="batchDialogTitle">批量填写数量</h2></div><button class="icon-button" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div><form id="batchForm"><div class="dialog-body"><p class="dialog-intro">每行输入「物品名称 数量」，会设置该物品的当日总数量。全部校验通过后才会一起保存。</p><div class="field"><label for="batchText">物品与数量</label><textarea id="batchText" required spellcheck="false" placeholder="金刚石 2&#10;彩果 6&#10;70装备 3"></textarea><small>仅支持目录中已有的物品，数量为 1–99,999 的整数。</small></div><div class="form-error" id="batchError" role="alert"></div></div><div class="dialog-footer"><button class="button" type="button" data-close>取消</button><button class="button primary" type="submit">应用全部数量</button></div></form></dialog>
+  <dialog id="pricesDialog" class="wide" aria-labelledby="pricesDialogTitle"><div class="dialog-header"><div><div class="eyebrow">DAILY PRICES / 今日参考</div><h2 id="pricesDialogTitle">修改当日物价单</h2></div><button class="icon-button" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div><form id="pricesForm"><div class="dialog-body"><p class="dialog-intro">只修改当前日期。单价以万两计；留空表示未计价，手填报价在切换区服时保留。</p><div class="field"><label for="goldInput">当日金价</label><div class="unit-input"><input id="goldInput" type="number" min="0.01" max="1000000" step="0.01" required><span>元</span></div><small>每 3,000 万两对应的人民币参考值。</small></div><div id="priceBook" class="price-book"></div><div class="form-error" id="pricesError" role="alert"></div></div><div class="dialog-footer"><button class="button" type="button" data-close>取消</button><button class="button primary" type="submit">保存当日价格</button></div></form></dialog>
+  <dialog id="settlementDialog" aria-labelledby="settlementDialogTitle"><div class="dialog-header"><div><div class="eyebrow">SESSION COMPLETE / 这一段的收获</div><h2 id="settlementDialogTitle">结束并记录收益</h2></div><button class="icon-button" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div><form id="settlementForm"><div class="dialog-body"><div class="settle-summary"><span>本段时长 <b class="num" id="settlementDuration"></b></span><span id="settlementAccounts"></span></div><div class="field" style="margin-top:0;margin-bottom:17px"><label for="sessionName">本段备注</label><input id="sessionName" maxlength="40" placeholder="例如：抓鬼日常" value="日常收益" required></div><div class="segmented" aria-label="金额录入方式"><button type="button" class="active" data-mode="total" aria-pressed="true">总金额</button><button type="button" data-mode="accounts" aria-pressed="false">逐号金额</button></div><div id="settlementFields"></div><div class="form-error" id="settlementError" role="alert"></div><p class="dialog-intro" style="margin:12px 0 0;font-size:10px">只填写游戏币实收，清单里的物品会单独估值。暂不填金额时，本段仍会保留在结算记录中。</p></div><div class="dialog-footer"><button type="button" class="button" id="settleLater">稍后填金额</button><button type="submit" class="button primary">保存并结束</button></div></form></dialog>
+  <dialog id="durationDialog" aria-labelledby="durationDialogTitle"><div class="dialog-header"><div><div class="eyebrow">TIME / 用时修正</div><h2 id="durationDialogTitle">修正该日总时长</h2></div><button class="icon-button" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div><form id="durationForm"><div class="dialog-body"><p class="dialog-intro">只调整该日累计时长，不修改各段记录；修正后会重新计算每小时参考收益。</p><div class="duration-fields"><div class="field"><label for="durationHours">时</label><input id="durationHours" type="number" min="0" max="999" step="1" required></div><div class="field"><label for="durationMinutes">分</label><input id="durationMinutes" type="number" min="0" max="59" step="1" required></div><div class="field"><label for="durationSeconds">秒</label><input id="durationSeconds" type="number" min="0" max="59" step="1" required></div></div><div class="form-error" id="durationError" role="alert"></div></div><div class="dialog-footer"><button type="button" class="button" id="restoreDuration">恢复计时值</button><button type="submit" class="button primary">保存时长</button></div></form></dialog>
+
+  <script>
+    'use strict';
+    // 原型自包含：报价、账目与区服均为示例；不请求真实账户或价格接口。
+    const STORAGE_KEY = 'astral-express.menghuan-ledger.prototype.v1';
+    const TODAY = '2026-10-21';
+    const $ = id => document.getElementById(id);
+    const icon = name => `<svg class="icon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const money = value => Number(value).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    const validNumber = (value, max=100000000) => Number.isFinite(value) && value >= 0 && value <= max;
+    const validQuantity = value => Number.isInteger(value) && value >= 1 && value <= 99999;
+    const validDate = value => /^20\d{2}-\d{2}-\d{2}$/.test(value) && value>='2020-01-01' && value<='2099-12-31' && Number.isFinite(Date.parse(value+'T12:00:00')) && new Date(value+'T12:00:00Z').toISOString().slice(0,10) === value;
+    const timeText = seconds => { const s = Math.max(0, Math.floor(seconds)); return [Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(v=>String(v).padStart(2,'0')).join(':'); };
+    const shortTime = seconds => seconds >= 3600 ? `${Math.floor(seconds/3600)} 小时 ${Math.floor(seconds/60)%60} 分` : `${Math.floor(seconds/60)} 分 ${Math.floor(seconds)%60} 秒`;
+    const art = item => `<span class="item-art ${escapeHtml(item.tone || '')}"><svg aria-hidden="true"><use href="#art-${escapeHtml(item.art)}"/></svg></span>`;
+    const servers = [
+      {id:'zijin', name:'紫禁城', area:'北京一区', gold:200, factor:1},
+      {id:'lanting', name:'兰亭序', area:'浙江一区', gold:195, factor:.98},
+      {id:'diaoyu', name:'钓鱼岛', area:'山东一区', gold:210, factor:1.04},
+      {id:'shengshi', name:'盛世长安', area:'陕西区', gold:185, factor:.94}
+    ];
+    // 小型代表目录来自参考页的物品分类；价格是设计演示值。
+    const baseCatalog = [
+      {id:'diamond',name:'金刚石',category:'五宝',price:120,art:'diamond',tone:'gold',favorite:true},
+      {id:'pearl',name:'定魂珠',category:'五宝',price:120,art:'pearl',favorite:true},
+      {id:'fruit',name:'彩果',category:'杂货',price:38,art:'fruit',tone:'pink',favorite:true},
+      {id:'armor70',name:'70装备',category:'环装',price:4,art:'armor',favorite:true},
+      {id:'stone',name:'强化石',category:'杂货',price:.5,art:'stone',favorite:true},
+      {id:'training',name:'修炼果',category:'杂货',price:65,art:'fruit',tone:'green',favorite:true},
+      {id:'blackgem',name:'黑宝石',category:'宝石',price:8.5,art:'blue-gem',favorite:true},
+      {id:'scroll',name:'必杀',category:'兽决',price:42,art:'scroll',tone:'gold',favorite:true},
+      {id:'spark',name:'灵犀之屑',category:'杂货',price:null,art:'spark',tone:'green'},
+      {id:'nightpearl',name:'夜光珠',category:'五宝',price:8,art:'pearl'},
+      {id:'scale',name:'龙鳞',category:'五宝',price:3.5,art:'stone',tone:'green'},
+      {id:'waterpearl',name:'避水珠',category:'五宝',price:1.5,art:'pearl'},
+      {id:'armor60',name:'60装备',category:'环装',price:3,art:'armor'},
+      {id:'armor80',name:'80装备',category:'环装',price:7,art:'armor'},
+      {id:'moongem',name:'月亮石',category:'宝石',price:8,art:'blue-gem'},
+      {id:'sungem',name:'太阳石',category:'宝石',price:3.5,art:'diamond',tone:'gold'},
+      {id:'sneak',name:'偷袭',category:'兽决',price:48,art:'scroll',tone:'gold'},
+      {id:'map',name:'藏宝图',category:'杂货',price:2.8,art:'scroll',tone:'gold'}
+    ];
+    function makeDay(seed=false) {
+      return {server:'zijin',gold:200,goldManual:false,accounts:5,prices:{},rows:seed?[{id:'diamond',qty:2,price:120,manual:false},{id:'pearl',qty:1,price:120,manual:false},{id:'fruit',qty:6,price:38,manual:true},{id:'armor70',qty:3,price:4,manual:false},{id:'stone',qty:12,price:.5,manual:false},{id:'spark',qty:2,price:null,manual:false}]:[],sessions:seed?[
+        {id:'seed-1',name:'抓鬼日常',seconds:5400,amount:450,accounts:5,at:'10:00',accountAmounts:null},
+        {id:'seed-2',name:'副本日常',seconds:4800,amount:410,accounts:5,at:'11:40',accountAmounts:null},
+        {id:'seed-3',name:'师门任务',seconds:1182,amount:220,accounts:5,at:'12:10',accountAmounts:null}
+      ]:[],elapsed:seed?1578:0,adjustment:0};
+    }
+    let store = {version:1,selected:TODAY,custom:[],days:{[TODAY]:makeDay(true)}};
+    let storageAvailable = true;
+    let loadIssue = false;
+    function validateDay(day, catalogIds) {
+      return day && servers.some(s=>s.id===day.server) && validNumber(day.gold,1000000) && day.gold>0 && typeof day.goldManual==='boolean' && Number.isInteger(day.accounts) && day.accounts>=1 && day.accounts<=20 && Array.isArray(day.rows) && day.rows.length<=500 && new Set(day.rows.map(row=>row.id)).size===day.rows.length && day.rows.every(row=>catalogIds.has(row.id)&&validQuantity(row.qty)&&(row.price===null||validNumber(row.price))&&typeof row.manual==='boolean') && Array.isArray(day.sessions) && day.sessions.length<=10000 && day.sessions.every(s=>typeof s.id==='string'&&typeof s.name==='string'&&s.name.length<=40&&validNumber(s.seconds,3600000)&&(s.amount===null||validNumber(s.amount))&&Number.isInteger(s.accounts)&&s.accounts>=1&&s.accounts<=20&&/^\d{2}:\d{2}$/.test(s.at)&&(s.accountAmounts===null||(Array.isArray(s.accountAmounts)&&s.accountAmounts.length===s.accounts&&s.accountAmounts.every(v=>validNumber(v))))) && validNumber(day.elapsed,3600000) && Number.isFinite(day.adjustment) && Math.abs(day.adjustment)<=3600000 && day.prices && typeof day.prices==='object' && !Array.isArray(day.prices) && Object.entries(day.prices).every(([id,p])=>catalogIds.has(id)&&p&&(p.value===null||validNumber(p.value))&&typeof p.manual==='boolean');
+    }
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        if (raw.length>2000000) throw new Error('存储超出原型限制');
+        const candidate = JSON.parse(raw);
+        if (candidate.version!==1 || !Array.isArray(candidate.custom) || candidate.custom.length>100 || !candidate.custom.every(i=>/^custom-[a-z0-9-]+$/.test(i.id)&&typeof i.name==='string'&&i.name.trim().length>0&&i.name.length<=30&&(i.price===null||validNumber(i.price))&&i.art==='spark'&&i.category==='个人'&&i.tone==='green')) throw new Error('个人目录无效');
+        const allItems=[...baseCatalog,...candidate.custom];
+        const ids = new Set(allItems.map(i=>i.id));
+        if (ids.size!==allItems.length || new Set(allItems.map(i=>i.name)).size!==allItems.length || !validDate(candidate.selected) || !candidate.days || typeof candidate.days!=='object' || Array.isArray(candidate.days) || Object.keys(candidate.days).length>3660 || !Object.entries(candidate.days).every(([date,day])=>validDate(date)&&validateDay(day,ids))) throw new Error('账本数据无效');
+        store=candidate;
+      }
+    } catch(error) { loadIssue=true; storageAvailable=false; }
+    let currentDate=store.selected, currentView='ledger', category='常用', query='', running=false, startedAt=0, selectedServer=null, settleMode='total', editingSession=null;
+    const catalog = () => [...baseCatalog,...store.custom];
+    const getItem = id => catalog().find(item=>item.id===id);
+    const day = () => store.days[currentDate] || (store.days[currentDate]=makeDay());
+    const rawSessionSeconds = () => day().elapsed + (running ? Math.max(0,(Date.now()-startedAt)/1000) : 0);
+    const actualSeconds = () => day().sessions.reduce((sum,s)=>sum+s.seconds,0)+rawSessionSeconds();
+    const totalSeconds = () => Math.max(0,actualSeconds()+day().adjustment);
+    function totals() {
+      const items=day().rows.reduce((sum,row)=>sum+(row.price===null?0:row.qty*row.price),0);
+      const cash=day().sessions.reduce((sum,s)=>sum+(s.amount??0),0);
+      return {items,cash,total:items+cash,rmb:(items+cash)/3000*day().gold,unpriced:day().rows.filter(r=>r.price===null).length};
+    }
+    function save() {
+      store.selected=currentDate;
+      if (!storageAvailable) { $('saveStatus').style.color='var(--gold-text)'; $('saveStatus').lastElementChild.textContent='仅本次预览'; return; }
+      try { localStorage.setItem(STORAGE_KEY,JSON.stringify(store)); $('saveStatus').style.color='var(--green)'; $('saveStatus').lastElementChild.textContent='本地已保存'; }
+      catch(error) { storageAvailable=false; $('saveStatus').style.color='var(--red)'; $('saveStatus').lastElementChild.textContent='保存失败'; toast('本地存储不可用，当前更改只在本次预览保留。'); }
+    }
+    let toastTimeout;
+    function toast(message, undo) {
+      document.querySelector('.toast')?.remove(); clearTimeout(toastTimeout);
+      const node=document.createElement('div'); node.className='toast'; node.setAttribute('role','status'); node.innerHTML=icon('check');
+      const text=document.createElement('span'); text.textContent=message; node.append(text);
+      if (undo) { const button=document.createElement('button'); button.textContent='撤销'; button.onclick=()=>{undo();node.remove();}; node.append(button); }
+      document.body.append(node); toastTimeout=setTimeout(()=>node.remove(),undo?8000:3500);
+    }
+    function priceFor(item) { const saved=day().prices[item.id]; if(saved)return saved.value; const recorded=day().rows.find(row=>row.id===item.id);if(recorded?.manual)return recorded.price;return item.price===null?null:Math.round(item.price*(item.category==='个人'?1:servers.find(s=>s.id===day().server).factor)*100)/100; }
+    function renderMetrics() {
+      const t=totals(); $('totalRevenue').textContent=money(t.total); $('cashRevenue').textContent=money(t.cash); $('itemRevenue').textContent=money(t.items); $('rmbRevenue').textContent=money(t.rmb);
+      $('settledCount').textContent=`已完成 ${day().sessions.filter(s=>s.amount!==null).length} 段结算${day().sessions.some(s=>s.amount===null)?' · 有待补金额':''}`;
+      $('metricItemCount').textContent=`${day().rows.length} 种物品`; $('metricUnpriced').hidden=!t.unpriced; $('metricUnpriced').textContent=`${t.unpriced} 项待计价`;
+      $('itemSubtotal').innerHTML=money(t.items)+'<small>万两</small>';
+      $('unpricedNote').style.color=t.unpriced?'var(--gold-text)':'var(--muted)'; $('unpricedNote').innerHTML=icon(t.unpriced?'info':'check')+`<span>${t.unpriced?`${t.unpriced} 项未计价，不计入收益`:'所有物品均已计价'}</span>`;
+      $('rowCount').textContent=day().rows.length; $('itemsSubtitle').textContent=`共 ${day().rows.reduce((n,r)=>n+r.qty,0)} 件物品，所有单价以万两计`;
+      $('hourlyRevenue').textContent=totalSeconds()>0?'¥'+money(t.rmb/(totalSeconds()/3600)):'—';
+    }
+    function renderRows() {
+      $('itemRows').innerHTML=day().rows.map(row=>{const item=getItem(row.id);return `<tr data-id="${escapeHtml(row.id)}"><td><div class="item-info">${art(item)}<div><div class="item-name">${escapeHtml(item.name)}</div><div class="item-category">${escapeHtml(item.category)}${row.manual?'<span class="manual-tag">手填价</span>':''}</div></div></div></td><td><div class="price-field"><input class="num" type="number" min="0" max="100000000" step="0.01" data-price="${escapeHtml(row.id)}" aria-label="${escapeHtml(item.name)}参考单价" value="${row.price??''}" placeholder="待填写">${icon('edit')}</div></td><td><div class="quantity"><button data-delta="-1" data-item="${escapeHtml(row.id)}" aria-label="减少${escapeHtml(item.name)}" ${row.qty===1?'disabled':''}>${icon('minus')}</button><input class="num" type="number" min="1" max="99999" step="1" data-quantity="${escapeHtml(row.id)}" aria-label="${escapeHtml(item.name)}数量" value="${row.qty}"><button data-delta="1" data-item="${escapeHtml(row.id)}" aria-label="增加${escapeHtml(item.name)}" ${row.qty===99999?'disabled':''}>${icon('plus')}</button></div></td><td class="num">${row.price===null?'<span class="unpriced">待计价</span>':money(row.qty*row.price)}</td><td><button class="remove-row" data-remove="${escapeHtml(row.id)}" aria-label="移除${escapeHtml(item.name)}">${icon('close')}</button></td></tr>`;}).join('');
+      $('itemsEmpty').hidden=day().rows.length>0;
+    }
+    function renderCatalog() {
+      const cats=['常用','五宝','宝石','环装','兽决','杂货',...(store.custom.length?['个人']:[])];
+      $('categoryTabs').innerHTML=cats.map(c=>`<button class="category-tab ${category===c?'active':''}" data-category="${c}" aria-pressed="${category===c}">${c}</button>`).join('');
+      const items=catalog().filter(item=>(query?item.name.includes(query):category==='常用'?item.favorite:item.category===category));
+      $('catalogGrid').innerHTML=items.length?items.map(item=>`<button class="catalog-item" data-add="${escapeHtml(item.id)}" aria-label="记入${escapeHtml(item.name)}">${art(item)}<div><div class="item-name">${escapeHtml(item.name)}</div><div class="catalog-price num">${priceFor(item)===null?'暂未计价':money(priceFor(item))+' 万两'}</div></div><span class="catalog-plus">${icon('plus')}</span></button>`).join(''):`<div class="empty-state">${icon('search')}<div>没有找到这个物品</div><p>试试其他名称，或添加自定义物品。</p></div>`;
+    }
+    function renderTimer() {
+      $('dayClock').innerHTML=timeText(totalSeconds()).split(':').join('<span>:</span>'); $('segmentClock').textContent=timeText(rawSessionSeconds());
+      $('timerStatus').textContent=running?'计时中':rawSessionSeconds()>0?'已暂停':'未开始'; $('timerStatus').classList.toggle('running',running);
+      $('toggleTimer').innerHTML=icon(running?'pause':'play')+`<span>${running?'暂停计时':rawSessionSeconds()>0?'继续计时':'开始计时'}</span>`;
+      $('openSettlement').disabled=rawSessionSeconds()<1; $('accountCount').value=day().accounts; $('accountCount').disabled=running||rawSessionSeconds()>0; $('accountCount').title=rawSessionSeconds()>0?'本段账号数量固定，结算后可修改':''; $('accountSummary').textContent=day().accounts+' 个账号';
+      const t=totals(); $('hourlyRevenue').textContent=totalSeconds()>0?'¥'+money(t.rmb/(totalSeconds()/3600)):'—';
+    }
+    function renderSessions() {
+      const sessions=[...day().sessions].reverse();
+      $('recentHeading').textContent=`最近结算 · ${sessions.length} 段`;
+      $('recentSessions').innerHTML=sessions.length?sessions.slice(0,2).map(s=>`<div class="session-mini"><span class="session-dot"></span><div><div class="session-mini-name">${escapeHtml(s.name)}</div><div class="session-mini-time num">${escapeHtml(s.at)} · ${shortTime(s.seconds)}</div></div><div class="session-mini-amount num">${s.amount===null?'<button class="text-button" data-complete="'+escapeHtml(s.id)+'">补填金额</button>':'+'+money(s.amount)+'<small>万两</small>'}</div></div>`).join(''):'<div style="color:var(--muted);font-size:10px;padding:8px 0">开始第一段计时，记录今天的努力。</div>';
+      $('historyCount').textContent=sessions.length;
+      $('historyList').innerHTML=sessions.length?sessions.map((s,i)=>`<div class="history-row"><div class="history-index num">${String(sessions.length-i).padStart(2,'0')}</div><div><div class="history-name">${escapeHtml(s.name)}</div><div class="history-desc">${escapeHtml(s.at)} 结束 · ${s.accounts} 个账号${s.accountAmounts?' · 逐号录入':''}</div></div><div class="history-duration num">${timeText(s.seconds)}</div><div class="history-value num">${s.amount===null?'<button class="button soft" data-complete="'+escapeHtml(s.id)+'">补填金额</button>':'+'+money(s.amount)+' <small>万两</small>'}</div></div>`).join('')+`<div class="history-summary"><span>累计实收</span><b class="num">${money(totals().cash)} 万两</b></div>`:'<div class="empty-state">'+icon('history')+'<div>这一天还没有结算记录</div><p>结束计时后，收获会保存在这里。</p></div>';
+    }
+    function renderServer() { const s=servers.find(v=>v.id===day().server); $('toolbarServer').textContent=s.area+' · '+s.name; $('priceServer').textContent=s.area+' · '+s.name; $('goldPrice').textContent=money(day().gold); }
+    function render() { $('ledgerDate').value=currentDate; renderRows();renderMetrics();renderCatalog();renderTimer();renderSessions();renderServer(); }
+    function pauseTimer() { if (running) { day().elapsed=rawSessionSeconds();running=false;startedAt=0; } }
+    function changeDate(date) { if (!validDate(date)) { $('ledgerDate').value=currentDate; toast('请选择有效日期（2020–2099）。'); return; } pauseTimer();save();currentDate=date;day();save();render(); }
+    function showView(view) { currentView=view; $('ledgerPanel').hidden=view!=='ledger';$('catalogPanel').hidden=view!=='ledger';$('historyPanel').hidden=view!=='history';document.querySelectorAll('[data-view]').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);b.setAttribute('aria-pressed',String(b.dataset.view===view));}); }
+    function addItem(id, quantity=1, replace=false) {
+      const item=getItem(id); if (!item) return false; const row=day().rows.find(r=>r.id===id); const next=replace?quantity:(row?.qty??0)+quantity;
+      if (!validQuantity(next)) { toast('数量需为 1–99,999 的整数。');return false; }
+      if(row) row.qty=next;else day().rows.push({id,qty:next,price:priceFor(item),manual:day().prices[id]?.manual??false}); return true;
+    }
+    document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+    $('showAllHistory').onclick=()=>{showView('history');$('historyPanel').scrollIntoView({behavior:'smooth',block:'nearest'});};
+    $('ledgerDate').onchange=event=>changeDate(event.target.value);
+    function shiftDay(delta) { const date=new Date(currentDate+'T12:00:00Z');date.setUTCDate(date.getUTCDate()+delta);changeDate(date.toISOString().slice(0,10)); }
+    $('previousDay').onclick=()=>shiftDay(-1);$('nextDay').onclick=()=>shiftDay(1);$('goToday').onclick=()=>changeDate(TODAY);
+    $('catalogSearch').oninput=event=>{query=event.target.value.trim();renderCatalog();};
+    $('categoryTabs').onclick=event=>{const b=event.target.closest('[data-category]');if(b){category=b.dataset.category;query='';$('catalogSearch').value='';renderCatalog();}};
+    $('catalogGrid').onclick=event=>{const b=event.target.closest('[data-add]');if(b&&addItem(b.dataset.add)){save();renderRows();renderMetrics();toast(getItem(b.dataset.add).name+' 已记入，数量 +1');}};
+    $('itemRows').onclick=event=>{
+      const delta=event.target.closest('[data-delta]');
+      if(delta){const row=day().rows.find(r=>r.id===delta.dataset.item);const value=row.qty+Number(delta.dataset.delta);if(validQuantity(value)){row.qty=value;save();renderRows();renderMetrics();}return;}
+      const remove=event.target.closest('[data-remove]');if(remove){const date=currentDate,index=day().rows.findIndex(r=>r.id===remove.dataset.remove),row=day().rows.splice(index,1)[0];save();renderRows();renderMetrics();toast(getItem(row.id).name+' 已移出清单',()=>{const target=store.days[date];if(!target.rows.some(r=>r.id===row.id))target.rows.splice(index,0,row);save();render();});}
+    };
+    function updateInlineInput(event, commit) {
+      const input=event.target;
+      let changedRow;
+      if(input.dataset.quantity){const row=day().rows.find(r=>r.id===input.dataset.quantity);const value=Number(input.value);if(!validQuantity(value)){if(commit){input.value=row.qty;toast('数量需为 1–99,999 的整数。');}return;}row.qty=value;changedRow=row;}
+      else if(input.dataset.price){const row=day().rows.find(r=>r.id===input.dataset.price);const value=input.value.trim()===''?null:Number(input.value);if(value!==null&&!validNumber(value)){if(commit){input.value=row.price??'';toast('单价需为 0–100,000,000 的数字。');}return;}row.price=value;row.manual=true;day().prices[row.id]={value,manual:true};changedRow=row;}
+      else return;
+      save();
+      // 输入时只更新同一行的派生值，保留焦点、光标与尚未输入完的小数。
+      if(commit)renderRows();
+      else {
+        const rowElement=input.closest('tr');
+        rowElement.children[3].innerHTML=changedRow.price===null?'<span class="unpriced">待计价</span>':money(changedRow.qty*changedRow.price);
+        rowElement.querySelector('[data-delta="-1"]').disabled=changedRow.qty===1;
+        rowElement.querySelector('[data-delta="1"]').disabled=changedRow.qty===99999;
+        if(changedRow.manual&&!rowElement.querySelector('.manual-tag')){const badge=document.createElement('span');badge.className='manual-tag';badge.textContent='手填价';rowElement.querySelector('.item-category').append(badge);}
+      }
+      renderMetrics();renderCatalog();
+    }
+    $('itemRows').oninput=event=>updateInlineInput(event,false);
+    $('itemRows').onchange=event=>updateInlineInput(event,true);
+    document.querySelectorAll('[data-close]').forEach(button=>button.onclick=()=>button.closest('dialog').close());
+    document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('click',event=>{if(event.target===dialog){const rect=dialog.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)dialog.close();}}));
+    $('toggleTimer').onclick=()=>{if(running){pauseTimer();save();}else{running=true;startedAt=Date.now();}renderTimer();};
+    function updateAccounts(event,commit){const value=Number(event.target.value);if(running||rawSessionSeconds()>0||!Number.isInteger(value)||value<1||value>20){if(commit){event.target.value=day().accounts;toast('每段账号数量固定，可在本段结算后调整为 1–20 个。');}return;}day().accounts=value;save();$('accountSummary').textContent=value+' 个账号';}
+    $('accountCount').oninput=event=>updateAccounts(event,false);
+    $('accountCount').onchange=event=>updateAccounts(event,true);
+    const persistTimer=()=>{if(running){day().elapsed=rawSessionSeconds();startedAt=Date.now();save();}};
+    setInterval(()=>{if(running)renderTimer();},1000);setInterval(persistTimer,5000);
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseTimer();save();renderTimer();}});
+    window.addEventListener('pagehide',()=>{pauseTimer();save();});
+    function renderServerOptions(){ $('serverOptions').innerHTML=servers.map(s=>`<button class="server-option ${selectedServer===s.id?'active':''}" data-server="${s.id}"><span><strong>${s.name}</strong><small>${s.area} · 示例金价 ¥${money(s.gold)}</small></span>${icon('check')}</button>`).join(''); }
+    $('openServer').onclick=()=>{selectedServer=day().server;renderServerOptions();$('serverError').textContent='';$('serverDialog').showModal();};
+    $('serverOptions').onclick=event=>{const b=event.target.closest('[data-server]');if(b){selectedServer=b.dataset.server;renderServerOptions();}};
+    $('saveServer').onclick=()=>{const server=servers.find(s=>s.id===selectedServer);if(!server)return;day().server=server.id;if(!day().goldManual)day().gold=server.gold;day().rows.forEach(row=>{if(!row.manual)row.price=priceFor(getItem(row.id));});save();render();$('serverDialog').close();toast('已切换至'+server.name+'，手填价格已保留。');};
+    $('openCustom').onclick=()=>{$('customForm').reset();$('customError').textContent='';$('customDialog').showModal();};
+    $('customForm').onsubmit=event=>{event.preventDefault();const name=$('customName').value.trim(),price=$('customPrice').value.trim()===''?null:Number($('customPrice').value);if(!name||name.length>30||/[\u0000-\u001f]/.test(name)){$('customError').textContent='请输入 1–30 个字符的有效名称。';return;}if(catalog().some(i=>i.name===name)){$('customError').textContent='该物品已经在目录中，请搜索并直接记入。';return;}if(price!==null&&!validNumber(price)){$('customError').textContent='请输入有效的非负单价。';return;}if(store.custom.length>=100){$('customError').textContent='原型最多支持 100 个个人物品。';return;}const item={id:'custom-'+crypto.randomUUID(),name,price,category:'个人',art:'spark',tone:'green'};store.custom.push(item);day().prices[item.id]={value:price,manual:true};addItem(item.id);category='个人';query='';$('catalogSearch').value='';save();render();$('customDialog').close();toast(name+' 已新增并记入。');};
+    $('openBatch').onclick=()=>{$('batchForm').reset();$('batchError').textContent='';$('batchDialog').showModal();};
+    $('batchForm').onsubmit=event=>{
+      event.preventDefault();const lines=$('batchText').value.trim().split(/\r?\n/).filter(line=>line.trim());const changes=[],seen=new Set();
+      if(!lines.length||lines.length>500){$('batchError').textContent='请输入 1–500 行物品。';return;}
+      for(let i=0;i<lines.length;i++){const match=lines[i].trim().match(/^(.+?)\s+(\d+)$/);if(!match||!validQuantity(Number(match[2]))){$('batchError').textContent=`第 ${i+1} 行格式无效，请输入「物品名称 整数数量」。`;return;}const item=catalog().find(v=>v.name===match[1].trim());if(!item){$('batchError').textContent=`第 ${i+1} 行：目录中没有「${match[1].trim()}」，请先新增该物品。`;return;}if(seen.has(item.id)){$('batchError').textContent=`第 ${i+1} 行物品重复，请合并后再填写。`;return;}seen.add(item.id);changes.push({id:item.id,qty:Number(match[2])});}
+      changes.forEach(change=>addItem(change.id,change.qty,true));save();render();$('batchDialog').close();toast(`已更新 ${changes.length} 种物品的数量。`);
+    };
+    function openPrices(){ $('pricesError').textContent='';$('goldInput').value=day().gold;$('priceBook').innerHTML=catalog().map(item=>`<label class="price-book-row"><span>${escapeHtml(item.name)}<span style="font-size:9px;color:var(--muted);margin-left:6px">${escapeHtml(item.category)}</span></span><input type="number" min="0" max="100000000" step="0.01" data-book="${escapeHtml(item.id)}" aria-label="${escapeHtml(item.name)}物价" value="${priceFor(item)??''}" placeholder="未计价"></label>`).join('');$('pricesDialog').showModal(); }
+    $('openPrices').onclick=openPrices;$('editGold').onclick=openPrices;
+    $('pricesForm').onsubmit=event=>{event.preventDefault();const gold=Number($('goldInput').value);if(!validNumber(gold,1000000)||gold<=0){$('pricesError').textContent='金价需大于 0，且不超过 1,000,000 元。';return;}const changes=[];for(const input of document.querySelectorAll('[data-book]')){const value=input.value.trim()===''?null:Number(input.value);if(value!==null&&!validNumber(value)){$('pricesError').textContent='物品单价格式无效。';return;}if(value!==priceFor(getItem(input.dataset.book)))changes.push({id:input.dataset.book,value});}if(day().gold!==gold){day().gold=gold;day().goldManual=true;}changes.forEach(change=>{day().prices[change.id]={value:change.value,manual:true};const row=day().rows.find(r=>r.id===change.id);if(row){row.price=change.value;row.manual=true;}});save();render();$('pricesDialog').close();toast('当日物价单已保存，收益已重新计算。');};
+    function renderSettlementFields(){const session=editingSession?day().sessions.find(s=>s.id===editingSession):null;const accounts=session?.accounts??day().accounts;$('settlementFields').innerHTML=settleMode==='total'?`<div class="field"><label for="settlementAmount">本段游戏币总金额</label><div class="unit-input"><input id="settlementAmount" type="number" min="0" max="100000000" step="0.01" required placeholder="例如：150.00" value="${session?.amount??''}"><span>万两</span></div></div>`:`<div class="account-fields">${Array.from({length:accounts},(_,i)=>`<div class="field"><label for="accountAmount${i}">账号 ${i+1} / 万两</label><input id="accountAmount${i}" type="number" min="0" max="100000000" step="0.01" data-account-amount required placeholder="0.00" value="${session?.accountAmounts?.[i]??''}"></div>`).join('')}</div>`; }
+    function openSettlement(id=null){if(!id&&rawSessionSeconds()<1)return;pauseTimer();save();renderTimer();editingSession=id;const session=id?day().sessions.find(s=>s.id===id):null;if(id&&!session)return;settleMode=session?.accountAmounts?'accounts':'total';$('settlementDuration').textContent=timeText(session?.seconds??rawSessionSeconds());$('settlementAccounts').textContent=(session?.accounts??day().accounts)+' 个账号';$('sessionName').value=session?.name??'日常收益';$('settlementError').textContent='';$('settlementDialogTitle').textContent=id?'补填本段收益':'结束并记录收益';$('settleLater').hidden=Boolean(id);document.querySelectorAll('[data-mode]').forEach(b=>{b.classList.toggle('active',b.dataset.mode===settleMode);b.setAttribute('aria-pressed',String(b.dataset.mode===settleMode));});renderSettlementFields();$('settlementDialog').showModal();}
+    $('openSettlement').onclick=()=>openSettlement();
+    document.addEventListener('click',event=>{const b=event.target.closest('[data-complete]');if(b)openSettlement(b.dataset.complete);});
+    document.querySelectorAll('[data-mode]').forEach(button=>button.onclick=()=>{settleMode=button.dataset.mode;document.querySelectorAll('[data-mode]').forEach(b=>{b.classList.toggle('active',b===button);b.setAttribute('aria-pressed',String(b===button));});renderSettlementFields();});
+    function finishSettlement(later=false){
+      const name=$('sessionName').value.trim();if(!name||name.length>40){$('settlementError').textContent='请填写 1–40 个字符的本段备注。';return;}
+      let amount=null,accountAmounts=null;
+      if(!later){if(settleMode==='total'){const input=$('settlementAmount');if(input.value.trim()===''){$('settlementError').textContent='请填写金额；没有游戏币实收时可填 0。';return;}amount=Number(input.value);}else{const inputs=[...document.querySelectorAll('[data-account-amount]')];if(inputs.some(input=>input.value.trim()===''||!validNumber(Number(input.value)))){$('settlementError').textContent='请为每个账号填写有效金额，没有实收可填 0。';return;}accountAmounts=inputs.map(input=>Number(input.value));amount=accountAmounts.reduce((sum,v)=>sum+v,0);}if(!validNumber(amount)){$('settlementError').textContent='合计金额需为 0–100,000,000 万两。';return;}}
+      if(editingSession){const session=day().sessions.find(s=>s.id===editingSession);session.name=name;session.amount=amount;session.accountAmounts=accountAmounts;}
+      else{day().sessions.push({id:crypto.randomUUID(),name,seconds:day().elapsed,amount,accounts:day().accounts,at:new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Shanghai'}).format(new Date()),accountAmounts});day().elapsed=0;}
+      save();render();$('settlementDialog').close();toast(later?'本段已结束，可在结算记录中补填金额。':'本段收益已保存。');editingSession=null;
+    }
+    $('settlementForm').onsubmit=event=>{event.preventDefault();finishSettlement();};$('settleLater').onclick=()=>finishSettlement(true);
+    $('openDuration').onclick=()=>{pauseTimer();save();renderTimer();const seconds=Math.floor(totalSeconds());$('durationHours').value=Math.floor(seconds/3600);$('durationMinutes').value=Math.floor(seconds/60)%60;$('durationSeconds').value=seconds%60;$('durationError').textContent='';$('durationDialog').showModal();};
+    $('durationForm').onsubmit=event=>{event.preventDefault();const h=Number($('durationHours').value),m=Number($('durationMinutes').value),s=Number($('durationSeconds').value);if(![h,m,s].every(Number.isInteger)||h<0||h>999||m<0||m>59||s<0||s>59){$('durationError').textContent='请输入有效时长：0–999 时、0–59 分、0–59 秒。';return;}day().adjustment=h*3600+m*60+s-actualSeconds();save();renderTimer();$('durationDialog').close();toast('该日总时长已修正。');};
+    $('restoreDuration').onclick=()=>{day().adjustment=0;save();renderTimer();$('durationDialog').close();toast('已恢复为实际计时累计值。');};
+    render();save();
+    if(loadIssue)toast('本地数据无效或无法读取，已显示示例账本；原存储未覆盖。');
+  </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.card {
+  position: relative;
+  min-width: 0;
+  min-height: 150px;
+  overflow: hidden;
+  border: 1px solid $glass-border;
+  border-radius: 14px;
+  background: $glass-surface;
+  box-shadow: $glass-shadow;
+  backdrop-filter: blur($glass-blur) saturate($glass-saturation);
+}
+
+// 内容在卡片内上下分布，卡片变高后标题、数值、说明不会挤在顶部。
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: inherit;
+  padding: 22px 24px 20px;
+}
+
+.label {
+  font-size: 12px;
+  color: $color-text-muted;
+}
+
+.icon {
+  font-size: 16px;
+  color: $brand-400;
+}
+
+.value {
+  font-size: 33px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: $brand-700;
+  font-variant-numeric: tabular-nums;
+}
+
+.unit {
+  margin-inline-start: 7px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.note {
+  margin-top: 11px;
+}
+
+.noteText {
+  font-size: 11px;
+  color: $color-text-muted;
+}
+
+.badge {
+  margin: 0;
+  padding: 0 6px;
+  font-size: 10px;
+  line-height: 18px;
+  color: $gold-700;
+  background: $gold-50;
+  border: none;
+}
+
+// 主卡：蓝色渐变底，文字反白。
+.primary {
+  border-color: #6488d4;
+  background: linear-gradient(115deg, #2d54ad, #3f6fdc 70%, #7095e8);
+  box-shadow: 0 10px 24px rgba($brand-600, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+  .label,
+  .noteText {
+    color: $brand-100;
+  }
+
+  .icon {
+    color: $brand-200;
+  }
+
+  .value {
+    color: #ffffff;
+  }
+
+  &::after {
+    position: absolute;
+    top: 29px;
+    right: -28px;
+    width: 145px;
+    height: 145px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 22px rgba(255, 255, 255, 0.02),
+      0 0 0 44px rgba(255, 255, 255, 0.02);
+    content: "";
+    pointer-events: none;
+  }
+}

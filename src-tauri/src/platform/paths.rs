@@ -1,4 +1,4 @@
-use crate::domain::module::ModuleId;
+use crate::shared::module::ModuleId;
 use std::path::PathBuf;
 
 /// 获取项目工作区根目录。

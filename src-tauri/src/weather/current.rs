@@ -1,4 +1,4 @@
-use crate::domain::weather::{LiveWeather, LiveWeatherResponse};
+use super::domain::{LiveWeather, LiveWeatherResponse};
 use tauri_plugin_http::reqwest;
 
 const AMAP_KEY: &str = "45454eef0a5eb7eeda64adb709100dbc";

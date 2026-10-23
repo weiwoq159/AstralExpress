@@ -9,4 +9,8 @@ export const AglaeaNavigation: Navigation = {
     path: "/aglaea/income-statistics",
     title: "收益统计",
   },
+  guildShop: {
+    path: "/aglaea/guild-shop",
+    title: "商会物价",
+  },
 } as const;

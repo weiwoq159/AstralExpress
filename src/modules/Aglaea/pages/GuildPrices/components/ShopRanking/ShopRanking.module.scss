@@ -1,0 +1,75 @@
+@use '@/shared/styles/variables.scss' as *;
+
+.subtitle,
+.sub {
+  font-size: 12px;
+}
+
+// 列表较长时在面板内滚动，不撑高整页。
+.list {
+  max-height: 670px;
+  overflow-y: auto;
+}
+
+// 整行是一个可选中的按钮：antd 没有"可选中列表行"，这里只重置原生按钮的外观。
+.row {
+  width: 100%;
+  padding: 14px 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: $brand-50;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-focus;
+    outline-offset: 2px;
+  }
+}
+
+.active {
+  border-color: $color-border;
+  background: $color-primary-soft;
+
+  &:hover {
+    background: $color-primary-soft;
+  }
+}
+
+.rank {
+  flex: none;
+  width: 42px;
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+  color: $ink-300;
+  font-variant-numeric: tabular-nums;
+}
+
+.first .rank {
+  color: $color-primary;
+}
+
+// 允许名字在 flex 行里被截断，而不是把整行撑宽。
+.name {
+  min-width: 0;
+}
+
+.price {
+  flex: none;
+  font-size: 21px;
+  font-weight: 700;
+  color: $color-primary;
+  font-variant-numeric: tabular-nums;
+}
+
+.unit {
+  margin-inline-start: 3px;
+  font-size: 11px;
+}
